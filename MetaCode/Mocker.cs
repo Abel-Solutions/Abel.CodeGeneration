@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MetaCode.DynamicRun;
 using MetaCode.Extensions;
 
 namespace MetaCode
@@ -28,7 +29,13 @@ namespace MetaCode
 		{
 			var code = GenerateCode(); // todo
 
-			return default;
+			var assembly = new Compiler()
+				.AddReference<TMockable>()
+				.Compile(code);
+
+			var types = assembly.ExportedTypes;
+
+			return types.First(); // todo
 		}
 
 		public string GenerateCode() // todo private?

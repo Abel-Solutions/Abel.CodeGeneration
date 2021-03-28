@@ -15,8 +15,9 @@ namespace MetaCode
 
 		public void Run(string code)
 		{
-			var bytes = _compiler.Compile(code);
-			_runner.Execute(bytes);
+			//var assembly = _compiler.Compile(code);
+			//assembly.ExportedTypes
+			//_runner.Execute(bytes);
 		}
 	}
 }

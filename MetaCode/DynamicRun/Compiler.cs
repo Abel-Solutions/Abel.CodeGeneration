@@ -9,47 +9,81 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace MetaCode.DynamicRun
 {
-    public class Compiler
-    {
-        public byte[] Compile(string sourceCode)
-        {
-			using var peStream = new MemoryStream();
-			var result = GenerateCode(sourceCode).Emit(peStream);
+	public class Compiler
+	{
+		private readonly IList<string> _referenceNames = new List<string>();
+
+		public Compiler AddReference<T>() => AddReference(typeof(T));
+
+		public Compiler AddReference(Type type)
+		{
+			_referenceNames.Add(type.GetTypeInfo().Assembly.Location);
+			return this;
+		}
+
+		public Assembly Compile(string sourceCode)
+		{
+			var references = FindReferences();
+
+			var compilation = GenerateCode(sourceCode, references);
+
+			return CreateAssembly(compilation);
+		}
+
+		private IEnumerable<MetadataReference> FindReferences()
+		{
+			AddReference<object>();
+			AddReference(typeof(Console));
+
+			foreach (var a in Assembly.GetEntryAssembly()?.GetReferencedAssemblies())
+			{
+				_referenceNames.Add(Assembly.Load(a).Location);
+			}
+
+			return _referenceNames.Distinct().Select(x => MetadataReference.CreateFromFile(x));
+
+			//var references = new List<MetadataReference>
+			//{
+			//	MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+			//	MetadataReference.CreateFromFile(typeof(Console).Assembly.Location)
+			//};
+
+			//Assembly.GetEntryAssembly()?.GetReferencedAssemblies().ToList()
+			//	.ForEach(a => references.Add(MetadataReference.CreateFromFile(Assembly.Load(a).Location)));
+		}
+
+		private static Assembly CreateAssembly(Compilation compilation)
+		{
+			using var ms = new MemoryStream();
+			var result = compilation.Emit(ms);
 
 			if (!result.Success)
 			{
-				var failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
+				var failures = result.Diagnostics.Where(diagnostic =>
+					diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
 
 				throw new Exception("Compilation failed: " + string.Join("\n", failures.Select(f => f.GetMessage())));
 			}
 
-			peStream.Seek(0, SeekOrigin.Begin);
+			ms.Seek(0, SeekOrigin.Begin);
 
-			return peStream.ToArray();
+			return Assembly.Load(ms.ToArray());
 		}
 
-        private static CSharpCompilation GenerateCode(string sourceCode)
-        {
-            var codeString = SourceText.From(sourceCode);
-            var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp9);
+		private static Compilation GenerateCode(string sourceCode, IEnumerable<MetadataReference> references)
+		{
+			var codeString = SourceText.From(sourceCode);
+			var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp9);
 
-            var parsedSyntaxTree = SyntaxFactory.ParseSyntaxTree(codeString, options);
+			var parsedSyntaxTree = SyntaxFactory.ParseSyntaxTree(codeString, options);
 
-            var references = new List<MetadataReference>
-            {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location)
-            };
-
-            Assembly.GetEntryAssembly()?.GetReferencedAssemblies().ToList()
-                .ForEach(a => references.Add(MetadataReference.CreateFromFile(Assembly.Load(a).Location)));
-
-            return CSharpCompilation.Create("Hello.dll",
-                new[] { parsedSyntaxTree },
-                references: references,
-                options: new CSharpCompilationOptions(OutputKind.ConsoleApplication,
-                    optimizationLevel: OptimizationLevel.Release,
-                    assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default));
-        }
-    }
+			return CSharpCompilation.Create(
+				"Hello.dll",
+				new[] { parsedSyntaxTree },
+				references,
+				new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, // todo console
+					optimizationLevel: OptimizationLevel.Debug,
+					assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default));
+		}
+	}
 }
