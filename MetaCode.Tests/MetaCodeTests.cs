@@ -27,13 +27,13 @@ namespace MetaCode.Tests
 				.AddLine("using System;")
 				.AddLine("using System.Text;")
 				.AddLine()
-				.AddScoped("namespace MetaCode", n =>
+				.AddScoped("namespace MetaCode", nspace =>
 				{
-					n.AddScoped("public class Lol", c =>
+					nspace.AddScoped("public class Lol", cl =>
 					{
-						c.AddScoped("public static void Main()", f =>
+						cl.AddScoped("public static void Main()", method =>
 						{
-							f.AddLine("Console.WriteLine(\"foo\");");
+							method.AddLine("Console.WriteLine(\"foo\");");
 						});
 					});
 				})
@@ -61,13 +61,13 @@ namespace MetaCode.Tests
 				.AddLine("using System;")
 				.AddLine("using System.Text;")
 				.AddLine()
-				.AddScoped("namespace MetaCode", n =>
+				.AddScoped("namespace MetaCode", nspace =>
 				{
-					n.AddScoped("public class Lol", c =>
+					nspace.AddScoped("public class Lol", cl =>
 					{
-						c.AddScoped("public static void Main()", f =>
+						cl.AddScoped("public static void Main()", method =>
 						{
-							f.AddLine("Console.WriteLine(\"foo\");");
+							method.AddLine("Console.WriteLine(\"foo\");");
 						});
 					});
 				})

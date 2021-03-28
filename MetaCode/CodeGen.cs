@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using MetaCode.Extensions;
 
 namespace MetaCode
 {
@@ -17,6 +19,12 @@ namespace MetaCode
 			return this;
 		}
 
+		public ICodeGen AddLines(IEnumerable<string> lines)
+		{
+			lines.ForEach(line => AddLine(line));
+			return this;
+		}
+
 		public ICodeGen AddScoped(string line, Action<ICodeGen> action)
 		{
 			AddLine(line);
@@ -29,5 +37,11 @@ namespace MetaCode
 		}
 
 		public string Generate() => _sb.ToString();
+
+		//public ICodeGen AddScopes<T>(IEnumerable<T> enumerable, Func<T, string> func, Action<ICodeGen> action)
+		//{
+		//	enumerable.ForEach(element => AddScoped(func(element), action));
+		//	return this;
+		//}
 	}
 }
