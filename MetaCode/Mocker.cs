@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using MetaCode.DynamicRun;
 using MetaCode.Extensions;
 
 namespace MetaCode
@@ -17,6 +16,8 @@ namespace MetaCode
 
 		private readonly IDictionary<string, Func<object>> _setups = new Dictionary<string, Func<object>>();
 
+		private readonly ICompiler _compiler = new Compiler();
+
 		public Mocker<TMockable> Setup<TResult>(Expression<Func<TMockable, TResult>> method, TResult result)
 		{
 			var methodBody = (MethodCallExpression)method.Body;
@@ -25,20 +26,14 @@ namespace MetaCode
 			return this;
 		}
 
-		private Type BuildType()
-		{
-			var code = GenerateCode(); // todo
-
-			var assembly = new Compiler()
+		private Type BuildType() =>
+			_compiler
 				.AddReference<TMockable>()
-				.Compile(code);
+				.Compile(GenerateCode())
+				.ExportedTypes
+				.Single();
 
-			var types = assembly.ExportedTypes;
-
-			return types.First(); // todo
-		}
-
-		public string GenerateCode() // todo private?
+		private string GenerateCode()
 		{
 			var newTypeName = $"{_type.Name}Proxy";
 

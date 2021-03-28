@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MetaCode
+namespace MetaCode.Interfaces
 {
 	public interface ICodeGen
 	{
@@ -14,7 +14,5 @@ namespace MetaCode
 		ICodeGen AddScoped(string line, Action<ICodeGen> action);
 
 		string Generate();
-
-		//ICodeGen AddScopes<T>(IEnumerable<T> enumerable, Func<T, string> func, Action<ICodeGen> action);
 	}
 }

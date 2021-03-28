@@ -2,23 +2,17 @@
 using System.IO;
 using System.Text;
 using FluentAssertions;
-using MetaCode.DynamicRun;
+using MetaCode.Extensions;
+using MetaCode.Interfaces;
+using Microsoft.CodeAnalysis;
 using Xunit;
 
 namespace MetaCode.Tests
 {
 	public class MetaCodeTests
 	{
-		private static string NewLine => Environment.NewLine;
-
-		private readonly ICodeGen _codeGen;
-		private readonly ICodeRunner _codeRunner;
-
-		public MetaCodeTests()
-		{
-			_codeGen = new CodeGen();
-			_codeRunner = new CodeRunner(new Compiler(), new Runner()); // todo DI?
-		}
+		private readonly ICodeGen _codeGen = new CodeGen();
+		private readonly ICompiler _compiler = new Compiler();
 
 		[Fact]
 		public void CodeGen_AddCode_GeneratedCodeIsCorrect()
@@ -39,23 +33,23 @@ namespace MetaCode.Tests
 				})
 				.Generate();
 
-			code.Should().Be($"using System;{NewLine}" +
-							 $"using System.Text;{NewLine}" +
-							 NewLine +
-							 $"namespace MetaCode{NewLine}" +
-							 $"{{{NewLine}" +
-							 $"\tpublic class Lol{NewLine}" +
-							 $"\t{{{NewLine}" +
-							 $"\t\tpublic static void Main(){NewLine}" +
-							 $"\t\t{{{NewLine}" +
-							 $"\t\t\tConsole.WriteLine(\"foo\");{NewLine}" +
-							 $"\t\t}}{NewLine}" +
-							 $"\t}}{NewLine}" +
-							 $"}}{NewLine}");
+			RemoveSpecialChars(code).Should().Be(
+				"using System;" +
+				"using System.Text;" +
+				"namespace MetaCode" +
+				"{" +
+				"public class Lol" +
+				"{" +
+				"public static void Main()" +
+				"{" +
+				"Console.WriteLine(\"foo\");" +
+				"}" +
+				"}" +
+				"}");
 		}
 
 		[Fact]
-		public void CodeRunner_Code_CodeIsRunCorrectly()
+		public void Compiler_Code_CodeIsRunCorrectly()
 		{
 			var code = _codeGen
 				.AddLine("using System;")
@@ -76,9 +70,16 @@ namespace MetaCode.Tests
 			var sb = new StringBuilder();
 			Console.SetOut(new StringWriter(sb));
 
-			_codeRunner.Run(code);
+			_compiler
+				.Compile(code, OutputKind.ConsoleApplication)
+				.Execute();
 
-			sb.ToString().Should().Be($"foo{NewLine}");
+			sb.ToString().Should().Be($"foo{Environment.NewLine}");
 		}
+
+		private static string RemoveSpecialChars(string text) =>
+			text
+				.Replace("\t", "")
+				.Replace(Environment.NewLine, "");
 	}
 }

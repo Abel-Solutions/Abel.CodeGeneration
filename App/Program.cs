@@ -1,6 +1,8 @@
 ﻿using System;
 using MetaCode;
-using MetaCode.DynamicRun;
+using MetaCode.Extensions;
+using MetaCode.Interfaces;
+using Microsoft.CodeAnalysis;
 
 namespace App
 {
@@ -10,10 +12,8 @@ namespace App
 		{
 			// todo DI
 			ICodeGen codeGen = new CodeGen();
-			var runner = new Runner();
-			var compiler = new Compiler();
-			ICodeRunner codeRunner = new CodeRunner(compiler, runner);
-			
+			ICompiler compiler = new Compiler();
+
 			var code = codeGen
 				.AddLine("using System;")
 				.AddLine("using System.Text;")
@@ -39,7 +39,9 @@ namespace App
 
 			Console.WriteLine(code);
 
-			codeRunner.Run(code);
+			compiler
+				.Compile(code, OutputKind.ConsoleApplication)
+				.Execute();
 		}
 	}
 }

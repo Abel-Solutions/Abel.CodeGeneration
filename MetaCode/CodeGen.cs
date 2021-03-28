@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MetaCode.Extensions;
+using MetaCode.Interfaces;
 
 namespace MetaCode
 {
@@ -37,11 +38,5 @@ namespace MetaCode
 		}
 
 		public string Generate() => _sb.ToString();
-
-		//public ICodeGen AddScopes<T>(IEnumerable<T> enumerable, Func<T, string> func, Action<ICodeGen> action)
-		//{
-		//	enumerable.ForEach(element => AddScoped(func(element), action));
-		//	return this;
-		//}
 	}
 }
