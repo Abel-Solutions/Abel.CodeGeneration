@@ -21,9 +21,9 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithClass AddClass(string className);
 
-		IWith AddConstructor(string className);
+		IWithConstructor AddConstructor(string className);
 
-		IWith AddMethod(string methodName);
+		IWithMethod AddMethod(string methodName);
 
 		string Generate();
 	}

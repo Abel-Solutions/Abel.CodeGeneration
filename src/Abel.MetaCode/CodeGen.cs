@@ -49,9 +49,9 @@ namespace Abel.MetaCode
 
 		public IWithClass AddClass(string className) => new WithClass(className, this);
 
-		public IWith AddConstructor(string className) => new WithConstructor(className, this); // todo put in class
+		public IWithConstructor AddConstructor(string className) => new WithConstructor(className, this); // todo put in class
 
-		public IWith AddMethod(string methodName) => new With(methodName, this);
+		public IWithMethod AddMethod(string methodName) => new WithMethod(methodName, this);
 
 		public string Generate() => _sb.ToString();
 	}

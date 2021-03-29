@@ -2,6 +2,6 @@
 {
 	public interface IWithClass : IWith
 	{
-		IWith WithParent(string parentName);
+		IWithClass WithParent(string parentName);
 	}
 }

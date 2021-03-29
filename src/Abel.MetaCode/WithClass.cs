@@ -12,7 +12,7 @@ namespace Abel.MetaCode
 		{
 		}
 
-		public IWith WithParent(string parentName)
+		public IWithClass WithParent(string parentName)
 		{
 			_parentName = parentName;
 			return this;
