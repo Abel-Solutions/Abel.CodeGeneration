@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MetaCode.Extensions
+namespace Abel.MetaCode.Extensions
 {
 	public static class EnumerableExtensions
 	{

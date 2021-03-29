@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace MetaCode.Tests
+namespace Abel.MetaCode.Tests
 {
 	public class MockerTests
 	{

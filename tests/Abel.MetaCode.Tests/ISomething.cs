@@ -1,4 +1,4 @@
-﻿namespace MetaCode.Tests
+﻿namespace Abel.MetaCode.Tests
 {
 	public interface ISomething
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace MetaCode.Extensions
+namespace Abel.MetaCode.Extensions
 {
 	public static class AssemblyExtensions
 	{

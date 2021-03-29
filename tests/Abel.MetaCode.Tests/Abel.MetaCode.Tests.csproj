@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetaCode\MetaCode.csproj" />
+    <ProjectReference Include="..\..\src\Abel.MetaCode\Abel.MetaCode.csproj" />
   </ItemGroup>
 
 </Project>

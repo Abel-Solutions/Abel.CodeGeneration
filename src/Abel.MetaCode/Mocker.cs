@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using MetaCode.Extensions;
+using Abel.MetaCode.Extensions;
+using Abel.MetaCode.Interfaces;
 
-namespace MetaCode
+namespace Abel.MetaCode
 {
 	public class Mocker<TMockable>
 		where TMockable : class

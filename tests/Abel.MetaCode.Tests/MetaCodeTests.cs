@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Abel.MetaCode.Extensions;
+using Abel.MetaCode.Interfaces;
 using FluentAssertions;
-using MetaCode.Extensions;
-using MetaCode.Interfaces;
 using Microsoft.CodeAnalysis;
 using Xunit;
 
-namespace MetaCode.Tests
+namespace Abel.MetaCode.Tests
 {
 	public class MetaCodeTests
 	{

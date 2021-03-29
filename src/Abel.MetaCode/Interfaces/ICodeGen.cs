@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MetaCode.Interfaces
+namespace Abel.MetaCode.Interfaces
 {
 	public interface ICodeGen
 	{

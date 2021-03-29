@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MetaCode.Extensions;
-using MetaCode.Interfaces;
+using Abel.MetaCode.Extensions;
+using Abel.MetaCode.Interfaces;
 
-namespace MetaCode
+namespace Abel.MetaCode
 {
 	public class CodeGen : ICodeGen
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.CodeAnalysis;
 
-namespace MetaCode
+namespace Abel.MetaCode.Interfaces
 {
 	public interface ICompiler
 	{
