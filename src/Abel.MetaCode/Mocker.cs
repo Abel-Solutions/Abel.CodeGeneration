@@ -52,28 +52,29 @@ namespace Abel.MetaCode
 				.AddNamespace(_type.Namespace, nspace => // todo add -> with?
 				{
 					nspace
-						.AddClass(newTypeName + " : " + _type.Name)
-						.WithContent(cl => // todo inheritance)
-						{
-							cl
-								.AddLine("IDictionary<string, Func<object>> _methods;")
-								.AddLine()
-								.AddConstructor(newTypeName)
-									.WithParameters("IDictionary<string, Func<object>> methods")
-									.WithContent(ctor =>
-									{
-										ctor.AddLine("_methods = methods;");
-									});
-
-							GetMockableMethods().ForEach(info =>
+						.AddClass(newTypeName)
+							.WithParent(_type.Name)
+							.WithContent(cl => 
 							{
-								var parameters = string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
-								nspace.AddScoped($"public {info.ReturnType.Name} {info.Name}({parameters})", method =>
-								{
-									method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
-								});
+								cl
+									.AddLine("IDictionary<string, Func<object>> _methods;")
+									.AddLine()
+									.AddConstructor(newTypeName)
+										.WithParameters("IDictionary<string, Func<object>> methods")
+										.WithContent(ctor =>
+										{
+											ctor.AddLine("_methods = methods;");
+										});
+
+								GetMockableMethods().ForEach(info => nspace
+									.AddMethod(info.Name)
+									.WithReturnType(info.ReturnType.Name)
+									.WithParameters(string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")))
+									.WithContent(method =>
+									{
+										method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
+									}));
 							});
-						});
 				})
 				.Generate();
 		}

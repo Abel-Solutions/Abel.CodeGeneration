@@ -47,7 +47,7 @@ namespace Abel.MetaCode
 
 		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) => AddScoped($"namespace {namespaceName}", action); // todo with
 
-		public IWith AddClass(string className) => new WithClass(className, this);
+		public IWithClass AddClass(string className) => new WithClass(className, this);
 
 		public IWith AddConstructor(string className) => new WithConstructor(className, this); // todo put in class
 

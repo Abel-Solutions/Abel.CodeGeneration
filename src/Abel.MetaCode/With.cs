@@ -37,6 +37,7 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public virtual ICodeGen WithContent(Action<ICodeGen> action) => CodeGen.AddScoped($"{Modifiers} {ReturnTypeName} {Name}({Parameters})", action);
+		public virtual ICodeGen WithContent(Action<ICodeGen> action) =>
+			CodeGen.AddScoped($"{Modifiers} {ReturnTypeName} {Name}({Parameters})", action);
 	}
 }
