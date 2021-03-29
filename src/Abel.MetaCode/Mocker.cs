@@ -43,23 +43,24 @@ namespace Abel.MetaCode
 				.Distinct();
 
 			return new CodeGen()
-				.AddLines(referenceNames.Select(n => $"using {n};"))
+				.AddUsings(referenceNames)
 				.AddLine()
-				.AddScoped("namespace " + _type.Namespace, nspace =>
+				.AddNamespace(_type.Namespace, nspace => // todo add -> with?
 				{
-					nspace.AddScoped($"public class {newTypeName} : {_type.Name}", cl =>
+					nspace.AddClass($"{newTypeName} : {_type.Name}", cl => // todo inheritance
 					{
 						cl
 							.AddLine("IDictionary<string, Func<object>> _methods;")
 							.AddLine()
-							.AddScoped($"public {newTypeName}(IDictionary<string, Func<object>> methods)", ctor =>
+							.AddConstructor(newTypeName, "IDictionary<string, Func<object>> methods", ctor => // todo ctor
 							{
 								ctor.AddLine("_methods = methods;");
 							});
 
 						GetMockableMethods().ForEach(info =>
 						{
-							nspace.AddScoped($"public {info.ReturnType.Name} {info.Name}({string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"))})", method =>
+							var parameters = string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
+							nspace.AddScoped($"public {info.ReturnType.Name} {info.Name}({parameters})", method =>
 							{
 								method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
 							});

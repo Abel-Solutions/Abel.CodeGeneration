@@ -18,14 +18,14 @@ namespace Abel.MetaCode.Tests
 		public void CodeGen_AddCode_GeneratedCodeIsCorrect()
 		{
 			var code = _codeGen
-				.AddLine("using System;")
-				.AddLine("using System.Text;")
+				.Using("System")
+				.Using("System.Text")
 				.AddLine()
-				.AddScoped("namespace MetaCode", nspace =>
+				.AddNamespace("MetaCode", nspace =>
 				{
-					nspace.AddScoped("public class Lol", cl =>
+					nspace.AddClass("Lol", cl =>
 					{
-						cl.AddScoped("public static void Main()", method =>
+						cl.AddMethod("Main", "public static", method =>
 						{
 							method.AddLine("Console.WriteLine(\"foo\");");
 						});
@@ -52,14 +52,14 @@ namespace Abel.MetaCode.Tests
 		public void Compiler_Code_CodeIsRunCorrectly()
 		{
 			var code = _codeGen
-				.AddLine("using System;")
-				.AddLine("using System.Text;")
+				.Using("System")
+				.Using("System.Text")
 				.AddLine()
-				.AddScoped("namespace MetaCode", nspace =>
+				.AddNamespace("MetaCode", nspace =>
 				{
-					nspace.AddScoped("public class Lol", cl =>
+					nspace.AddClass("Lol", cl =>
 					{
-						cl.AddScoped("public static void Main()", method =>
+						cl.AddMethod("Main", "public static", method =>
 						{
 							method.AddLine("Console.WriteLine(\"foo\");");
 						});

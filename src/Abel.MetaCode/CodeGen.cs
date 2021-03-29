@@ -26,6 +26,14 @@ namespace Abel.MetaCode
 			return this;
 		}
 
+		public ICodeGen Using(string namespaceName) => AddLine($"using {namespaceName};");
+
+		public ICodeGen AddUsings(IEnumerable<string> namespaceNames)
+		{
+			namespaceNames.ForEach(namespaceName => Using(namespaceName));
+			return this;
+		}
+
 		public ICodeGen AddScoped(string line, Action<ICodeGen> action)
 		{
 			AddLine(line);
@@ -36,6 +44,18 @@ namespace Abel.MetaCode
 			AddLine("}");
 			return this;
 		}
+
+		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) => AddScoped($"namespace {namespaceName}", action);
+
+		public ICodeGen AddClass(string className, Action<ICodeGen> action) => AddScoped($"public class {className}", action);
+
+		public ICodeGen AddConstructor(string className, Action<ICodeGen> action) => AddConstructor(className, string.Empty, action);
+
+		public ICodeGen AddConstructor(string className, string parameters, Action<ICodeGen> action) => AddScoped($"public {className}({parameters})", action);
+
+		public ICodeGen AddMethod(string methodName, Action<ICodeGen> action) => AddMethod(methodName, "public", action);
+
+		public ICodeGen AddMethod(string methodName, string modifiers, Action<ICodeGen> action) => AddScoped($"{modifiers} void {methodName}()", action); // todo input, output
 
 		public string Generate() => _sb.ToString();
 	}
