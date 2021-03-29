@@ -21,21 +21,14 @@ namespace Abel.MetaCode.Tests
 				.Using("System")
 				.Using("System.Text")
 				.AddLine()
-				.AddNamespace("MetaCode", nspace =>
-				{
-					nspace
-						.AddClass("Lol")
-						.WithContent(cl =>
-						{
-							cl
-								.AddMethod("Main")
-								.WithModifiers("public static")
-								.WithContent(method =>
-								{
-									method.AddLine("Console.WriteLine(\"foo\");");
-								});
-						});
-				})
+				.AddNamespace("MetaCode", nspace => nspace
+					.AddClass("Lol", cl => cl
+						.AddConstructor("Lol", ctor => ctor
+							.AddLine("Console.WriteLine(\"foo\");"))
+						.AddMethod("Main")
+							.WithModifiers("public static")
+							.WithContent(method => method
+								.AddLine("Console.WriteLine(\"bar\");"))))
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -45,9 +38,13 @@ namespace Abel.MetaCode.Tests
 				"{" +
 				"public class Lol" +
 				"{" +
-				"public static void Main()" +
+				"public Lol()" +
 				"{" +
 				"Console.WriteLine(\"foo\");" +
+				"}" +
+				"public static void Main()" +
+				"{" +
+				"Console.WriteLine(\"bar\");" +
 				"}" +
 				"}" +
 				"}");
@@ -60,21 +57,12 @@ namespace Abel.MetaCode.Tests
 				.Using("System")
 				.Using("System.Text")
 				.AddLine()
-				.AddNamespace("MetaCode", nspace =>
-				{
-					nspace
-						.AddClass("Lol")
-						.WithContent(cl =>
-						{
-							cl
-								.AddMethod("Main")
-								.WithModifiers("public static")
-								.WithContent(method =>
-								{
-									method.AddLine("Console.WriteLine(\"foo\");");
-								});
-						});
-				})
+				.AddNamespace("MetaCode", nspace => nspace
+					.AddClass("Lol", cl => cl
+						.AddMethod("Main")
+							.WithModifiers("public static")
+							.WithContent(method => method
+								.AddLine("Console.Write(\"foo\");"))))
 				.Generate();
 
 			var sb = new StringBuilder();
@@ -84,7 +72,7 @@ namespace Abel.MetaCode.Tests
 				.Compile(code, OutputKind.ConsoleApplication)
 				.Execute();
 
-			sb.ToString().Should().Be($"foo{Environment.NewLine}");
+			sb.ToString().Should().Be("foo");
 		}
 
 		private static string RemoveSpecialChars(string text) =>

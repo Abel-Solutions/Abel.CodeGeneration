@@ -17,7 +17,11 @@ namespace Abel.MetaCode.Interfaces
 
 		ICodeGen AddScoped(string line, Action<ICodeGen> action);
 
-		ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action); // todo with
+		ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action);
+		
+		ICodeGen AddClass(string className, Action<ICodeGen> action);
+
+		ICodeGen AddConstructor(string className, Action<ICodeGen> action);
 
 		IWithClass AddClass(string className);
 

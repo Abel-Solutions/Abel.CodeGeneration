@@ -31,6 +31,7 @@ namespace Abel.MetaCode
 		public ICodeGen AddUsings(IEnumerable<string> namespaceNames)
 		{
 			namespaceNames.ForEach(namespaceName => Using(namespaceName));
+			AddLine();
 			return this;
 		}
 
@@ -45,13 +46,23 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) => AddScoped($"namespace {namespaceName}", action); // todo with
+		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) =>
+			AddScoped($"namespace {namespaceName}", action);
 
-		public IWithClass AddClass(string className) => new WithClass(className, this);
+		public ICodeGen AddClass(string className, Action<ICodeGen> action) =>
+			AddScoped($"public class {className}", action);
 
-		public IWithConstructor AddConstructor(string className) => new WithConstructor(className, this); // todo put in class
+		public ICodeGen AddConstructor(string className, Action<ICodeGen> action) =>
+			AddScoped($"public {className}()", action);
 
-		public IWithMethod AddMethod(string methodName) => new WithMethod(methodName, this);
+		public IWithClass AddClass(string className) =>
+			new WithClass(className, this);
+
+		public IWithConstructor AddConstructor(string className) =>
+			new WithConstructor(className, this); // todo put in class
+
+		public IWithMethod AddMethod(string methodName) =>
+			new WithMethod(methodName, this);
 
 		public string Generate() => _sb.ToString();
 	}

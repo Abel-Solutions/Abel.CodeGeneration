@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
@@ -24,6 +26,9 @@ namespace Abel.MetaCode
 			_parameters = parameters;
 			return this;
 		}
+
+		public IWithMethod WithParameters(ParameterInfo[] parameters) =>
+			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
 
 		public override ICodeGen WithContent(Action<ICodeGen> action) =>
 			CodeGen.AddScoped($"{Modifiers} {_returnTypeName} {Name}({_parameters})", action);

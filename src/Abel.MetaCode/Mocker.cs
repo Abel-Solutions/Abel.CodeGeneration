@@ -48,34 +48,26 @@ namespace Abel.MetaCode
 
 			return new CodeGen()
 				.AddUsings(referenceNames)
-				.AddLine()
-				.AddNamespace(_type.Namespace, nspace => // todo add -> with?
-				{
-					nspace
-						.AddClass(newTypeName)
-							.WithParent(_type.Name)
-							.WithContent(cl => 
-							{
-								cl
-									.AddLine("IDictionary<string, Func<object>> _methods;")
-									.AddLine()
-									.AddConstructor(newTypeName)
-										.WithParameters("IDictionary<string, Func<object>> methods")
-										.WithContent(ctor =>
-										{
-											ctor.AddLine("_methods = methods;");
-										});
+				.AddNamespace(_type.Namespace, nspace => nspace
+					.AddClass(newTypeName)
+						.WithParent(_type.Name)
+						.WithContent(cl => 
+						{
+							cl
+								.AddLine("IDictionary<string, Func<object>> _methods;")
+								.AddLine()
+								.AddConstructor(newTypeName)
+								.WithParameters("IDictionary<string, Func<object>> methods")
+								.WithContent(ctor => ctor
+									.AddLine("_methods = methods;"));
 
-								GetMockableMethods().ForEach(info => nspace
-									.AddMethod(info.Name)
+							GetMockableMethods().ForEach(info => cl
+								.AddMethod(info.Name)
 									.WithReturnType(info.ReturnType.Name)
-									.WithParameters(string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}")))
-									.WithContent(method =>
-									{
-										method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
-									}));
-							});
-				})
+									.WithParameters(info.GetParameters())
+									.WithContent(method => method
+										.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();")));
+					}))
 				.Generate();
 		}
 
