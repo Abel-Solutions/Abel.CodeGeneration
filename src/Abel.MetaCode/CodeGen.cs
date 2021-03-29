@@ -56,11 +56,10 @@ namespace Abel.MetaCode
 		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) =>
 			AddScoped($"namespace {namespaceName}", action);
 
-		public IClassGen AddClass(string className, Action<IClassGen> action)
+		public ICodeGen AddClass(string className, Action<IClassGen> action)
 		{
-			var classGen = new ClassGen(className, _sb);
-			AddScoped($"public class {className}", gen => action(classGen));
-			return classGen;
+			var classGen = new ClassGen(className, _sb); // todo cleanup
+			return AddScoped($"public class {className}", gen => action(classGen));
 		}
 
 		public IWithClass AddClass(string className) =>

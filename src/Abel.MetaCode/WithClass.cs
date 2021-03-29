@@ -20,11 +20,10 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public IClassGen WithContent(Action<IClassGen> action)
+		public ICodeGen WithContent(Action<IClassGen> action)
 		{
 			var classGen = new ClassGen(Name, (StringBuilder)CodeGen.GetType().GetField("_sb", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(CodeGen)); // todo
-			CodeGen.AddScoped($"{Modifiers} class {Name}{(_parentName == null ? string.Empty : $" : {_parentName}")}", gen => action(classGen));
-			return classGen;
+			return CodeGen.AddScoped($"{Modifiers} class {Name}{(_parentName == null ? string.Empty : $" : {_parentName}")}", gen => action(classGen));
 		}
 
 		public override ICodeGen WithContent(Action<ICodeGen> action) => throw new NotImplementedException(); // todo

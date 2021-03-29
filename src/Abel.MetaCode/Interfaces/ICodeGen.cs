@@ -19,7 +19,7 @@ namespace Abel.MetaCode.Interfaces
 
 		ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action);
 
-		IClassGen AddClass(string className, Action<IClassGen> action);
+		ICodeGen AddClass(string className, Action<IClassGen> action);
 
 		IWithClass AddClass(string className);
 
