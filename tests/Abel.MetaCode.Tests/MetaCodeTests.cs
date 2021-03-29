@@ -23,13 +23,18 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace =>
 				{
-					nspace.AddClass("Lol", cl =>
-					{
-						cl.AddMethod("Main", "public static", method =>
+					nspace
+						.AddClass("Lol")
+						.WithContent(cl =>
 						{
-							method.AddLine("Console.WriteLine(\"foo\");");
+							cl
+								.AddMethod("Main")
+								.WithModifiers("public static")
+								.WithContent(method =>
+								{
+									method.AddLine("Console.WriteLine(\"foo\");");
+								});
 						});
-					});
 				})
 				.Generate();
 
@@ -57,13 +62,18 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace =>
 				{
-					nspace.AddClass("Lol", cl =>
-					{
-						cl.AddMethod("Main", "public static", method =>
+					nspace
+						.AddClass("Lol")
+						.WithContent(cl =>
 						{
-							method.AddLine("Console.WriteLine(\"foo\");");
+							cl
+								.AddMethod("Main")
+								.WithModifiers("public static")
+								.WithContent(method =>
+								{
+									method.AddLine("Console.WriteLine(\"foo\");");
+								});
 						});
-					});
 				})
 				.Generate();
 

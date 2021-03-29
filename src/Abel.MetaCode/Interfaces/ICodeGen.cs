@@ -8,7 +8,7 @@ namespace Abel.MetaCode.Interfaces
 		ICodeGen AddLine();
 
 		ICodeGen AddLine(string line);
-		
+
 		ICodeGen AddLines(IEnumerable<string> lines);
 
 		ICodeGen Using(string namespaceName);
@@ -17,17 +17,13 @@ namespace Abel.MetaCode.Interfaces
 
 		ICodeGen AddScoped(string line, Action<ICodeGen> action);
 
-		ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action);
+		ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action); // todo with
 
-		ICodeGen AddClass(string className, Action<ICodeGen> action);
+		IWith AddClass(string className);
 
-		ICodeGen AddConstructor(string className, Action<ICodeGen> action); // todo skip class name
+		IWith AddConstructor(string className);
 
-		ICodeGen AddConstructor(string className, string parameters, Action<ICodeGen> action);
-
-		ICodeGen AddMethod(string methodName, Action<ICodeGen> action);
-
-		ICodeGen AddMethod(string methodName, string modifiers, Action<ICodeGen> action);
+		IWith AddMethod(string methodName);
 
 		string Generate();
 	}

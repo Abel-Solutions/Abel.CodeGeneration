@@ -45,17 +45,13 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) => AddScoped($"namespace {namespaceName}", action);
+		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) => AddScoped($"namespace {namespaceName}", action); // todo with
 
-		public ICodeGen AddClass(string className, Action<ICodeGen> action) => AddScoped($"public class {className}", action);
+		public IWith AddClass(string className) => new WithClass(className, this);
 
-		public ICodeGen AddConstructor(string className, Action<ICodeGen> action) => AddConstructor(className, string.Empty, action);
+		public IWith AddConstructor(string className) => new WithConstructor(className, this); // todo put in class
 
-		public ICodeGen AddConstructor(string className, string parameters, Action<ICodeGen> action) => AddScoped($"public {className}({parameters})", action);
-
-		public ICodeGen AddMethod(string methodName, Action<ICodeGen> action) => AddMethod(methodName, "public", action);
-
-		public ICodeGen AddMethod(string methodName, string modifiers, Action<ICodeGen> action) => AddScoped($"{modifiers} void {methodName}()", action); // todo input, output
+		public IWith AddMethod(string methodName) => new With(methodName, this);
 
 		public string Generate() => _sb.ToString();
 	}

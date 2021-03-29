@@ -27,12 +27,16 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		private Type BuildType() =>
-			_compiler
+		private Type BuildType()
+		{
+			var code = GenerateCode();
+
+			return _compiler
 				.AddReference<TMockable>()
-				.Compile(GenerateCode())
+				.Compile(code)
 				.ExportedTypes
 				.Single();
+		}
 
 		private string GenerateCode()
 		{
@@ -47,25 +51,29 @@ namespace Abel.MetaCode
 				.AddLine()
 				.AddNamespace(_type.Namespace, nspace => // todo add -> with?
 				{
-					nspace.AddClass($"{newTypeName} : {_type.Name}", cl => // todo inheritance
-					{
-						cl
-							.AddLine("IDictionary<string, Func<object>> _methods;")
-							.AddLine()
-							.AddConstructor(newTypeName, "IDictionary<string, Func<object>> methods", ctor => // todo ctor
-							{
-								ctor.AddLine("_methods = methods;");
-							});
-
-						GetMockableMethods().ForEach(info =>
+					nspace
+						.AddClass(newTypeName + " : " + _type.Name)
+						.WithContent(cl => // todo inheritance)
 						{
-							var parameters = string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
-							nspace.AddScoped($"public {info.ReturnType.Name} {info.Name}({parameters})", method =>
+							cl
+								.AddLine("IDictionary<string, Func<object>> _methods;")
+								.AddLine()
+								.AddConstructor(newTypeName)
+									.WithParameters("IDictionary<string, Func<object>> methods")
+									.WithContent(ctor =>
+									{
+										ctor.AddLine("_methods = methods;");
+									});
+
+							GetMockableMethods().ForEach(info =>
 							{
-								method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
+								var parameters = string.Join(", ", info.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
+								nspace.AddScoped($"public {info.ReturnType.Name} {info.Name}({parameters})", method =>
+								{
+									method.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();");
+								});
 							});
 						});
-					});
 				})
 				.Generate();
 		}
