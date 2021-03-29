@@ -8,7 +8,7 @@ namespace Abel.MetaCode
 {
 	public class CodeGen : ICodeGen
 	{
-		protected int _indents; // todo
+		private int _indents;
 
 		private readonly StringBuilder _sb;
 
