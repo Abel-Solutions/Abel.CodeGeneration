@@ -16,11 +16,8 @@ namespace Abel.MetaCode
 
 		public new IClassGen AddLine(string line) => (IClassGen)base.AddLine(line);
 
-		public IClassGen AddScoped(string line, Action<IClassGen> action)
-			=> (IClassGen)base.AddScoped(line, gen => action(this));
-
 		public IClassGen AddConstructor(Action<ICodeGen> action) =>
-			AddScoped($"public {_name}()", action);
+			(IClassGen)AddScoped($"public {_name}()", action);
 
 		public IWithConstructor AddConstructor() =>
 			new WithConstructor(_name, this);

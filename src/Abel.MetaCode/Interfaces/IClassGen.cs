@@ -8,8 +8,6 @@ namespace Abel.MetaCode.Interfaces
 
 		new IClassGen AddLine(string line);
 
-		IClassGen AddScoped(string line, Action<IClassGen> action);
-
 		IClassGen AddConstructor(Action<ICodeGen> action);
 
 		IWithConstructor AddConstructor();
