@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Text;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
@@ -7,7 +9,7 @@ namespace Abel.MetaCode
 	{
 		private string _parentName;
 
-		public WithClass(string name, ICodeGen codeGen) 
+		public WithClass(string name, ICodeGen codeGen)
 			: base(name, codeGen)
 		{
 		}
@@ -18,7 +20,13 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public override ICodeGen WithContent(Action<ICodeGen> action) =>
-			CodeGen.AddScoped($"{Modifiers} class {Name}{(_parentName == null ? string.Empty : $" : {_parentName}")}", action);
+		public IClassGen WithContent(Action<IClassGen> action)
+		{
+			var classGen = new ClassGen(Name, (StringBuilder)CodeGen.GetType().GetField("_sb", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(CodeGen)); // todo
+			CodeGen.AddScoped($"{Modifiers} class {Name}{(_parentName == null ? string.Empty : $" : {_parentName}")}", gen => action(classGen));
+			return classGen;
+		}
+
+		public override ICodeGen WithContent(Action<ICodeGen> action) => throw new NotImplementedException(); // todo
 	}
 }

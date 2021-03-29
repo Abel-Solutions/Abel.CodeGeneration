@@ -8,9 +8,16 @@ namespace Abel.MetaCode
 {
 	public class CodeGen : ICodeGen
 	{
-		private int _indents;
+		protected int _indents; // todo
 
-		private readonly StringBuilder _sb = new StringBuilder();
+		private readonly StringBuilder _sb;
+
+		public CodeGen()
+			: this(new StringBuilder())
+		{
+		}
+
+		public CodeGen(StringBuilder sb) => _sb = sb;
 
 		public ICodeGen AddLine() => AddLine(string.Empty);
 
@@ -49,20 +56,15 @@ namespace Abel.MetaCode
 		public ICodeGen AddNamespace(string namespaceName, Action<ICodeGen> action) =>
 			AddScoped($"namespace {namespaceName}", action);
 
-		public ICodeGen AddClass(string className, Action<ICodeGen> action) =>
-			AddScoped($"public class {className}", action);
-
-		public ICodeGen AddConstructor(string className, Action<ICodeGen> action) =>
-			AddScoped($"public {className}()", action);
+		public IClassGen AddClass(string className, Action<IClassGen> action)
+		{
+			var classGen = new ClassGen(className, _sb);
+			AddScoped($"public class {className}", gen => action(classGen));
+			return classGen;
+		}
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
-
-		public IWithConstructor AddConstructor(string className) =>
-			new WithConstructor(className, this); // todo put in class
-
-		public IWithMethod AddMethod(string methodName) =>
-			new WithMethod(methodName, this);
 
 		public string Generate() => _sb.ToString();
 	}

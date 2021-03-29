@@ -23,7 +23,7 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol", cl => cl
-						.AddConstructor("Lol", ctor => ctor
+						.AddConstructor(ctor => ctor
 							.AddLine("Console.WriteLine(\"foo\");"))
 						.AddMethod("Main")
 							.WithModifiers("public static")

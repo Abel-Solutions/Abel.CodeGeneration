@@ -7,7 +7,7 @@ namespace Abel.MetaCode
 	{
 		private string _parameters = string.Empty;
 
-		public WithConstructor(string name, ICodeGen codeGen) 
+		public WithConstructor(string name, ICodeGen codeGen)
 			: base(name, codeGen)
 		{
 		}
