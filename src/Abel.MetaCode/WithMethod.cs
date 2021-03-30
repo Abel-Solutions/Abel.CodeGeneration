@@ -10,8 +10,10 @@ namespace Abel.MetaCode
 		private string _parameters = string.Empty;
 		private string _returnTypeName = "void";
 
-		public WithMethod(string name, ICodeGen codeGen)
-			: base(name, codeGen)
+		private string Line => $"{Modifiers} {_returnTypeName} {Name}({_parameters})";
+
+		public WithMethod(string name, ICodeGenerator codeGenerator)
+			: base(name, codeGenerator)
 		{
 		}
 
@@ -30,7 +32,7 @@ namespace Abel.MetaCode
 		public IWithMethod WithParameters(ParameterInfo[] parameters) =>
 			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
 
-		public override ICodeGen WithContent(Action<ICodeGen> action) =>
-			CodeGen.AddScoped($"{Modifiers} {_returnTypeName} {Name}({_parameters})", action);
+		public override ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
+			CodeGenerator.AddScoped(Line, action);
 	}
 }

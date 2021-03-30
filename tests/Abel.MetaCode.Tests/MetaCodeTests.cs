@@ -11,24 +11,26 @@ namespace Abel.MetaCode.Tests
 {
 	public class MetaCodeTests
 	{
-		private readonly ICodeGen _codeGen = new CodeGen();
+		private readonly ICodeGenerator _codeGenerator = new CodeGenerator();
 		private readonly ICompiler _compiler = new Compiler();
 
 		[Fact]
 		public void CodeGen_AddCode_GeneratedCodeIsCorrect()
 		{
-			var code = _codeGen
+			var code = _codeGenerator
 				.Using("System")
 				.Using("System.Text")
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
-					.AddClass("Lol", cl => cl
-						.AddConstructor(ctor => ctor
-							.AddLine("Console.WriteLine(\"foo\");"))
-						.AddMethod("Main")
-							.WithModifiers("public static")
-							.WithContent(method => method
-								.AddLine("Console.WriteLine(\"bar\");"))))
+					.AddClass("Lol")
+						.WithParent("object")
+						.WithContent(cl => cl
+							.AddConstructor(ctor => ctor
+								.AddLine("Console.WriteLine(\"foo\");"))
+							.AddMethod("Main")
+								.WithModifiers("public static")
+								.WithContent(method => method
+									.AddLine("Console.WriteLine(\"bar\");"))))
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -36,7 +38,7 @@ namespace Abel.MetaCode.Tests
 				"using System.Text;" +
 				"namespace MetaCode" +
 				"{" +
-				"public class Lol" +
+				"public class Lol : object" +
 				"{" +
 				"public Lol()" +
 				"{" +
@@ -53,7 +55,7 @@ namespace Abel.MetaCode.Tests
 		[Fact]
 		public void Compiler_Code_CodeIsRunCorrectly()
 		{
-			var code = _codeGen
+			var code = _codeGenerator
 				.Using("System")
 				.Using("System.Text")
 				.AddLine()

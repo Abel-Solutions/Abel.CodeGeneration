@@ -6,6 +6,6 @@ namespace Abel.MetaCode.Interfaces
 	{
 		IWith WithModifiers(string modifiers);
 
-		ICodeGen WithContent(Action<ICodeGen> action);
+		ICodeGenerator WithContent(Action<ICodeGenerator> action);
 	}
 }

@@ -6,6 +6,6 @@ namespace Abel.MetaCode.Interfaces
 	{
 		IWithClass WithParent(string parentName);
 
-		ICodeGen WithContent(Action<IClassGen> action);
+		ICodeGenerator WithContent(Action<IClassGenerator> action);
 	}
 }

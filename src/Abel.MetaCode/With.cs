@@ -5,15 +5,15 @@ namespace Abel.MetaCode
 {
 	public abstract class With : IWith
 	{
-		protected readonly ICodeGen CodeGen;
+		protected readonly ICodeGenerator CodeGenerator;
 		protected readonly string Name;
 
 		protected string Modifiers = "public";
 
-		protected With(string name, ICodeGen codeGen)
+		protected With(string name, ICodeGenerator codeGenerator)
 		{
 			Name = name;
-			CodeGen = codeGen;
+			CodeGenerator = codeGenerator;
 		}
 
 		public IWith WithModifiers(string modifiers)
@@ -22,6 +22,6 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public abstract ICodeGen WithContent(Action<ICodeGen> action);
+		public abstract ICodeGenerator WithContent(Action<ICodeGenerator> action);
 	}
 }

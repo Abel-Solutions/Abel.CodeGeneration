@@ -13,11 +13,13 @@ namespace Abel.MetaCode
 	{
 		public TMockable Object => (TMockable)Activator.CreateInstance(BuildType(), _setups);
 
-		private readonly Type _type = typeof(TMockable);
-
 		private readonly IDictionary<string, Func<object>> _setups = new Dictionary<string, Func<object>>();
 
 		private readonly ICompiler _compiler = new Compiler();
+
+		private static readonly Type Type = typeof(TMockable);
+
+		private IEnumerable<MethodInfo> MockableMethods { get; } = Type.GetMethods().Where(m => m.IsAbstract || m.IsVirtual);
 
 		public Mocker<TMockable> Setup<TResult>(Expression<Func<TMockable, TResult>> method, TResult result)
 		{
@@ -27,31 +29,27 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		private Type BuildType()
-		{
-			var code = GenerateCode();
-
-			return _compiler
+		private Type BuildType() =>
+			_compiler
 				.AddReference<TMockable>()
-				.Compile(code)
+				.Compile(GenerateCode())
 				.ExportedTypes
 				.Single();
-		}
 
 		private string GenerateCode()
 		{
-			var newTypeName = $"{_type.Name}Proxy";
+			var newTypeName = $"{Type.Name}Proxy";
 
 			var referenceNames = new List<string> { "System", "System.Collections.Generic" }
 				.Concat(GetReferenceTypes().Select(r => r.Namespace))
 				.Distinct();
 
-			return new CodeGen()
+			return new CodeGenerator()
 				.AddUsings(referenceNames)
-				.AddNamespace(_type.Namespace, nspace => nspace
+				.AddNamespace(Type.Namespace, nspace => nspace
 					.AddClass(newTypeName)
-						.WithParent(_type.Name)
-						.WithContent(cl => 
+						.WithParent(Type.Name)
+						.WithContent(cl =>
 						{
 							cl
 								.AddLine("IDictionary<string, Func<object>> _methods;")
@@ -61,27 +59,21 @@ namespace Abel.MetaCode
 									.WithContent(ctor => ctor
 										.AddLine("_methods = methods;"));
 
-							GetMockableMethods().ForEach(info => cl
+							MockableMethods.ForEach(info => cl
 								.AddMethod(info.Name)
 									.WithReturnType(info.ReturnType.Name)
 									.WithParameters(info.GetParameters())
 									.WithContent(method => method
 										.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();")));
-					}))
+						}))
 				.Generate();
 		}
 
-		private IEnumerable<Type> GetReferenceTypes()
-		{
-			var mockableMethods = GetMockableMethods();
-			return mockableMethods
+		private IEnumerable<Type> GetReferenceTypes() =>
+			MockableMethods
 				.Select(m => m.ReturnType)
-				.Concat(mockableMethods
+				.Concat(MockableMethods
 					.SelectMany(k => k.GetParameters()
 						.Select(t => t.ParameterType)));
-		}
-
-		private IEnumerable<MethodInfo> GetMockableMethods() =>
-			_type.GetMethods().Where(m => m.IsAbstract || m.IsVirtual);
 	}
 }

@@ -7,8 +7,10 @@ namespace Abel.MetaCode
 	{
 		private string _parameters = string.Empty;
 
-		public WithConstructor(string name, ICodeGen codeGen)
-			: base(name, codeGen)
+		private string Line => $"{Modifiers} {Name}({_parameters})";
+
+		public WithConstructor(string name, ICodeGenerator codeGenerator)
+			: base(name, codeGenerator)
 		{
 		}
 
@@ -18,7 +20,7 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public override ICodeGen WithContent(Action<ICodeGen> action) =>
-			CodeGen.AddScoped($"{Modifiers} {Name}({_parameters})", action);
+		public override ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
+			CodeGenerator.AddScoped(Line, action);
 	}
 }
