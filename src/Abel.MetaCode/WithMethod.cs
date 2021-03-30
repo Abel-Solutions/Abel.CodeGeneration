@@ -8,7 +8,7 @@ namespace Abel.MetaCode
 	public class WithMethod : IWithMethod
 	{
 		private readonly string _name;
-		private readonly ICodeGenerator _codeGenerator;
+		private readonly IClassGenerator _classGenerator;
 
 		private string _modifiers = "public";
 		private string _returnTypeName = "void";
@@ -16,10 +16,10 @@ namespace Abel.MetaCode
 
 		private string Line => $"{_modifiers} {_returnTypeName} {_name}({_parameters})";
 
-		public WithMethod(string name, ICodeGenerator codeGenerator)
+		public WithMethod(string name, IClassGenerator classGenerator)
 		{
 			_name = name;
-			_codeGenerator = codeGenerator;
+			_classGenerator = classGenerator;
 		}
 
 		public IWithMethod WithModifiers(string modifiers)
@@ -43,7 +43,7 @@ namespace Abel.MetaCode
 		public IWithMethod WithParameters(ParameterInfo[] parameters) =>
 			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
 
-		public ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
-			_codeGenerator.AddScoped(Line, action);
+		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
+			_classGenerator.AddScoped(Line, action);
 	}
 }

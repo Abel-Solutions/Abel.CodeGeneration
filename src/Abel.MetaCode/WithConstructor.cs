@@ -6,17 +6,17 @@ namespace Abel.MetaCode
 	public class WithConstructor : IWithConstructor
 	{
 		private readonly string _name;
-		private readonly ICodeGenerator _codeGenerator;
+		private readonly IClassGenerator _classGenerator;
 		
 		private string _modifiers = "public";
 		private string _parameters = string.Empty;
 
 		private string Line => $"{_modifiers} {_name}({_parameters})";
 		
-		public WithConstructor(string name, ICodeGenerator codeGenerator)
+		public WithConstructor(string name, IClassGenerator classGenerator)
 		{
 			_name = name;
-			_codeGenerator = codeGenerator;
+			_classGenerator = classGenerator;
 		}
 
 		public IWithConstructor WithModifiers(string modifiers)
@@ -31,7 +31,7 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
-			_codeGenerator.AddScoped(Line, action);
+		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
+			_classGenerator.AddScoped(Line, action);
 	}
 }

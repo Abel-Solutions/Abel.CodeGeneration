@@ -12,7 +12,7 @@ namespace Abel.MetaCode
 		private string _parentName;
 
 		private string Line => $"{_modifiers} class {_name}{(_parentName == null ? string.Empty : $" : {_parentName}")}";
-		
+
 		public WithClass(string name, ICodeGenerator codeGenerator)
 		{
 			_name = name;
@@ -32,6 +32,6 @@ namespace Abel.MetaCode
 		}
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
-			_codeGenerator.AddScoped(Line, gen => action(_codeGenerator.ToClassGenerator(_name)));
+			_codeGenerator.AddScoped(Line, _codeGenerator.ToClassGenerator(_name), action);
 	}
 }

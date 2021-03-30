@@ -6,10 +6,8 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
 {
-	public class CodeGenerator : ICodeGenerator
+	public class CodeGenerator : MethodGenerator, ICodeGenerator // todo separate?
 	{
-		private int _indents;
-
 		private readonly StringBuilder _sb;
 
 		public CodeGenerator()
@@ -17,21 +15,18 @@ namespace Abel.MetaCode
 		{
 		}
 
-		public CodeGenerator(StringBuilder sb) => _sb = sb;
+		public CodeGenerator(StringBuilder sb)
+			: base(sb) =>
+			_sb = sb;
 
-		public ICodeGenerator AddLine() => AddLine(string.Empty);
+		public new ICodeGenerator AddLine() =>
+			(ICodeGenerator)base.AddLine(string.Empty);
 
-		public ICodeGenerator AddLine(string line)
-		{
-			_sb.AppendLine(new string('\t', _indents) + line);
-			return this;
-		}
+		public new ICodeGenerator AddLine(string line) =>
+			(ICodeGenerator)base.AddLine(line);
 
-		public ICodeGenerator AddLines(IEnumerable<string> lines)
-		{
-			lines.ForEach(line => AddLine(line));
-			return this;
-		}
+		public new ICodeGenerator AddLines(IEnumerable<string> lines) =>
+			(ICodeGenerator)base.AddLines(lines);
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
@@ -42,22 +37,22 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public ICodeGenerator AddScoped(string line, Action<ICodeGenerator> action)
+		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
+			AddScoped($"namespace {namespaceName}", this, action);
+
+		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
+			AddScoped($"public class {className}", ToClassGenerator(className), action);
+
+		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
 		{
 			AddLine(line);
 			AddLine("{");
 			_indents++;
-			action(this);
+			action(generator);
 			_indents--;
 			AddLine("}");
 			return this;
 		}
-
-		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
-			AddScoped($"namespace {namespaceName}", action);
-
-		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
-			AddScoped($"public class {className}", gen => action(ToClassGenerator(className)));
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);

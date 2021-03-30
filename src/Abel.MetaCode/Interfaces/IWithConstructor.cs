@@ -8,6 +8,6 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithConstructor WithParameters(string parameters);
 
-		ICodeGenerator WithContent(Action<ICodeGenerator> action);
+		IClassGenerator WithContent(Action<IMethodGenerator> action);
 	}
 }
