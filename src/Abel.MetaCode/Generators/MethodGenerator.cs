@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
-namespace Abel.MetaCode
+namespace Abel.MetaCode.Generators
 {
 	public class MethodGenerator : IMethodGenerator
 	{
-		private readonly CodeWriter _codeWriter;
+		private readonly ICodeWriter _codeWriter;
 
-		public MethodGenerator(CodeWriter codeWriter) => _codeWriter = codeWriter;
+		public MethodGenerator(ICodeWriter codeWriter) => _codeWriter = codeWriter;
 
 		public IMethodGenerator AddLine() => AddLine(string.Empty);
 
@@ -20,7 +19,7 @@ namespace Abel.MetaCode
 
 		public IMethodGenerator AddLines(IEnumerable<string> lines)
 		{
-			lines.ForEach(line => AddLine(line));
+			_codeWriter.WriteLines(lines);
 			return this;
 		}
 	}

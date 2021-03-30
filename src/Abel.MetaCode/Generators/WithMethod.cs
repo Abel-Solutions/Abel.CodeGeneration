@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Abel.MetaCode.Interfaces;
 
-namespace Abel.MetaCode
+namespace Abel.MetaCode.Generators
 {
 	public class WithMethod : IWithMethod
 	{

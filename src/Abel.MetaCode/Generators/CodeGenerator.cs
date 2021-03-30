@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
-namespace Abel.MetaCode
+namespace Abel.MetaCode.Generators
 {
 	public class CodeGenerator : ICodeGenerator
 	{
-		private readonly CodeWriter _codeWriter = new CodeWriter();
+		private readonly ICodeWriter _codeWriter = new CodeWriter();
 
 		public ICodeGenerator AddLine() => AddLine(string.Empty);
 
@@ -19,7 +19,7 @@ namespace Abel.MetaCode
 
 		public ICodeGenerator AddLines(IEnumerable<string> lines)
 		{
-			lines.ForEach(line => AddLine(line));
+			_codeWriter.WriteLines(lines);
 			return this;
 		}
 

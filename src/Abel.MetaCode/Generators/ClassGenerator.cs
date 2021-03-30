@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using Abel.MetaCode.Interfaces;
 
-namespace Abel.MetaCode
+namespace Abel.MetaCode.Generators
 {
 	public class ClassGenerator : IClassGenerator
 	{
 		private readonly string _name;
-		private readonly CodeWriter _codeWriter;
+		private readonly ICodeWriter _codeWriter;
 
-		public ClassGenerator(string name, CodeWriter codeWriter)
+		public ClassGenerator(string name, ICodeWriter codeWriter)
 		{
 			_name = name;
 			_codeWriter = codeWriter;
@@ -44,6 +44,7 @@ namespace Abel.MetaCode
 		public IWithMethod AddMethod(string methodName) =>
 			new WithMethod(methodName, this);
 
-		public IMethodGenerator ToMethodGenerator() => new MethodGenerator(_codeWriter);
+		public IMethodGenerator ToMethodGenerator() =>
+			new MethodGenerator(_codeWriter);
 	}
 }

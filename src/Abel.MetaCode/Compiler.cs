@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,7 +13,7 @@ namespace Abel.MetaCode
 {
 	public class Compiler : ICompiler
 	{
-		private readonly IList<string> _referenceNames = new List<string>();
+		private readonly IList<string> _referenceLocations = new List<string>();
 
 		public Assembly Compile(string sourceCode, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary)
 		{
@@ -23,40 +24,30 @@ namespace Abel.MetaCode
 
 		public ICompiler WithReference<T>() => WithReference(typeof(T));
 
-		private ICompiler WithReference(Type type)
+		public ICompiler WithReference(Type type)
 		{
-			_referenceNames.Add(type.GetTypeInfo().Assembly.Location);
+			_referenceLocations.Add(type.GetTypeInfo().Assembly.Location);
 			return this;
 		}
 
-		private Compilation CreateCompilation(string sourceCode, OutputKind outputKind)
-		{
-			var codeString = SourceText.From(sourceCode);
-			var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp9);
-
-			var parsedSyntaxTree = SyntaxFactory.ParseSyntaxTree(codeString, options);
-
-			return CSharpCompilation.Create(
-				"Hello.dll",
-				new[] { parsedSyntaxTree },
+		private Compilation CreateCompilation(string sourceCode, OutputKind outputKind) =>
+			CSharpCompilation.Create(
+				Guid.NewGuid().ToString(),
+				new[] { SyntaxFactory.ParseSyntaxTree(
+					SourceText.From(sourceCode),
+					CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp9)) },
 				GetReferences(),
-				new CSharpCompilationOptions(
-					outputKind,
-					optimizationLevel: OptimizationLevel.Debug,
-					assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default));
-		}
+				new CSharpCompilationOptions(outputKind));
 
 		private IEnumerable<MetadataReference> GetReferences()
 		{
 			WithReference<object>();
 			WithReference(typeof(Console));
 
-			foreach (var a in Assembly.GetEntryAssembly().GetReferencedAssemblies())
-			{
-				_referenceNames.Add(Assembly.Load(a).Location);
-			}
+			Assembly.GetEntryAssembly().GetReferencedAssemblies()
+				.ForEach(assemblyName => _referenceLocations.Add(Assembly.Load(assemblyName).Location));
 
-			return _referenceNames.Distinct().Select(x => MetadataReference.CreateFromFile(x));
+			return _referenceLocations.Distinct().Select(x => MetadataReference.CreateFromFile(x));
 		}
 
 		private static Assembly CreateAssembly(Compilation compilation)

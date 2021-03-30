@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Microsoft.CodeAnalysis;
 
 namespace Abel.MetaCode.Interfaces
@@ -8,5 +9,7 @@ namespace Abel.MetaCode.Interfaces
 		Assembly Compile(string code, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary);
 
 		ICompiler WithReference<T>();
+
+		ICompiler WithReference(Type type);
 	}
 }

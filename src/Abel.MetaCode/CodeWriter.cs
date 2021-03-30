@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Abel.MetaCode.Extensions;
+using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
 {
-	public class CodeWriter
+	public class CodeWriter : ICodeWriter
 	{
 		private int _indents;
 
