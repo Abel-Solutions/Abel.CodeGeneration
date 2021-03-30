@@ -21,9 +21,9 @@ namespace Abel.MetaCode
 			return CreateAssembly(compilation);
 		}
 
-		public ICompiler AddReference<T>() => AddReference(typeof(T));
+		public ICompiler WithReference<T>() => WithReference(typeof(T));
 
-		private ICompiler AddReference(Type type)
+		private ICompiler WithReference(Type type)
 		{
 			_referenceNames.Add(type.GetTypeInfo().Assembly.Location);
 			return this;
@@ -48,8 +48,8 @@ namespace Abel.MetaCode
 
 		private IEnumerable<MetadataReference> GetReferences()
 		{
-			AddReference<object>();
-			AddReference(typeof(Console));
+			WithReference<object>();
+			WithReference(typeof(Console));
 
 			foreach (var a in Assembly.GetEntryAssembly().GetReferencedAssemblies())
 			{

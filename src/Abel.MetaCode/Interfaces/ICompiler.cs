@@ -7,6 +7,6 @@ namespace Abel.MetaCode.Interfaces
 	{
 		Assembly Compile(string code, OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary);
 
-		ICompiler AddReference<T>();
+		ICompiler WithReference<T>();
 	}
 }

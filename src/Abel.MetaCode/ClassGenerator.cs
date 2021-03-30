@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Abel.MetaCode.Interfaces;
 
@@ -17,6 +18,9 @@ namespace Abel.MetaCode
 
 		public new IClassGenerator AddLine(string line) =>
 			(IClassGenerator)base.AddLine(line);
+
+		public new IClassGenerator AddLines(IEnumerable<string> lines) =>
+			(IClassGenerator)base.AddLines(lines);
 
 		public IClassGenerator AddConstructor(Action<ICodeGenerator> action) =>
 			(IClassGenerator)AddScoped($"public {_name}()", action);

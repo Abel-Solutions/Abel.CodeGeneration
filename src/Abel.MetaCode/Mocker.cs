@@ -31,15 +31,13 @@ namespace Abel.MetaCode
 
 		private Type BuildType() =>
 			_compiler
-				.AddReference<TMockable>()
+				.WithReference<TMockable>()
 				.Compile(GenerateCode())
 				.ExportedTypes
 				.Single();
 
 		private string GenerateCode()
 		{
-			var newTypeName = $"{Type.Name}Proxy";
-
 			var referenceNames = new List<string> { "System", "System.Collections.Generic" }
 				.Concat(GetReferenceTypes().Select(r => r.Namespace))
 				.Distinct();
@@ -47,7 +45,7 @@ namespace Abel.MetaCode
 			return new CodeGenerator()
 				.AddUsings(referenceNames)
 				.AddNamespace(Type.Namespace, nspace => nspace
-					.AddClass(newTypeName)
+					.AddClass($"{Type.Name}Proxy")
 						.WithParent(Type.Name)
 						.WithContent(cl =>
 						{

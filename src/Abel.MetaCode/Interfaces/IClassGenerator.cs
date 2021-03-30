@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Abel.MetaCode.Interfaces
 {
@@ -7,6 +8,8 @@ namespace Abel.MetaCode.Interfaces
 		new IClassGenerator AddLine();
 
 		new IClassGenerator AddLine(string line);
+
+		new IClassGenerator AddLines(IEnumerable<string> lines);
 
 		IClassGenerator AddConstructor(Action<ICodeGenerator> action);
 
