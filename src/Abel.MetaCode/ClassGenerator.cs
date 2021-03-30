@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
@@ -9,25 +7,25 @@ namespace Abel.MetaCode
 	public class ClassGenerator : IClassGenerator
 	{
 		private readonly string _name;
-		private readonly StringBuilder _sb;
+		private readonly CodeWriter _codeWriter;
 
-		public ClassGenerator(string name, StringBuilder sb)
+		public ClassGenerator(string name, CodeWriter codeWriter)
 		{
 			_name = name;
-			_sb = sb;
+			_codeWriter = codeWriter;
 		}
 
 		public IClassGenerator AddLine() => AddLine(string.Empty);
 
 		public IClassGenerator AddLine(string line)
 		{
-			_sb.AppendLine(new string('\t', 0 /* todo */) + line);
+			_codeWriter.WriteLine(line);
 			return this;
 		}
 
 		public IClassGenerator AddLines(IEnumerable<string> lines)
 		{
-			lines.ForEach(line => AddLine(line));
+			_codeWriter.WriteLines(lines);
 			return this;
 		}
 
@@ -36,12 +34,7 @@ namespace Abel.MetaCode
 
 		public IClassGenerator AddScoped(string line, Action<IMethodGenerator> action)
 		{
-			AddLine(line);
-			AddLine("{");
-			//_indents++; todo
-			action(ToMethodGenerator());
-			//_indents--;
-			AddLine("}");
+			_codeWriter.WriteScoped(line, ToMethodGenerator(), action);
 			return this;
 		}
 
@@ -51,6 +44,6 @@ namespace Abel.MetaCode
 		public IWithMethod AddMethod(string methodName) =>
 			new WithMethod(methodName, this);
 
-		public IMethodGenerator ToMethodGenerator() => new MethodGenerator(_sb);
+		public IMethodGenerator ToMethodGenerator() => new MethodGenerator(_codeWriter);
 	}
 }

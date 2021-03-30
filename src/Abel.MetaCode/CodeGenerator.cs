@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
 {
-	public class CodeGenerator : MethodGenerator, ICodeGenerator // todo separate?
+	public class CodeGenerator : ICodeGenerator
 	{
-		private readonly StringBuilder _sb;
+		private readonly CodeWriter _codeWriter = new CodeWriter();
 
-		public CodeGenerator()
-			: this(new StringBuilder())
+		public ICodeGenerator AddLine() => AddLine(string.Empty);
+
+		public ICodeGenerator AddLine(string line)
 		{
+			_codeWriter.WriteLine(line);
+			return this;
 		}
 
-		public CodeGenerator(StringBuilder sb)
-			: base(sb) =>
-			_sb = sb;
-
-		public new ICodeGenerator AddLine() =>
-			(ICodeGenerator)base.AddLine(string.Empty);
-
-		public new ICodeGenerator AddLine(string line) =>
-			(ICodeGenerator)base.AddLine(line);
-
-		public new ICodeGenerator AddLines(IEnumerable<string> lines) =>
-			(ICodeGenerator)base.AddLines(lines);
+		public ICodeGenerator AddLines(IEnumerable<string> lines)
+		{
+			lines.ForEach(line => AddLine(line));
+			return this;
+		}
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
@@ -45,20 +40,15 @@ namespace Abel.MetaCode
 
 		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
 		{
-			AddLine(line);
-			AddLine("{");
-			_indents++;
-			action(generator);
-			_indents--;
-			AddLine("}");
+			_codeWriter.WriteScoped(line, generator, action);
 			return this;
 		}
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
 
-		public string Generate() => _sb.ToString();
+		public string Generate() => _codeWriter.ToString();
 
-		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, _sb);
+		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, _codeWriter);
 	}
 }

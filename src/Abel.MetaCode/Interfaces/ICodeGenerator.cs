@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface ICodeGenerator : IMethodGenerator // todo separate
+	public interface ICodeGenerator
 	{
-		new ICodeGenerator AddLine(); // todo
+		ICodeGenerator AddLine();
 
-		new ICodeGenerator AddLine(string line);
+		ICodeGenerator AddLine(string line);
 
-		new ICodeGenerator AddLines(IEnumerable<string> lines);
+		ICodeGenerator AddLines(IEnumerable<string> lines);
 
 		ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
 
 		ICodeGenerator Using(string namespaceName);
 
 		ICodeGenerator AddUsings(IEnumerable<string> namespaceNames);
-		
+
 		ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action);
 
 		ICodeGenerator AddClass(string className, Action<IClassGenerator> action);

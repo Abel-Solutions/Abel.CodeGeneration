@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
@@ -7,17 +6,15 @@ namespace Abel.MetaCode
 {
 	public class MethodGenerator : IMethodGenerator
 	{
-		protected int _indents;
+		private readonly CodeWriter _codeWriter;
 
-		private readonly StringBuilder _sb;
-
-		public MethodGenerator(StringBuilder sb) => _sb = sb;
+		public MethodGenerator(CodeWriter codeWriter) => _codeWriter = codeWriter;
 
 		public IMethodGenerator AddLine() => AddLine(string.Empty);
 
 		public IMethodGenerator AddLine(string line)
 		{
-			_sb.AppendLine(new string('\t', _indents) + line);
+			_codeWriter.WriteLine(line);
 			return this;
 		}
 
