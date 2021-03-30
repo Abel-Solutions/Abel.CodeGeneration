@@ -3,15 +3,26 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
 {
-	public class WithConstructor : With, IWithConstructor
+	public class WithConstructor : IWithConstructor
 	{
+		private readonly string _name;
+		private readonly ICodeGenerator _codeGenerator;
+		
+		private string _modifiers = "public";
 		private string _parameters = string.Empty;
 
-		private string Line => $"{Modifiers} {Name}({_parameters})";
-
+		private string Line => $"{_modifiers} {_name}({_parameters})";
+		
 		public WithConstructor(string name, ICodeGenerator codeGenerator)
-			: base(name, codeGenerator)
 		{
+			_name = name;
+			_codeGenerator = codeGenerator;
+		}
+
+		public IWithConstructor WithModifiers(string modifiers)
+		{
+			_modifiers = modifiers;
+			return this;
 		}
 
 		public IWithConstructor WithParameters(string parameters)
@@ -20,7 +31,7 @@ namespace Abel.MetaCode
 			return this;
 		}
 
-		public override ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
-			CodeGenerator.AddScoped(Line, action);
+		public ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
+			_codeGenerator.AddScoped(Line, action);
 	}
 }

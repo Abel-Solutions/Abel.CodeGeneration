@@ -5,16 +5,27 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode
 {
-	public class WithMethod : With, IWithMethod
+	public class WithMethod : IWithMethod
 	{
-		private string _parameters = string.Empty;
-		private string _returnTypeName = "void";
+		private readonly string _name;
+		private readonly ICodeGenerator _codeGenerator;
 
-		private string Line => $"{Modifiers} {_returnTypeName} {Name}({_parameters})";
+		private string _modifiers = "public";
+		private string _returnTypeName = "void";
+		private string _parameters = string.Empty;
+
+		private string Line => $"{_modifiers} {_returnTypeName} {_name}({_parameters})";
 
 		public WithMethod(string name, ICodeGenerator codeGenerator)
-			: base(name, codeGenerator)
 		{
+			_name = name;
+			_codeGenerator = codeGenerator;
+		}
+
+		public IWithMethod WithModifiers(string modifiers)
+		{
+			_modifiers = modifiers;
+			return this;
 		}
 
 		public IWithMethod WithReturnType(string returnTypeName)
@@ -32,7 +43,7 @@ namespace Abel.MetaCode
 		public IWithMethod WithParameters(ParameterInfo[] parameters) =>
 			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
 
-		public override ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
-			CodeGenerator.AddScoped(Line, action);
+		public ICodeGenerator WithContent(Action<ICodeGenerator> action) =>
+			_codeGenerator.AddScoped(Line, action);
 	}
 }
