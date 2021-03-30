@@ -16,6 +16,8 @@ namespace Abel.MetaCode
 
 		private readonly IDictionary<string, Func<object>> _setups = new Dictionary<string, Func<object>>();
 
+		private readonly ICodeGenerator _codeGenerator = new CodeGenerator();
+
 		private readonly ICompiler _compiler = new Compiler();
 
 		private static readonly Type Type = typeof(TMockable);
@@ -37,14 +39,9 @@ namespace Abel.MetaCode
 				.ExportedTypes
 				.Single();
 
-		private string GenerateCode()
-		{
-			var referenceNames = new List<string> { "System", "System.Collections.Generic" }
-				.Concat(GetReferenceTypes().Select(r => r.Namespace))
-				.Distinct();
-
-			return new CodeGenerator()
-				.AddUsings(referenceNames)
+		private string GenerateCode() =>
+			_codeGenerator
+				.AddUsings(GetReferenceNames())
 				.AddNamespace(Type.Namespace, nspace => nspace
 					.AddClass($"{Type.Name}Proxy")
 						.WithParent(Type.Name)
@@ -66,7 +63,11 @@ namespace Abel.MetaCode
 										.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();")));
 						}))
 				.Generate();
-		}
+
+		private IEnumerable<string> GetReferenceNames() =>
+			new List<string> { "System", "System.Collections.Generic" }
+				.Concat(GetReferenceTypes().Select(r => r.Namespace))
+				.Distinct();
 
 		private IEnumerable<Type> GetReferenceTypes() =>
 			MockableMethods

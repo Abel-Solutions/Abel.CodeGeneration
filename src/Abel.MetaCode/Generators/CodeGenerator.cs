@@ -47,8 +47,9 @@ namespace Abel.MetaCode.Generators
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
 
-		public string Generate() => _codeWriter.ToString();
+		public IClassGenerator ToClassGenerator(string className) =>
+			new ClassGenerator(className, _codeWriter);
 
-		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, _codeWriter);
+		public string Generate() => _codeWriter.ToString();
 	}
 }
