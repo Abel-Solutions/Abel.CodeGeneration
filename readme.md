@@ -4,9 +4,9 @@ Abel.MetaCode is a suite of tools for generating, compiling, executing and mocki
 
 ## Code generation
 
-Generate code with a fluent code builder.
+The CodeGenerator class helps generate code in a fluent way.
 
-Simple console app which prints "Hello world":
+A simple console app which prints "Hello world":
 
 ~~~
 var code = new CodeGenerator()
@@ -19,7 +19,7 @@ var code = new CodeGenerator()
 	.Generate();
 ~~~
 
-A more advanced example with namespace and explicit modifiers and parameters on contructor and method:
+A more advanced example with namespace, inheritance, constructor and explicit modifiers and parameters:
 
 ~~~
 var code = new CodeGenerator()
@@ -41,7 +41,11 @@ var code = new CodeGenerator()
 	.Generate();
 ~~~
 
-## Run code at run-time
+## Compile and execute code at run-time
+
+The Compiler class compiles source code and returns an Assembly.
+
+This example compiles a console app and runs it:
 
 ~~~
 new Compiler()
@@ -49,11 +53,15 @@ new Compiler()
 	.Execute();
 ~~~
 
+OutputKind is optional, without it the Assembly will be a DLL.
+
+The Execute method is an extension method which invokes the entry method (usually `static void Main`).
+
 ## Mock classes
 
-The Mocker class works similar to Moq and demonstrates both code generation and using the compiled code at run-time.
+The Mocker class works similarly to Moq and demonstrates both code generation and compiling code at run-time.
 
-This example shows it in action, together with FluentAssertions: 
+This example shows it in action, together with FluentAssertions:
 
 ~~~
 var mock = new Mocker<ISomething>();
