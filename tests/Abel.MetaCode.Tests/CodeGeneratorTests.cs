@@ -19,16 +19,16 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol")
-					.WithParent("object")
-					.WithContent(cl => cl
-						.AddConstructor()
-							.WithParameters("string lol")
-							.WithContent(ctor => ctor
-								.AddLine("Console.WriteLine(lol);"))
-						.AddMethod("Main")
-							.WithModifiers("public static")
-							.WithContent(method => method
-								.AddLine("Console.WriteLine(\"foo\");"))))
+						.WithParent("object")
+						.WithContent(cl => cl
+							.AddConstructor()
+								.WithParameters("string lol")
+								.WithContent(ctor => ctor
+									.AddLine("Console.WriteLine(lol);"))
+							.AddMethod("Main")
+								.WithModifiers("public static")
+								.WithContent(method => method
+									.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
