@@ -16,4 +16,11 @@ namespace Abel.MetaCode.Tests
 			mock.Object.GetDouble(2).Should().Be(4);
 		}
 	}
+
+	public interface ISomething
+	{
+		int GetDouble(int number);
+
+		string ToString(int number);
+	}
 }
