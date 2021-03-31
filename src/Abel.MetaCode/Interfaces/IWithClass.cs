@@ -4,13 +4,13 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface IWithClass
 	{
-		IWithClass WithParent(string parentName);
+		IWithClass WithParents(params string[] parentNames);
 
 		IWithClass WithParent<T>();
 
+		IWithClass WithGenericTypes(params string[] typeNames);
+		
 		IWithClass WithGenericType<T>();
-
-		IWithClass WithGenericType(string typeName);
 
 		IWithClass WithModifiers(params string[] modifiers);
 		

@@ -27,21 +27,21 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
-		public IWithClass WithParent(string parentName)
+		public IWithClass WithParents(params string[] parentNames)
 		{
-			_parentNames.Add(parentName);
+			_parentNames.AddRange(parentNames);
 			return this;
 		}
 
-		public IWithClass WithParent<T>() => WithParent(typeof(T).Name);
+		public IWithClass WithParent<T>() => WithParents(typeof(T).Name);
 
-		public IWithClass WithGenericType(string typeName)
+		public IWithClass WithGenericTypes(params string[] typeNames)
 		{
-			_genericTypeNames.Add(typeName);
+			_genericTypeNames.AddRange(typeNames);
 			return this;
 		}
 
-		public IWithClass WithGenericType<T>() => WithGenericType(typeof(T).Name);
+		public IWithClass WithGenericType<T>() => WithGenericTypes(typeof(T).Name);
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
 			_codeGenerator.AddScoped(Line(), _codeGenerator.ToClassGenerator(_name), action);
