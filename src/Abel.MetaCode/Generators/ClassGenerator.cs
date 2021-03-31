@@ -30,14 +30,19 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
-		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
-			AddScoped($"public {_name}()", action);
-
 		public IClassGenerator AddScoped(string line, Action<IMethodGenerator> action)
 		{
 			_codeWriter.WriteScoped(line, ToMethodGenerator(), action);
 			return this;
 		}
+
+		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
+			AddScoped($"public {_name}()", action);
+
+		public IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action) =>
+			AddConstructor()
+				.WithParameters(parameters)
+				.WithContent(action);
 
 		public IWithConstructor AddConstructor() =>
 			new WithConstructor(_name, this);

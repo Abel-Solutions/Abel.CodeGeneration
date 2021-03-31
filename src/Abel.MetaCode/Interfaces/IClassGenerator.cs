@@ -16,6 +16,8 @@ namespace Abel.MetaCode.Interfaces
 
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 
+		IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action);
+
 		IWithConstructor AddConstructor();
 
 		IWithMethod AddMethod(string methodName);

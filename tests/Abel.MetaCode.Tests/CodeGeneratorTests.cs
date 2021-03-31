@@ -21,15 +21,14 @@ namespace Abel.MetaCode.Tests
 					.AddClass("Lol")
 					.WithParent("object")
 					.WithContent(@class => @class
-						.AddConstructor()
-						.WithParameters("string lol")
-						.WithContent(ctor => ctor
+						.AddConstructor("string lol", ctor => ctor
 							.AddLine("Console.WriteLine(lol);"))
 						.AddMethod<int>("GetInt")
 						.WithContent(method => method
 							.AddLine("return 3;"))
 						.AddMethod("Main")
 						.WithModifiers("public static")
+						.WithParameters("string[] args")
 						.WithContent(method => method
 							.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
@@ -49,7 +48,7 @@ namespace Abel.MetaCode.Tests
 				"{" +
 				"return 3;" +
 				"}" +
-				"public static void Main()" +
+				"public static void Main(string[] args)" +
 				"{" +
 				"Console.WriteLine(\"foo\");" +
 				"}" +

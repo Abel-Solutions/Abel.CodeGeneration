@@ -60,9 +60,7 @@ namespace Abel.MetaCode
 						@class
 							.AddLine("IDictionary<string, Func<object>> _methods;")
 							.AddLine()
-							.AddConstructor()
-							.WithParameters("IDictionary<string, Func<object>> methods")
-							.WithContent(ctor => ctor
+							.AddConstructor("IDictionary<string, Func<object>> methods", ctor => ctor
 								.AddLine("_methods = methods;"));
 
 						_mockableMethods.ForEach(methodInfo => @class
