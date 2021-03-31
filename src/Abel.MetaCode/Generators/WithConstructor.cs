@@ -7,12 +7,10 @@ namespace Abel.MetaCode.Generators
 	{
 		private readonly string _name;
 		private readonly IClassGenerator _classGenerator;
-		
+
 		private string _modifiers = "public";
 		private string _parameters = string.Empty;
 
-		private string Line => $"{_modifiers} {_name}({_parameters})";
-		
 		public WithConstructor(string name, IClassGenerator classGenerator)
 		{
 			_name = name;
@@ -32,6 +30,9 @@ namespace Abel.MetaCode.Generators
 		}
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
-			_classGenerator.AddScoped(Line, action);
+			_classGenerator.AddScoped(Line(), action);
+
+		private string Line() =>
+			$"{_modifiers} {_name}({_parameters})";
 	}
 }

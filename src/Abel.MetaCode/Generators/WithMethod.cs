@@ -14,8 +14,6 @@ namespace Abel.MetaCode.Generators
 		private string _returnTypeName = "void";
 		private string _parameters = string.Empty;
 
-		private string Line => $"{_modifiers} {_returnTypeName} {_name}({_parameters})";
-
 		public WithMethod(string name, IClassGenerator classGenerator)
 		{
 			_name = name;
@@ -48,6 +46,8 @@ namespace Abel.MetaCode.Generators
 			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
-			_classGenerator.AddScoped(Line, action);
+			_classGenerator.AddScoped(Line(), action);
+
+		private string Line() => $"{_modifiers} {_returnTypeName} {_name}({_parameters})";
 	}
 }
