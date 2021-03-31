@@ -11,7 +11,7 @@ namespace Abel.MetaCode.Generators
 		private readonly ICodeGenerator _codeGenerator;
 		private readonly string _name;
 
-		private readonly IList<string> _modifiers = new List<string> { "public" };
+		private readonly IList<string> _modifiers = new List<string>();
 		private readonly IList<string> _genericTypeNames = new List<string>();
 		private readonly IList<string> _parentNames = new List<string>();
 		private readonly IList<string> _constraints = new List<string>();
@@ -57,7 +57,9 @@ namespace Abel.MetaCode.Generators
 
 		private string Line() => $"{Modifiers()} class {_name}{Generics()}{Parents()}{Constraints()}";
 
-		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
+		private string Modifiers() => _modifiers.Any() ?
+			string.Join(" ", _modifiers.Distinct()) :
+			"public";
 
 		private string Generics() => _genericTypeNames.Any() ?
 			$"<{string.Join(", ", _genericTypeNames)}>"

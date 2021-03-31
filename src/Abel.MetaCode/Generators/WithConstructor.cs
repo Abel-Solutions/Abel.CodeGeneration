@@ -11,7 +11,7 @@ namespace Abel.MetaCode.Generators
 		private readonly string _name;
 		private readonly IClassGenerator _classGenerator;
 
-		private readonly IList<string> _modifiers = new List<string> { "public" };
+		private readonly IList<string> _modifiers = new List<string>();
 		private readonly IList<string> _parameters = new List<string>();
 
 		public WithConstructor(string name, IClassGenerator classGenerator)
@@ -25,7 +25,7 @@ namespace Abel.MetaCode.Generators
 			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
 			return this;
 		}
-		
+
 		public IWithConstructor WithModifier(string modifier) => WithModifiers(modifier);
 
 		public IWithConstructor WithParameters(params string[] parameters)
@@ -41,7 +41,9 @@ namespace Abel.MetaCode.Generators
 
 		private string Line() => $"{Modifiers()} {_name}({Parameters()})";
 
-		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
+		private string Modifiers() => _modifiers.Any() ?
+			string.Join(" ", _modifiers.Distinct()) :
+			"public";
 
 		private string Parameters() => string.Join(", ", _parameters);
 	}
