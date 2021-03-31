@@ -12,7 +12,11 @@ namespace Abel.MetaCode
 	public class Mocker<TMockable>
 		where TMockable : class
 	{
-		public TMockable Object => (TMockable)Activator.CreateInstance(BuildType(), _setups);
+		public TMockable Object => _object ??= CreateObject();
+
+		private readonly Type _type = typeof(TMockable);
+
+		private readonly IEnumerable<MethodInfo> _mockableMethods;
 
 		private readonly IDictionary<string, Func<object>> _setups = new Dictionary<string, Func<object>>();
 
@@ -20,9 +24,9 @@ namespace Abel.MetaCode
 
 		private readonly ICompiler _compiler = new Compiler();
 
-		private static readonly Type Type = typeof(TMockable);
+		private TMockable _object;
 
-		private IEnumerable<MethodInfo> MockableMethods { get; } = Type.GetMethods().Where(m => m.IsAbstract || m.IsVirtual);
+		public Mocker() => _mockableMethods = GetMockableMethods();
 
 		public Mocker<TMockable> Setup<TResult>(Expression<Func<TMockable, TResult>> method, TResult result)
 		{
@@ -31,6 +35,12 @@ namespace Abel.MetaCode
 			_setups[methodName] = () => result;
 			return this;
 		}
+
+		private IEnumerable<MethodInfo> GetMockableMethods() =>
+			_type.GetMethods().Where(m => m.IsAbstract || m.IsVirtual);
+
+		private TMockable CreateObject() =>
+			(TMockable)Activator.CreateInstance(BuildType(), _setups);
 
 		private Type BuildType() =>
 			_compiler
@@ -42,9 +52,9 @@ namespace Abel.MetaCode
 		private string GenerateCode() =>
 			_codeGenerator
 				.AddUsings(GetReferenceNames())
-				.AddNamespace(Type.Namespace, nspace => nspace
-					.AddClass($"{Type.Name}Proxy")
-					.WithParent(Type.Name)
+				.AddNamespace(_type.Namespace, nspace => nspace
+					.AddClass($"{_type.Name}Proxy")
+					.WithParent(_type.Name)
 					.WithContent(cl =>
 					{
 						cl
@@ -55,7 +65,7 @@ namespace Abel.MetaCode
 							.WithContent(ctor => ctor
 								.AddLine("_methods = methods;"));
 
-						MockableMethods.ForEach(info => cl
+						_mockableMethods.ForEach(info => cl
 							.AddMethod(info.Name)
 							.WithReturnType(info.ReturnType.Name)
 							.WithParameters(info.GetParameters())
@@ -70,9 +80,9 @@ namespace Abel.MetaCode
 				.Distinct();
 
 		private IEnumerable<Type> GetReferenceTypes() =>
-			MockableMethods
+			_mockableMethods
 				.Select(m => m.ReturnType)
-				.Concat(MockableMethods
+				.Concat(_mockableMethods
 					.SelectMany(k => k.GetParameters()
 						.Select(t => t.ParameterType)));
 	}

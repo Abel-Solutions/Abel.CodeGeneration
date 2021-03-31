@@ -13,9 +13,9 @@ var code = new CodeGenerator()
 	.Using("System")
 	.AddClass("Lol", cl => cl
 		.AddMethod("Main")
-			.WithModifiers("public static")
-			.WithContent(method => method
-				.AddLine("Console.WriteLine(\"Hello world\");")))
+		.WithModifiers("public static")
+		.WithContent(method => method
+			.AddLine("Console.WriteLine(\"Hello world\");")))
 	.Generate();
 ~~~
 
@@ -28,16 +28,16 @@ var code = new CodeGenerator()
 	.AddLine()
 	.AddNamespace("MetaCode", nspace => nspace
 		.AddClass("Lol")
-			.WithParent("object")
-			.WithContent(cl => cl
-				.AddConstructor()
-					.WithParameters("string lol")
-					.WithContent(ctor => ctor
-						.AddLine("Console.WriteLine(lol);"))
-				.AddMethod("Main")
-					.WithModifiers("public static")
-					.WithContent(method => method
-						.AddLine("Console.WriteLine(\"foo\");"))))
+		.WithParent("object")
+		.WithContent(cl => cl
+			.AddConstructor()
+			.WithParameters("string lol")
+			.WithContent(ctor => ctor
+				.AddLine("Console.WriteLine(lol);"))
+			.AddMethod("Main")
+			.WithModifiers("public static")
+			.WithContent(method => method
+				.AddLine("Console.WriteLine(\"foo\");"))))
 	.Generate();
 ~~~
 
