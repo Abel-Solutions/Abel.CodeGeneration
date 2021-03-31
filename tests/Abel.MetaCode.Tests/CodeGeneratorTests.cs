@@ -24,7 +24,12 @@ namespace Abel.MetaCode.Tests
 						.AddConstructor("string lol", ctor => ctor
 							.AddLine("Console.WriteLine(lol);"))
 						.AddMethod<int>("GetInt", method => method
-							.AddLine("return 1337;"))))
+							.AddLine("return 1337;"))
+						.AddMethod("Main")
+						.WithModifiers("public static")
+						.WithParameters("string[] args")
+						.WithContent(method => method
+							.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -41,6 +46,10 @@ namespace Abel.MetaCode.Tests
 				"public Int32 GetInt()" +
 				"{" +
 				"return 1337;" +
+				"}" +
+				"public static void Main(string[] args)" +
+				"{" +
+				"Console.WriteLine(\"foo\");" +
 				"}" +
 				"}" +
 				"}");
