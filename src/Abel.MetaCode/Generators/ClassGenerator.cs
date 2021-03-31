@@ -54,6 +54,14 @@ namespace Abel.MetaCode.Generators
 			AddMethod(methodName)
 				.WithReturnType<TResult>();
 
+		public IClassGenerator AddMethod(string methodName, Action<IMethodGenerator> action) =>
+			AddMethod(methodName)
+				.WithContent(action);
+
+		public IClassGenerator AddMethod<TResult>(string methodName, Action<IMethodGenerator> action) =>
+			AddMethod<TResult>(methodName)
+				.WithContent(action);
+
 		public IClassGenerator AddMethod(MethodInfo methodInfo, Action<IMethodGenerator> action) =>
 			AddMethod(methodInfo.Name)
 				.WithReturnType(methodInfo.ReturnType)

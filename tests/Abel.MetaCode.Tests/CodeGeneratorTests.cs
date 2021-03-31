@@ -23,8 +23,7 @@ namespace Abel.MetaCode.Tests
 					.WithContent(@class => @class
 						.AddConstructor("string lol", ctor => ctor
 							.AddLine("Console.WriteLine(lol);"))
-						.AddMethod<int>("GetInt")
-						.WithContent(method => method
+						.AddMethod<int>("GetInt", method => method
 							.AddLine("return 3;"))
 						.AddMethod("Main")
 						.WithModifiers("public static")
