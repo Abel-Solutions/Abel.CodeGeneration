@@ -5,6 +5,8 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface IWithMethod
 	{
+		IWithMethod WithModifier(string modifier);
+
 		IWithMethod WithModifiers(params string[] modifiers);
 
 		IWithMethod WithReturnType(string typeName);
@@ -13,7 +15,11 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithMethod WithReturnType<TResult>();
 
+		IWithMethod WithParameter(string parameter);
+
 		IWithMethod WithParameters(params string[] parameters);
+
+		IWithMethod WithParameter(ParameterInfo parameter);
 
 		IWithMethod WithParameters(params ParameterInfo[] parameters);
 

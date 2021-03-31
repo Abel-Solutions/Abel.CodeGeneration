@@ -25,12 +25,16 @@ namespace Abel.MetaCode.Generators
 			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
 			return this;
 		}
+		
+		public IWithConstructor WithModifier(string modifier) => WithModifiers(modifier);
 
 		public IWithConstructor WithParameters(params string[] parameters)
 		{
 			_parameters.AddRange(parameters);
 			return this;
 		}
+
+		public IWithConstructor WithParameter(string parameter) => WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			_classGenerator.AddScoped(Line(), action);
