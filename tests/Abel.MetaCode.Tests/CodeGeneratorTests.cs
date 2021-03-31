@@ -20,7 +20,7 @@ namespace Abel.MetaCode.Tests
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol")
 					.WithParent("object")
-					.WithContent(cl => cl
+					.WithContent(@class => @class
 						.AddConstructor()
 						.WithParameters("string lol")
 						.WithContent(ctor => ctor

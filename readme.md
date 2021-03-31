@@ -11,7 +11,7 @@ A simple console app which prints "Hello world":
 ~~~
 var code = new CodeGenerator()
 	.Using("System")
-	.AddClass("Lol", cl => cl
+	.AddClass("Lol", @class => @class
 		.AddMethod("Main")
 		.WithModifiers("public static")
 		.WithContent(method => method
@@ -29,7 +29,7 @@ var code = new CodeGenerator()
 	.AddNamespace("MetaCode", nspace => nspace
 		.AddClass("Lol")
 		.WithParent("object")
-		.WithContent(cl => cl
+		.WithContent(@class => @class
 			.AddConstructor()
 			.WithParameters("string lol")
 			.WithContent(ctor => ctor

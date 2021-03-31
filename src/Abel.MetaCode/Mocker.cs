@@ -55,9 +55,9 @@ namespace Abel.MetaCode
 				.AddNamespace(_type.Namespace, nspace => nspace
 					.AddClass($"{_type.Name}Proxy")
 					.WithParent(_type.Name)
-					.WithContent(cl =>
+					.WithContent(@class =>
 					{
-						cl
+						@class
 							.AddLine("IDictionary<string, Func<object>> _methods;")
 							.AddLine()
 							.AddConstructor()
@@ -65,7 +65,7 @@ namespace Abel.MetaCode
 							.WithContent(ctor => ctor
 								.AddLine("_methods = methods;"));
 
-						_mockableMethods.ForEach(methodInfo => cl
+						_mockableMethods.ForEach(methodInfo => @class
 							.AddMethod(methodInfo, method => method
 								.AddLine($"return ({methodInfo.ReturnType.Name})_methods[\"{methodInfo.Name}\"]();")));
 					}))
