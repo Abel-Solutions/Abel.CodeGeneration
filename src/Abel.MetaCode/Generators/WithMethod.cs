@@ -29,13 +29,13 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
+		public IWithMethod WithModifier(string modifier) => WithModifiers(modifier);
+
 		public IWithMethod WithReturnType(string typeName)
 		{
 			_returnTypeName = typeName;
 			return this;
 		}
-
-		public IWithMethod WithModifier(string modifier) => WithModifiers(modifier);
 
 		public IWithMethod WithReturnType(Type type) => WithReturnType(type.Name);
 
@@ -54,7 +54,6 @@ namespace Abel.MetaCode.Generators
 
 		public IWithMethod WithParameter(ParameterInfo parameter) => WithParameters(parameter);
 		
-
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			_classGenerator.AddScoped(Line(), action);
 
