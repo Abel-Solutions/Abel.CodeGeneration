@@ -38,7 +38,7 @@ namespace Abel.MetaCode.Tests
 				"using System.Text;" +
 				"namespace MetaCode" +
 				"{" +
-				"public class Lol<Object, Object> : Object" +
+				"public class Lol<Object> : Object" +
 				"{" +
 				"public Lol(string lol)" +
 				"{" +
