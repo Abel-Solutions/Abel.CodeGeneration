@@ -19,7 +19,8 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol")
-					.WithGenericType<object>()
+					.WithModifier("private")
+					.WithGenericType("T", "Object")
 					.WithParent<object>()
 					.WithContent(@class => @class
 						.AddConstructor("string lol", ctor => ctor
@@ -38,7 +39,7 @@ namespace Abel.MetaCode.Tests
 				"using System.Text;" +
 				"namespace MetaCode" +
 				"{" +
-				"public class Lol<Object> : Object" +
+				"private class Lol<T> : Object where T : Object" +
 				"{" +
 				"public Lol(string lol)" +
 				"{" +
