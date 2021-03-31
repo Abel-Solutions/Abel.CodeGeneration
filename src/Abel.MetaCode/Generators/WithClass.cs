@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -10,10 +11,8 @@ namespace Abel.MetaCode.Generators
 		private readonly ICodeGenerator _codeGenerator;
 		private readonly string _name;
 
-		private string _modifiers = "public";
-
+		private readonly IList<string> _modifiers = new List<string> { "public" };
 		private readonly IList<string> _parentNames = new List<string>();
-
 		private readonly IList<string> _genericTypeNames = new List<string>();
 
 		public WithClass(string name, ICodeGenerator codeGenerator)
@@ -22,9 +21,9 @@ namespace Abel.MetaCode.Generators
 			_codeGenerator = codeGenerator;
 		}
 
-		public IWithClass WithModifiers(string modifiers)
+		public IWithClass WithModifiers(params string[] modifiers)
 		{
-			_modifiers = modifiers;
+			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
 			return this;
 		}
 
@@ -47,17 +46,16 @@ namespace Abel.MetaCode.Generators
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
 			_codeGenerator.AddScoped(Line(), _codeGenerator.ToClassGenerator(_name), action);
 
-		private string Line() =>
-			$"{_modifiers} class {_name}{Generics()}{Parents()}";
+		private string Line() => $"{Modifiers()} class {_name}{Generics()}{Parents()}";
 
-		private string Generics() =>
-			_genericTypeNames.Any() ?
-				$"<{string.Join(", ", _genericTypeNames)}>"
-				: null;
+		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
 
-		private string Parents() =>
-			_parentNames.Any() ?
-				$" : {string.Join(", ", _parentNames)}" :
-				null;
+		private string Generics() => _genericTypeNames.Any() ?
+			$"<{string.Join(", ", _genericTypeNames)}>"
+			: null;
+
+		private string Parents() => _parentNames.Any() ?
+			$" : {string.Join(", ", _parentNames)}" :
+			null;
 	}
 }

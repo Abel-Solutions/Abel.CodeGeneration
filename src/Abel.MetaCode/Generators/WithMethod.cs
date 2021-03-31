@@ -11,11 +11,11 @@ namespace Abel.MetaCode.Generators
 	{
 		private readonly string _name;
 		private readonly IClassGenerator _classGenerator;
-
-		private string _modifiers = "public";
-		private string _returnTypeName = "void";
-
+		
+		private readonly IList<string> _modifiers = new List<string> { "public" };
 		private readonly IList<string> _parameters = new List<string>();
+
+		private string _returnTypeName = "void";
 
 		public WithMethod(string name, IClassGenerator classGenerator)
 		{
@@ -23,9 +23,9 @@ namespace Abel.MetaCode.Generators
 			_classGenerator = classGenerator;
 		}
 
-		public IWithMethod WithModifiers(string modifiers)
+		public IWithMethod WithModifiers(string[] modifiers)
 		{
-			_modifiers = modifiers;
+			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
 			return this;
 		}
 
@@ -54,7 +54,9 @@ namespace Abel.MetaCode.Generators
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			_classGenerator.AddScoped(Line(), action);
 
-		private string Line() => $"{_modifiers} {_returnTypeName} {_name}({Parameters()})";
+		private string Line() => $"{Modifiers()} {_returnTypeName} {_name}({Parameters()})";
+
+		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
 
 		private string Parameters() => string.Join(", ", _parameters);
 	}

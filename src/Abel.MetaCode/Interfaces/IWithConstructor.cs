@@ -4,9 +4,9 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface IWithConstructor
 	{
-		IWithConstructor WithModifiers(string modifiers);
+		IWithConstructor WithModifiers(params string[] modifiers);
 
-		IWithConstructor WithParameters(string parameters);
+		IWithConstructor WithParameters(params string[] parameters);
 
 		IClassGenerator WithContent(Action<IMethodGenerator> action);
 	}

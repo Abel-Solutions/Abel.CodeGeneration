@@ -12,7 +12,7 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithClass WithGenericType(string typeName);
 
-		IWithClass WithModifiers(string modifiers);
+		IWithClass WithModifiers(params string[] modifiers);
 		
 		ICodeGenerator WithContent(Action<IClassGenerator> action);
 	}
