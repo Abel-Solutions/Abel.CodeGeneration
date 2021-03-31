@@ -44,6 +44,10 @@ namespace Abel.MetaCode.Generators
 		public IWithMethod AddMethod(string methodName) =>
 			new WithMethod(methodName, this);
 
+		public IWithMethod AddMethod<TResult>(string methodName) =>
+			AddMethod(methodName)
+				.WithReturnType<TResult>();
+
 		private IMethodGenerator ToMethodGenerator() =>
 			new MethodGenerator(_codeWriter);
 	}

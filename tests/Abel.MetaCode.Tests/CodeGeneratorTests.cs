@@ -19,16 +19,19 @@ namespace Abel.MetaCode.Tests
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol")
-						.WithParent("object")
-						.WithContent(cl => cl
-							.AddConstructor()
-								.WithParameters("string lol")
-								.WithContent(ctor => ctor
-									.AddLine("Console.WriteLine(lol);"))
-							.AddMethod("Main")
-								.WithModifiers("public static")
-								.WithContent(method => method
-									.AddLine("Console.WriteLine(\"foo\");"))))
+					.WithParent("object")
+					.WithContent(cl => cl
+						.AddConstructor()
+						.WithParameters("string lol")
+						.WithContent(ctor => ctor
+							.AddLine("Console.WriteLine(lol);"))
+						.AddMethod<int>("GetInt")
+						.WithContent(method => method
+							.AddLine("return 3;"))
+						.AddMethod("Main")
+						.WithModifiers("public static")
+						.WithContent(method => method
+							.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -41,6 +44,10 @@ namespace Abel.MetaCode.Tests
 				"public Lol(string lol)" +
 				"{" +
 				"Console.WriteLine(lol);" +
+				"}" +
+				"public Int32 GetInt()" +
+				"{" +
+				"return 3;" +
 				"}" +
 				"public static void Main()" +
 				"{" +

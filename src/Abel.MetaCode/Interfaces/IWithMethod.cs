@@ -7,7 +7,11 @@ namespace Abel.MetaCode.Interfaces
 	{
 		IWithMethod WithModifiers(string modifiers);
 
-		IWithMethod WithReturnType(string returnTypeName);
+		IWithMethod WithReturnType(string typeName);
+
+		IWithMethod WithReturnType(Type type);
+
+		IWithMethod WithReturnType<TResult>();
 
 		IWithMethod WithParameters(string parameters);
 

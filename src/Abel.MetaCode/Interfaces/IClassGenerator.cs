@@ -18,5 +18,7 @@ namespace Abel.MetaCode.Interfaces
 		IWithConstructor AddConstructor();
 
 		IWithMethod AddMethod(string methodName);
+
+		IWithMethod AddMethod<TResult>(string methodName);
 	}
 }
