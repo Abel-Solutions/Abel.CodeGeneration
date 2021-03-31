@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Abel.MetaCode.Interfaces
 {
@@ -15,8 +16,18 @@ namespace Abel.MetaCode.Interfaces
 
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 
+		IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action);
+
 		IWithConstructor AddConstructor();
 
 		IWithMethod AddMethod(string methodName);
+
+		IWithMethod AddMethod<TResult>(string methodName);
+
+		IClassGenerator AddMethod(string methodName, Action<IMethodGenerator> action);
+
+		IClassGenerator AddMethod<TResult>(string methodName, Action<IMethodGenerator> action);
+
+		IClassGenerator AddMethod(MethodInfo methodInfo, Action<IMethodGenerator> action);
 	}
 }

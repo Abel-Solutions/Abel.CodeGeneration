@@ -28,11 +28,15 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
-		public IWithMethod WithReturnType(string returnTypeName)
+		public IWithMethod WithReturnType(string typeName)
 		{
-			_returnTypeName = returnTypeName;
+			_returnTypeName = typeName;
 			return this;
 		}
+
+		public IWithMethod WithReturnType(Type type) => WithReturnType(type.Name);
+
+		public IWithMethod WithReturnType<TResult>() => WithReturnType(typeof(TResult));
 
 		public IWithMethod WithParameters(string parameters)
 		{

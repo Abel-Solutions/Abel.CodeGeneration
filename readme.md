@@ -11,35 +11,33 @@ A simple console app which prints "Hello world":
 ~~~
 var code = new CodeGenerator()
 	.Using("System")
-	.AddClass("Lol", cl => cl
+	.AddClass("Lol", @class => @class
 		.AddMethod("Main")
-			.WithModifiers("public static")
-			.WithContent(method => method
-				.AddLine("Console.WriteLine(\"Hello world\");")))
+		.WithModifiers("public static")
+		.WithContent(method => method
+			.AddLine("Console.WriteLine(\"Hello world\");")))
 	.Generate();
 ~~~
 
-A more advanced example with namespace, inheritance, constructor and explicit modifiers and parameters:
+Another example with namespace, inheritance, constructor and explicit modifiers and parameters:
 
 ~~~
-var code = new CodeGenerator()
+var code = _codeGenerator
 	.Using("System")
 	.Using("System.Text")
 	.AddLine()
 	.AddNamespace("MetaCode", nspace => nspace
 		.AddClass("Lol")
-			.WithParent("object")
-			.WithContent(cl => cl
-				.AddConstructor()
-					.WithParameters("string lol")
-					.WithContent(ctor => ctor
-						.AddLine("Console.WriteLine(lol);"))
-				.AddMethod("Main")
-					.WithModifiers("public static")
-					.WithContent(method => method
-						.AddLine("Console.WriteLine(\"foo\");"))))
+		.WithParent("object")
+		.WithContent(@class => @class
+			.AddConstructor("string lol", ctor => ctor
+				.AddLine("Console.WriteLine(lol);"))
+			.AddMethod<int>("GetInt", method => method
+				.AddLine("return 1337;"))))
 	.Generate();
 ~~~
+
+The generator contains lots of overloads to suit different needs.
 
 ## Compile and execute code at run-time
 

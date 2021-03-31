@@ -23,11 +23,11 @@ namespace Abel.MetaCode.Tests
 				.Using("System.Text")
 				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
-					.AddClass("Lol", cl => cl
+					.AddClass("Lol", @class => @class
 						.AddMethod("Main")
-							.WithModifiers("public static")
-							.WithContent(method => method
-								.AddLine("Console.Write(\"foo\");"))))
+						.WithModifiers("public static")
+						.WithContent(method => method
+							.AddLine("Console.Write(\"foo\");"))))
 				.Generate();
 
 			var sb = new StringBuilder();
