@@ -54,7 +54,7 @@ namespace Abel.MetaCode
 				.AddUsings(GetReferenceNames())
 				.AddNamespace(_type.Namespace, nspace => nspace
 					.AddClass($"{_type.Name}Proxy")
-					.WithParents(_type.Name)
+					.WithParent(_type.Name)
 					.WithContent(@class =>
 					{
 						@class
