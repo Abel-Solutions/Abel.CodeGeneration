@@ -65,12 +65,9 @@ namespace Abel.MetaCode
 							.WithContent(ctor => ctor
 								.AddLine("_methods = methods;"));
 
-						_mockableMethods.ForEach(info => cl
-							.AddMethod(info.Name)
-							.WithReturnType(info.ReturnType.Name)
-							.WithParameters(info.GetParameters())
-							.WithContent(method => method
-								.AddLine($"return ({info.ReturnType.Name})_methods[\"{info.Name}\"]();")));
+						_mockableMethods.ForEach(methodInfo => cl
+							.AddMethod(methodInfo, method => method
+								.AddLine($"return ({methodInfo.ReturnType.Name})_methods[\"{methodInfo.Name}\"]();")));
 					}))
 				.Generate();
 

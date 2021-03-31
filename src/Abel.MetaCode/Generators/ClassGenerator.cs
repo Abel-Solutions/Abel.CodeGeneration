@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -47,6 +48,12 @@ namespace Abel.MetaCode.Generators
 		public IWithMethod AddMethod<TResult>(string methodName) =>
 			AddMethod(methodName)
 				.WithReturnType<TResult>();
+
+		public IClassGenerator AddMethod(MethodInfo methodInfo, Action<IMethodGenerator> action) =>
+			AddMethod(methodInfo.Name)
+				.WithReturnType(methodInfo.ReturnType)
+				.WithParameters(methodInfo.GetParameters())
+				.WithContent(action);
 
 		private IMethodGenerator ToMethodGenerator() =>
 			new MethodGenerator(_codeWriter);
