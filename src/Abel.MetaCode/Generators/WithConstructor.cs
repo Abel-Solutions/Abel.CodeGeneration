@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -7,31 +10,39 @@ namespace Abel.MetaCode.Generators
 	{
 		private readonly string _name;
 		private readonly IClassGenerator _classGenerator;
-		
-		private string _modifiers = "public";
-		private string _parameters = string.Empty;
 
-		private string Line => $"{_modifiers} {_name}({_parameters})";
-		
+		private readonly IList<string> _modifiers = new List<string> { "public" };
+		private readonly IList<string> _parameters = new List<string>();
+
 		public WithConstructor(string name, IClassGenerator classGenerator)
 		{
 			_name = name;
 			_classGenerator = classGenerator;
 		}
 
-		public IWithConstructor WithModifiers(string modifiers)
+		public IWithConstructor WithModifiers(params string[] modifiers)
 		{
-			_modifiers = modifiers;
+			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
+			return this;
+		}
+		
+		public IWithConstructor WithModifier(string modifier) => WithModifiers(modifier);
+
+		public IWithConstructor WithParameters(params string[] parameters)
+		{
+			_parameters.AddRange(parameters);
 			return this;
 		}
 
-		public IWithConstructor WithParameters(string parameters)
-		{
-			_parameters = parameters;
-			return this;
-		}
+		public IWithConstructor WithParameter(string parameter) => WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
-			_classGenerator.AddScoped(Line, action);
+			_classGenerator.AddScoped(Line(), action);
+
+		private string Line() => $"{Modifiers()} {_name}({Parameters()})";
+
+		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
+
+		private string Parameters() => string.Join(", ", _parameters);
 	}
 }

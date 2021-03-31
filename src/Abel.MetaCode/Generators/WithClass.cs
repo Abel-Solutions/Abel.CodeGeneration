@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -8,10 +11,9 @@ namespace Abel.MetaCode.Generators
 		private readonly ICodeGenerator _codeGenerator;
 		private readonly string _name;
 
-		private string _modifiers = "public";
-		private string _parentName;
-
-		private string Line => $"{_modifiers} class {_name}{(_parentName == null ? string.Empty : $" : {_parentName}")}";
+		private readonly IList<string> _modifiers = new List<string> { "public" };
+		private readonly IList<string> _genericTypeNames = new List<string>();
+		private readonly IList<string> _parentNames = new List<string>();
 
 		public WithClass(string name, ICodeGenerator codeGenerator)
 		{
@@ -19,19 +21,47 @@ namespace Abel.MetaCode.Generators
 			_codeGenerator = codeGenerator;
 		}
 
-		public IWithClass WithModifiers(string modifiers)
+		public IWithClass WithModifiers(params string[] modifiers)
 		{
-			_modifiers = modifiers;
+			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
 			return this;
 		}
 
-		public IWithClass WithParent(string parentName)
+		public IWithClass WithModifier(string modifier) => WithModifiers(modifier);
+
+		public IWithClass WithParents(params string[] parentNames)
 		{
-			_parentName = parentName;
+			_parentNames.AddRange(parentNames);
 			return this;
 		}
+
+		public IWithClass WithParent(string parentName) => WithParents(parentName);
+
+		public IWithClass WithParent<T>() => WithParent(typeof(T).Name);
+
+		public IWithClass WithGenericTypes(params string[] typeNames)
+		{
+			_genericTypeNames.AddRange(typeNames);
+			return this;
+		}
+
+		public IWithClass WithGenericType(string typeName) => WithGenericTypes(typeName);
+
+		public IWithClass WithGenericType<T>() => WithGenericTypes(typeof(T).Name);
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
-			_codeGenerator.AddScoped(Line, _codeGenerator.ToClassGenerator(_name), action);
+			_codeGenerator.AddScoped(Line(), _codeGenerator.ToClassGenerator(_name), action);
+
+		private string Line() => $"{Modifiers()} class {_name}{Generics()}{Parents()}";
+
+		private string Modifiers() => string.Join(" ", _modifiers.Distinct());
+
+		private string Generics() => _genericTypeNames.Any() ?
+			$"<{string.Join(", ", _genericTypeNames)}>"
+			: null;
+
+		private string Parents() => _parentNames.Any() ?
+			$" : {string.Join(", ", _parentNames)}" :
+			null;
 	}
 }

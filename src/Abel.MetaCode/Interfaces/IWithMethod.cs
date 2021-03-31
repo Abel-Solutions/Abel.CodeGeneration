@@ -5,7 +5,9 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface IWithMethod
 	{
-		IWithMethod WithModifiers(string modifiers);
+		IWithMethod WithModifier(string modifier);
+
+		IWithMethod WithModifiers(params string[] modifiers);
 
 		IWithMethod WithReturnType(string typeName);
 
@@ -13,9 +15,13 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithMethod WithReturnType<TResult>();
 
-		IWithMethod WithParameters(string parameters);
+		IWithMethod WithParameter(string parameter);
 
-		IWithMethod WithParameters(ParameterInfo[] parameters);
+		IWithMethod WithParameters(params string[] parameters);
+
+		IWithMethod WithParameter(ParameterInfo parameter);
+
+		IWithMethod WithParameters(params ParameterInfo[] parameters);
 
 		IClassGenerator WithContent(Action<IMethodGenerator> action);
 	}
