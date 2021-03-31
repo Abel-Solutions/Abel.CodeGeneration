@@ -13,9 +13,9 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithMethod WithReturnType<TResult>();
 
-		IWithMethod WithParameters(string parameters);
+		IWithMethod WithParameters(params string[] parameters);
 
-		IWithMethod WithParameters(ParameterInfo[] parameters);
+		IWithMethod WithParameters(params ParameterInfo[] parameters);
 
 		IClassGenerator WithContent(Action<IMethodGenerator> action);
 	}

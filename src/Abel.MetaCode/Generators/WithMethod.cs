@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -12,7 +14,8 @@ namespace Abel.MetaCode.Generators
 
 		private string _modifiers = "public";
 		private string _returnTypeName = "void";
-		private string _parameters = string.Empty;
+
+		private readonly IList<string> _parameters = new List<string>();
 
 		public WithMethod(string name, IClassGenerator classGenerator)
 		{
@@ -36,18 +39,23 @@ namespace Abel.MetaCode.Generators
 
 		public IWithMethod WithReturnType<TResult>() => WithReturnType(typeof(TResult));
 
-		public IWithMethod WithParameters(string parameters)
+		public IWithMethod WithParameters(params string[] parameters)
 		{
-			_parameters = parameters;
+			_parameters.AddRange(parameters);
 			return this;
 		}
 
-		public IWithMethod WithParameters(ParameterInfo[] parameters) =>
-			WithParameters(string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}")));
+		public IWithMethod WithParameters(params ParameterInfo[] parameters)
+		{
+			WithParameters(parameters.Select(p => $"{p.ParameterType.Name} {p.Name}").ToArray());
+			return this;
+		}
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			_classGenerator.AddScoped(Line(), action);
 
-		private string Line() => $"{_modifiers} {_returnTypeName} {_name}({_parameters})";
+		private string Line() => $"{_modifiers} {_returnTypeName} {_name}({Parameters()})";
+
+		private string Parameters() => string.Join(", ", _parameters);
 	}
 }
