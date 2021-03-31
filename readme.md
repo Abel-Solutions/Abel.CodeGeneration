@@ -19,10 +19,10 @@ var code = new CodeGenerator()
 	.Generate();
 ~~~
 
-A more advanced example with namespace, inheritance, constructor and explicit modifiers and parameters:
+Another example with namespace, inheritance, constructor and explicit modifiers and parameters:
 
 ~~~
-var code = new CodeGenerator()
+var code = _codeGenerator
 	.Using("System")
 	.Using("System.Text")
 	.AddLine()
@@ -30,16 +30,14 @@ var code = new CodeGenerator()
 		.AddClass("Lol")
 		.WithParent("object")
 		.WithContent(@class => @class
-			.AddConstructor()
-			.WithParameters("string lol")
-			.WithContent(ctor => ctor
+			.AddConstructor("string lol", ctor => ctor
 				.AddLine("Console.WriteLine(lol);"))
-			.AddMethod("Main")
-			.WithModifiers("public static")
-			.WithContent(method => method
-				.AddLine("Console.WriteLine(\"foo\");"))))
+			.AddMethod<int>("GetInt", method => method
+				.AddLine("return 1337;"))))
 	.Generate();
 ~~~
+
+The generator contains lots of overloads to suit different needs.
 
 ## Compile and execute code at run-time
 
