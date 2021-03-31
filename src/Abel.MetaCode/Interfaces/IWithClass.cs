@@ -12,9 +12,7 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithClass WithGenericType(string typeName);
 
-		IWithClass WithGenericTypes(params string[] typeNames);
-		
-		IWithClass WithGenericType<T>();
+		IWithClass WithGenericType(string typeName, string constraintTypeName);
 
 		IWithClass WithModifier(string modifier);
 
