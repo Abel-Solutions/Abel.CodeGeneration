@@ -7,10 +7,16 @@ namespace Abel.MetaCode.Generators
 {
 	public class CodeGenerator : Generator<ICodeGenerator>, ICodeGenerator
 	{
+		private readonly CodeWriter _codeWriter;
+
 		public CodeGenerator()
-			: base(new CodeWriter())
+			: this(new CodeWriter())
 		{
 		}
+
+		internal CodeGenerator(CodeWriter codeWriter)
+			: base(codeWriter) =>
+			_codeWriter = codeWriter;
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
@@ -29,6 +35,6 @@ namespace Abel.MetaCode.Generators
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
 
-		public string Generate() => CodeWriter.ToString();
+		public string Generate() => _codeWriter.ToString();
 	}
 }

@@ -4,7 +4,7 @@ namespace Abel.MetaCode.Generators
 {
 	public class MethodGenerator : Generator<IMethodGenerator>, IMethodGenerator
 	{
-		public MethodGenerator(ICodeWriter codeWriter)
+		internal MethodGenerator(ICodeWriter codeWriter)
 			: base(codeWriter)
 		{
 		}

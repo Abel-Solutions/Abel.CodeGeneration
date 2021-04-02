@@ -8,7 +8,7 @@ namespace Abel.MetaCode.Generators
 	{
 		private readonly string _name;
 
-		public ClassGenerator(string name, ICodeWriter codeWriter)
+		internal ClassGenerator(string name, ICodeWriter codeWriter)
 			: base(codeWriter) =>
 			_name = name;
 

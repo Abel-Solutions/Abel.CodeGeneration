@@ -7,7 +7,7 @@ namespace Abel.MetaCode.Generators
 	{
 		protected override string Line => $"{Modifiers} {ReturnTypeName} {Name}";
 
-		public WithProperty(string name, IClassGenerator classGenerator)
+		internal WithProperty(string name, IClassGenerator classGenerator)
 			: base(name, classGenerator) =>
 			ReturnTypeName = "object";
 
