@@ -18,8 +18,8 @@ namespace Abel.MetaCode.Generators
 
 		public ICodeGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
 
-		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) => 
-			AddScoped(line, generator, action, this); // todo not generic?
+		public ICodeGenerator AddScoped(string line, IClassGenerator generator, Action<IClassGenerator> action) => 
+			AddScoped(line, generator, action, this); // todo simplify more?
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
@@ -30,10 +30,10 @@ namespace Abel.MetaCode.Generators
 		public ICodeGenerator AddUsings(params string[] namespaceNames) => AddUsings(namespaceNames.ToList());
 
 		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
-			(ICodeGenerator)AddScoped($"namespace {namespaceName}", this, action);
+			AddScoped($"namespace {namespaceName}", this, action, this);
 
 		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
-			(ICodeGenerator)AddScoped($"public class {className}", ToClassGenerator(className), action);
+			AddScoped($"public class {className}", ToClassGenerator(className), action, this);
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);

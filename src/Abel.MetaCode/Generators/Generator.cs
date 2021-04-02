@@ -24,7 +24,7 @@ namespace Abel.MetaCode.Generators
 			return generator;
 		}
 
-		public TGenerator AddScoped<T, TGenerator>(string line, T generator, Action<T> action, TGenerator returnGenerator)
+		public TGenerator AddScoped<T, TGenerator>(string line, T generator, Action<T> action, TGenerator returnGenerator) // todo simplify?
 		{
 			CodeWriter.WriteScoped(line, generator, action);
 			return returnGenerator;

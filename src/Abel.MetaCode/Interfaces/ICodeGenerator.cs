@@ -11,7 +11,7 @@ namespace Abel.MetaCode.Interfaces
 
 		ICodeGenerator AddLines(IEnumerable<string> lines);
 
-		ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
+		ICodeGenerator AddScoped(string line, IClassGenerator generator, Action<IClassGenerator> action);
 
 		ICodeGenerator Using(string namespaceName);
 
