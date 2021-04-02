@@ -300,9 +300,8 @@ namespace Abel.MetaCode.Tests
 				"}");
 		}
 
-		private static string RemoveSpecialChars(string text) =>
-			text
-				.Replace("\t", "")
-				.Replace(Environment.NewLine, "");
+		private static string RemoveSpecialChars(string text) => text
+			.Replace("\t", "")
+			.Replace(Environment.NewLine, "");
 	}
 }
