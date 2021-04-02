@@ -35,6 +35,6 @@ namespace Abel.MetaCode.Generators
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
 
-		public string Generate() => _codeWriter.ToString();
+		public string Generate() => CodeWriter.ToString();
 	}
 }
