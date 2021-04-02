@@ -34,6 +34,6 @@ namespace Abel.MetaCode.Generators
 			WithGenericType(typeName, constraintTypeName, this);
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
-			Generator.AddScoped(Line, Generator.ToClassGenerator(Name), action);
+			WithContent(Generator.ToClassGenerator(Name), action);
 	}
 }

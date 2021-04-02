@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Abel.MetaCode.Extensions;
+using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
 	public abstract class With<TGenerator>
+		where TGenerator : IGenerator
 	{
 		protected readonly TGenerator Generator;
 		protected readonly string Name;
@@ -57,6 +60,12 @@ namespace Abel.MetaCode.Generators
 		{
 			ReturnTypeName = typeName;
 			return with;
+		}
+
+		public TGenerator WithContent<T>(T generator, Action<T> action)
+		{
+			Generator.AddScoped(Line, generator, action);
+			return Generator;
 		}
 
 		protected abstract string Line { get; }

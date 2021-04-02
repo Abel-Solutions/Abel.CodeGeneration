@@ -18,9 +18,6 @@ namespace Abel.MetaCode.Generators
 
 		public ICodeGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
 
-		public ICodeGenerator AddScoped(string line, IClassGenerator generator, Action<IClassGenerator> action) => 
-			AddScoped(line, generator, action, this); // todo simplify more?
-
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
 		public ICodeGenerator AddUsings(IEnumerable<string> namespaceNames) =>
