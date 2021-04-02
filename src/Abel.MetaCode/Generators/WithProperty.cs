@@ -1,31 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class WithProperty : IWithProperty
+	public class WithProperty : With<IClassGenerator>, IWithProperty
 	{
-		private readonly string _name;
-		private readonly IClassGenerator _classGenerator;
-
-		private readonly IList<string> _modifiers = new List<string>();
-
 		private string _returnTypeName = "object";
 
 		public WithProperty(string name, IClassGenerator classGenerator)
+			: base(name, classGenerator)
 		{
-			_name = name;
-			_classGenerator = classGenerator;
 		}
 
-		public IWithProperty WithModifiers(params string[] modifiers)
-		{
-			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
-			return this;
-		}
+		public new IWithProperty WithModifiers(params string[] modifiers) => (IWithProperty)base.WithModifiers(modifiers);
 
 		public IWithProperty WithModifier(string modifier) => WithModifiers(modifier);
 
@@ -40,12 +27,8 @@ namespace Abel.MetaCode.Generators
 		public IWithProperty WithReturnType<TResult>() => WithReturnType(typeof(TResult));
 
 		public IClassGenerator WithContent(Action<IPropertyGenerator> action) =>
-			(IClassGenerator)_classGenerator.AddScoped(Line(), _classGenerator.ToPropertyGenerator(), action);
+			WithContent(action, _generator.ToPropertyGenerator());
 
-		private string Line() => $"{Modifiers()} {_returnTypeName} {_name}";
-
-		private string Modifiers() => _modifiers.Any() ?
-			string.Join(" ", _modifiers.Distinct()) :
-			"public";
+		protected override string Line() => $"{Modifiers()} {_returnTypeName} {_name}";
 	}
 }
