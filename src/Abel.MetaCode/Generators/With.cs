@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public abstract class With<TGenerator>
+	public abstract class With<TGenerator, TWith>
 		where TGenerator : IGenerator<TGenerator>
 	{
 		protected readonly TGenerator Generator;
@@ -26,47 +27,61 @@ namespace Abel.MetaCode.Generators
 			Generator = generator;
 		}
 
-		public TWith WithParameters<TWith>(string[] parameters, TWith with)
+		public TWith WithModifier(string modifier) => WithModifiers(modifier);
+
+		public TWith WithParameter(string parameter) => WithParameters(parameter);
+
+		public TWith WithParameters(params string[] parameters)
 		{
 			_parameters.AddRange(parameters);
-			return with;
+			return (TWith)(object)this; // todo
 		}
 
-		public TWith WithModifiers<TWith>(string[] modifiers, TWith with)
+		public TWith WithModifiers(params string[] modifiers)
 		{
 			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
-			return with;
+			return (TWith)(object)this;
 		}
 
-		public TWith WithParents<TWith>(string[] parentNames, TWith with)
+		public TWith WithParents(params string[] parentNames)
 		{
 			_parentNames.AddRange(parentNames);
-			return with;
+			return (TWith)(object)this;
 		}
 
-		public TWith WithGenericType<TWith>(string typeName, TWith with)
+		public TWith WithParent(string parentName) => WithParents(parentName);
+
+		public TWith WithParent<T>() => WithParent(typeof(T).Name);
+
+		public TWith WithGenericType(string typeName)
 		{
 			_genericTypeNames.Add(typeName);
-			return with;
+			return (TWith)(object)this;
 		}
 
-		public TWith WithGenericType<TWith>(string typeName, string constraintTypeName, TWith with)
+		public TWith WithGenericType(string typeName, string constraintTypeName)
 		{
 			_constraints.Add($" where {typeName} : {constraintTypeName}");
-			return WithGenericType(typeName, with);
+			return WithGenericType(typeName);
 		}
 
-		public TWith WithReturnType<TWith>(string typeName, TWith with)
+		public TWith WithReturnType(string typeName)
 		{
 			ReturnTypeName = typeName;
-			return with;
+			return (TWith)(object)this;
 		}
 
-		public TGenerator WithContent<T>(T generator, Action<T> action)
-		{
+		public TWith WithReturnType(Type type) => WithReturnType(type.Name);
+
+		public TWith WithReturnType<TResult>() => WithReturnType(typeof(TResult));
+
+		public TWith WithParameters(params ParameterInfo[] parameters) =>
+			WithParameters(parameters.Select(p => $"{p.ParameterType.Name} {p.Name}").ToArray());
+
+		public TWith WithParameter(ParameterInfo parameter) => WithParameters(parameter);
+
+		public TGenerator WithContent<T>(T generator, Action<T> action) =>
 			Generator.AddScoped(Line, generator, action);
-			return Generator;
-		}
 
 		protected abstract string Line { get; }
 
