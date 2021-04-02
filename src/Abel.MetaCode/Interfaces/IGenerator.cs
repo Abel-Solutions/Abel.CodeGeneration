@@ -2,8 +2,8 @@
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IGenerator
+	public interface IGenerator<TGenerator>
 	{
-		IGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
+		TGenerator AddScoped<TScope>(string line, TScope scopeGenerator, Action<TScope> action);
 	}
 }

@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IClassGenerator : IGenerator
+	public interface IClassGenerator : IGenerator<IClassGenerator>
 	{
-		IClassGenerator AddLine();
+		IClassGenerator AddLine(); // todo move to IGenreator
 
 		IClassGenerator AddLine(string line);
 

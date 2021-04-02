@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface ICodeGenerator : IGenerator
+	public interface ICodeGenerator : IGenerator<ICodeGenerator>
 	{
 		ICodeGenerator AddLine();
 

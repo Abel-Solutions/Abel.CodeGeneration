@@ -3,25 +3,21 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class PropertyGenerator : Generator, IPropertyGenerator
+	public class PropertyGenerator : Generator<IPropertyGenerator>, IPropertyGenerator
 	{
 		public PropertyGenerator(ICodeWriter codeWriter)
 			: base(codeWriter)
 		{
 		}
 
-		public IPropertyGenerator AddLine() => AddLine(this);
-
-		public IPropertyGenerator AddLine(string line) => AddLine(line, this);
-
 		public IPropertyGenerator Get<T>(T value) => AddLine($"get => {value};");
 
 		public IPropertyGenerator Get(Action<IMethodGenerator> action) =>
-			AddScoped("get", ToMethodGenerator(), action, this);
+			AddScoped("get", ToMethodGenerator(), action);
 
 		public IPropertyGenerator Set<T>(T value) => AddLine($"set => value = {value};");
 
 		public IPropertyGenerator Set(Action<IMethodGenerator> action) =>
-			AddScoped("set", ToMethodGenerator(), action, this);
+			AddScoped("set", ToMethodGenerator(), action);
 	}
 }

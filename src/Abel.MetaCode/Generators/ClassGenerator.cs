@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class ClassGenerator : Generator, IClassGenerator
+	public class ClassGenerator : Generator<IClassGenerator>, IClassGenerator
 	{
 		private readonly string _name;
 
@@ -13,14 +12,8 @@ namespace Abel.MetaCode.Generators
 			: base(codeWriter) =>
 			_name = name;
 
-		public IClassGenerator AddLine() => AddLine(this);
-
-		public IClassGenerator AddLine(string line) => AddLine(line, this);
-
-		public IClassGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
-
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
-			AddScoped($"public {_name}()", ToMethodGenerator(), action, this);
+			AddScoped($"public {_name}()", ToMethodGenerator(), action);
 
 		public IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action) =>
 			AddConstructor()

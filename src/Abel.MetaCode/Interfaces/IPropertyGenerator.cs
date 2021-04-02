@@ -2,7 +2,7 @@
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IPropertyGenerator
+	public interface IPropertyGenerator : IGenerator<IPropertyGenerator>
 	{
 		IPropertyGenerator AddLine();
 

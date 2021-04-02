@@ -4,36 +4,32 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public abstract class Generator : IGenerator
+	public abstract class Generator<TGenerator> : IGenerator<TGenerator>
 	{
 		protected readonly ICodeWriter CodeWriter;
 
+		private TGenerator CastedGenerator => (TGenerator)(object)this;
+
 		protected Generator(ICodeWriter codeWriter) => CodeWriter = codeWriter;
 
-		public TGenerator AddLine<TGenerator>(TGenerator generator) => AddLine(string.Empty, generator);
+		public TGenerator AddLine() => AddLine(string.Empty);
 
-		public TGenerator AddLine<TGenerator>(string line, TGenerator generator)
+		public TGenerator AddLine(string line)
 		{
 			CodeWriter.WriteLine(line);
-			return generator;
+			return CastedGenerator;
 		}
 
-		public TGenerator AddLines<TGenerator>(IEnumerable<string> lines, TGenerator generator)
+		public TGenerator AddLines(IEnumerable<string> lines)
 		{
 			CodeWriter.WriteLines(lines);
-			return generator;
+			return CastedGenerator;
 		}
 
-		public TGenerator AddScoped<TScope, TGenerator>(string line, TScope scopeGenerator, Action<TScope> action, TGenerator generator)
+		public TGenerator AddScoped<TScope>(string line, TScope scopeGenerator, Action<TScope> action)
 		{
-			AddScoped(line, scopeGenerator, action);
-			return generator;
-		}
-
-		public IGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) // todo this or above?
-		{
-			CodeWriter.WriteScoped(line, generator, action);
-			return this;
+			CodeWriter.WriteScoped(line, scopeGenerator, action);
+			return CastedGenerator;
 		}
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, CodeWriter);

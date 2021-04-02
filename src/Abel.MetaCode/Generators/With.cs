@@ -7,7 +7,7 @@ using Abel.MetaCode.Interfaces;
 namespace Abel.MetaCode.Generators
 {
 	public abstract class With<TGenerator>
-		where TGenerator : IGenerator
+		where TGenerator : IGenerator<TGenerator>
 	{
 		protected readonly TGenerator Generator;
 		protected readonly string Name;
