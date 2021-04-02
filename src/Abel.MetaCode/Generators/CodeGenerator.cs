@@ -33,17 +33,11 @@ namespace Abel.MetaCode.Generators
 		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
 			AddScoped($"public class {className}", ToClassGenerator(className), action);
 
-		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
-		{
-			_codeWriter.WriteScoped(line, generator, action);
-			return this;
-		}
+		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
+			AddScoped(line, generator, action, this);
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
-
-		public IClassGenerator ToClassGenerator(string className) =>
-			new ClassGenerator(className, _codeWriter);
 
 		public string Generate() => _codeWriter.ToString();
 	}

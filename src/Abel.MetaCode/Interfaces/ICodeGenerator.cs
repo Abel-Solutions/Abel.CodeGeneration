@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface ICodeGenerator
+	public interface ICodeGenerator: IGenerator
 	{
 		ICodeGenerator AddLine();
 
@@ -22,8 +22,6 @@ namespace Abel.MetaCode.Interfaces
 		ICodeGenerator AddClass(string className, Action<IClassGenerator> action);
 
 		IWithClass AddClass(string className);
-
-		IClassGenerator ToClassGenerator(string className);
 
 		string Generate();
 	}

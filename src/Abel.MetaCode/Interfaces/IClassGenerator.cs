@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IClassGenerator
+	public interface IClassGenerator : IGenerator
 	{
 		IClassGenerator AddLine();
 
@@ -35,9 +35,5 @@ namespace Abel.MetaCode.Interfaces
 		IWithProperty AddProperty(string propertyName);
 
 		IWithProperty AddProperty<T>(string propertyName);
-
-		IMethodGenerator ToMethodGenerator();
-
-		IPropertyGenerator ToPropertyGenerator();
 	}
 }
