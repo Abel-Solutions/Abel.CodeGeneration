@@ -20,8 +20,6 @@ namespace Abel.MetaCode.Tests
 		{
 			var code = _codeGenerator
 				.Using("System")
-				.Using("System.Text")
-				.AddLine()
 				.AddNamespace("MetaCode", nspace => nspace
 					.AddClass("Lol", @class => @class
 						.AddMethod("Main")
