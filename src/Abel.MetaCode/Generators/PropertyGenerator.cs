@@ -10,9 +10,9 @@ namespace Abel.MetaCode.Generators
 		{
 		}
 
-		public new IPropertyGenerator AddLine() => (IPropertyGenerator)base.AddLine();
+		public IPropertyGenerator AddLine() => AddLine(this);
 
-		public new IPropertyGenerator AddLine(string line) => (IPropertyGenerator)base.AddLine(line);
+		public IPropertyGenerator AddLine(string line) => AddLine(line, this);
 
 		public IPropertyGenerator Get<T>(T value) => AddLine($"get => {value};");
 

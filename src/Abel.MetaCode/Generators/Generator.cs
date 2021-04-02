@@ -10,18 +10,18 @@ namespace Abel.MetaCode.Generators
 
 		protected Generator(ICodeWriter codeWriter) => CodeWriter = codeWriter;
 
-		public IGenerator AddLine() => AddLine(string.Empty);
+		public TGenerator AddLine<TGenerator>(TGenerator generator) => AddLine(string.Empty, generator);
 
-		public IGenerator AddLine(string line)
+		public TGenerator AddLine<TGenerator>(string line, TGenerator generator)
 		{
 			CodeWriter.WriteLine(line);
-			return this;
+			return generator;
 		}
 
-		public IGenerator AddLines(IEnumerable<string> lines)
+		public TGenerator AddLines<TGenerator>(IEnumerable<string> lines, TGenerator generator)
 		{
 			CodeWriter.WriteLines(lines);
-			return this;
+			return generator;
 		}
 
 		public IGenerator AddScoped<T>(string line, T generator, Action<T> action)

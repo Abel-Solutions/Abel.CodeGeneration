@@ -12,11 +12,11 @@ namespace Abel.MetaCode.Generators
 		{
 		}
 
-		public new ICodeGenerator AddLine() => (ICodeGenerator)base.AddLine();
+		public ICodeGenerator AddLine() => AddLine(this);
 
-		public new ICodeGenerator AddLine(string line) => (ICodeGenerator)base.AddLine(line);
+		public ICodeGenerator AddLine(string line) => AddLine(line, this);
 
-		public new ICodeGenerator AddLines(IEnumerable<string> lines) => (ICodeGenerator)base.AddLines(lines);
+		public ICodeGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 

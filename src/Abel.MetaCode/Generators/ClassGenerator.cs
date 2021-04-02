@@ -13,12 +13,12 @@ namespace Abel.MetaCode.Generators
 			: base(codeWriter) =>
 			_name = name;
 
-		public new IClassGenerator AddLine() => (IClassGenerator)base.AddLine();
+		public IClassGenerator AddLine() => AddLine(this);
 
-		public new IClassGenerator AddLine(string line) => (IClassGenerator)base.AddLine(line);
+		public IClassGenerator AddLine(string line) => AddLine(line, this);
 
-		public new IClassGenerator AddLines(IEnumerable<string> lines) => (IClassGenerator)base.AddLines(lines);
-		
+		public IClassGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
+
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
 			(IClassGenerator)AddScoped($"public {_name}()", ToMethodGenerator(), action);
 
