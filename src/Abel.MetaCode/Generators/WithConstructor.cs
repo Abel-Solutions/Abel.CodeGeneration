@@ -7,9 +7,6 @@ namespace Abel.MetaCode.Generators
 {
 	public class WithConstructor : With<IClassGenerator>, IWithConstructor
 	{
-		private readonly IList<string> _modifiers = new List<string>();
-		private readonly IList<string> _parameters = new List<string>();
-
 		public WithConstructor(string name, IClassGenerator classGenerator)
 			: base(name, classGenerator)
 		{
@@ -19,11 +16,7 @@ namespace Abel.MetaCode.Generators
 
 		public IWithConstructor WithModifier(string modifier) => WithModifiers(modifier);
 
-		public IWithConstructor WithParameters(params string[] parameters)
-		{
-			_parameters.AddRange(parameters);
-			return this;
-		}
+		public new IWithConstructor WithParameters(params string[] parameters) => (IWithConstructor)base.WithParameters(parameters);
 
 		public IWithConstructor WithParameter(string parameter) => WithParameters(parameter);
 
@@ -31,7 +24,5 @@ namespace Abel.MetaCode.Generators
 			WithContent(action, _generator.ToMethodGenerator());
 
 		protected override string Line() => $"{Modifiers()} {_name}({Parameters()})";
-
-		private string Parameters() => string.Join(", ", _parameters);
 	}
 }

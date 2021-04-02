@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
@@ -18,11 +16,18 @@ namespace Abel.MetaCode.Generators
 		private readonly IList<string> _genericTypeNames = new List<string>();
 		private readonly IList<string> _parentNames = new List<string>();
 		private readonly IList<string> _constraints = new List<string>();
+		private readonly IList<string> _parameters = new List<string>();
 
 		protected With(string name, TGenerator generator)
 		{
 			_name = name;
 			_generator = generator;
+		}
+
+		public IWith WithParameters(params string[] parameters)
+		{
+			_parameters.AddRange(parameters);
+			return this;
 		}
 
 		public IWith WithModifiers(string[] modifiers)
@@ -49,7 +54,7 @@ namespace Abel.MetaCode.Generators
 			return WithGenericType(typeName);
 		}
 
-		public TGenerator WithContent<T>(Action<T> action, T generator) // todo
+		public TGenerator WithContent<T>(Action<T> action, T generator)
 		{
 			_generator.AddScoped(Line(), generator, action);
 			return _generator;
@@ -72,5 +77,7 @@ namespace Abel.MetaCode.Generators
 		protected string Constraints() => _constraints.Any() ?
 			string.Join(string.Empty, _constraints) :
 			null;
+
+		protected string Parameters() => string.Join(", ", _parameters);
 	}
 }
