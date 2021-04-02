@@ -24,10 +24,10 @@ namespace Abel.MetaCode.Generators
 			return generator;
 		}
 
-		public TGenerator AddScoped<T, TGenerator>(string line, T generator, Action<T> action, TGenerator returnGenerator) // todo simplify?
+		public TGenerator AddScoped<TScope, TGenerator>(string line, TScope scopeGenerator, Action<TScope> action, TGenerator generator)
 		{
-			CodeWriter.WriteScoped(line, generator, action);
-			return returnGenerator;
+			CodeWriter.WriteScoped(line, scopeGenerator, action);
+			return generator;
 		}
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, CodeWriter);
