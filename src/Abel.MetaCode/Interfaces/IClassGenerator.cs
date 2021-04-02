@@ -4,13 +4,15 @@ using System.Reflection;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IClassGenerator : IGenerator
+	public interface IClassGenerator
 	{
 		IClassGenerator AddLine();
 
 		IClassGenerator AddLine(string line);
 
 		IClassGenerator AddLines(IEnumerable<string> lines);
+
+		IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
 
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 

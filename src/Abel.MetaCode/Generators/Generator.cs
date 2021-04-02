@@ -4,7 +4,7 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public abstract class Generator : IGenerator
+	public abstract class Generator
 	{
 		protected readonly ICodeWriter CodeWriter;
 
@@ -24,10 +24,10 @@ namespace Abel.MetaCode.Generators
 			return generator;
 		}
 
-		public IGenerator AddScoped<T>(string line, T generator, Action<T> action)
+		public TGenerator AddScoped<T, TGenerator>(string line, T generator, Action<T> action, TGenerator returnGenerator)
 		{
 			CodeWriter.WriteScoped(line, generator, action);
-			return this;
+			return returnGenerator;
 		}
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, CodeWriter);

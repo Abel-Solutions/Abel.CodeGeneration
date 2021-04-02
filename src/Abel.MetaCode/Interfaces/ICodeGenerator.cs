@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface ICodeGenerator : IGenerator
+	public interface ICodeGenerator
 	{
 		ICodeGenerator AddLine();
 
 		ICodeGenerator AddLine(string line);
 
 		ICodeGenerator AddLines(IEnumerable<string> lines);
+
+		ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
 
 		ICodeGenerator Using(string namespaceName);
 

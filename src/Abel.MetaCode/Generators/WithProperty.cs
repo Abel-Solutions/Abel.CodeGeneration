@@ -27,6 +27,6 @@ namespace Abel.MetaCode.Generators
 			WithReturnType(typeof(TResult));
 
 		public IClassGenerator WithContent(Action<IPropertyGenerator> action) =>
-			WithContent(action, Generator.ToPropertyGenerator());
+			Generator.AddScoped(Line, Generator.ToPropertyGenerator(), action);
 	}
 }

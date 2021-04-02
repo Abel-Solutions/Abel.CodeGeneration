@@ -25,6 +25,6 @@ namespace Abel.MetaCode.Generators
 			WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
-			WithContent(action, Generator.ToMethodGenerator());
+			Generator.AddScoped(Line, Generator.ToMethodGenerator(), action);
 	}
 }
