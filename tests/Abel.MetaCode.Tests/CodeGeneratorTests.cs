@@ -11,7 +11,7 @@ namespace Abel.MetaCode.Tests
 		private readonly ICodeGenerator _codeGenerator = new CodeGenerator();
 
 		[Fact]
-		public void AddCode_LotsOfStuff_CodeIsCorrect()
+		public void AcceptanceTest()
 		{
 			var code = _codeGenerator
 				.Using("System")
@@ -106,7 +106,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithGenericType("T")
-				.WithContent(@class => {})
+				.WithContent(@class => { })
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -136,7 +136,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithParent("object")
-				.WithContent(@class => {})
+				.WithContent(@class => { })
 				.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
@@ -207,6 +207,21 @@ namespace Abel.MetaCode.Tests
 
 		[Fact]
 		public void AddClass_ModifierWithSpaces_CodeIsCorrect()
+		{
+			var code = _codeGenerator
+				.AddClass("Lol")
+				.WithModifier("private static")
+				.WithContent(@class => { })
+				.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private static class Lol" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddClass_ModifiersWithSpaces_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddClass("Lol")

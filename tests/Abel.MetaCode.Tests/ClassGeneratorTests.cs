@@ -14,6 +14,130 @@ namespace Abel.MetaCode.Tests
 		public ClassGeneratorTests() => _classGenerator = _codeGenerator.ToClassGenerator("Lol");
 
 		[Fact]
+		public void AddConstructor_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_ParameterShorthand_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor("string lol", ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Lol(string lol)" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_Parameter_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithParameter("int foo")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Lol(int foo)" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_Parameters_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithParameters("int foo", "string bar")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Lol(int foo, string bar)" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_Modifier_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithModifier("private")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_Modifiers_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithModifiers("private", "static")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private static Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_ModifierWithSpace_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithModifier("private static")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private static Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddConstructor_ModifiersWithSpace_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddConstructor()
+				.WithModifiers("private static")
+				.WithContent(ctor => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private static Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
 		public void AddMethod_CodeIsCorrect()
 		{
 			_classGenerator
@@ -65,6 +189,22 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithModifier("private static")
+				.WithContent(method => { });
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private static void Lol()" +
+				"{" +
+				"}");
+		}
+
+		[Fact]
+		public void AddMethod_ModifiersWithSpace_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddMethod("Lol")
+				.WithModifiers("private static")
 				.WithContent(method => { });
 
 			var code = _codeGenerator.Generate();
