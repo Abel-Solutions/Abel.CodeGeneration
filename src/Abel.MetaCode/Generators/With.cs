@@ -9,8 +9,10 @@ namespace Abel.MetaCode.Generators
 	public abstract class With<TGenerator> : IWith
 		where TGenerator : IGenerator
 	{
-		protected readonly TGenerator _generator;
-		protected readonly string _name;
+		protected readonly TGenerator Generator;
+		protected readonly string Name;
+
+		protected string ReturnTypeName = "object";
 
 		private readonly IList<string> _modifiers = new List<string>();
 		private readonly IList<string> _genericTypeNames = new List<string>();
@@ -20,8 +22,8 @@ namespace Abel.MetaCode.Generators
 
 		protected With(string name, TGenerator generator)
 		{
-			_name = name;
-			_generator = generator;
+			Name = name;
+			Generator = generator;
 		}
 
 		public IWith WithParameters(params string[] parameters)
@@ -54,10 +56,16 @@ namespace Abel.MetaCode.Generators
 			return WithGenericType(typeName);
 		}
 
+		public IWith WithReturnType(string typeName)
+		{
+			ReturnTypeName = typeName;
+			return this;
+		}
+
 		public TGenerator WithContent<T>(Action<T> action, T generator)
 		{
-			_generator.AddScoped(Line(), generator, action);
-			return _generator;
+			Generator.AddScoped(Line(), generator, action);
+			return Generator;
 		}
 
 		protected abstract string Line();
