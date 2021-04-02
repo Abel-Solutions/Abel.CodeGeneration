@@ -1,40 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class ClassGenerator : IClassGenerator
+	public class ClassGenerator : Generator<IClassGenerator>, IClassGenerator
 	{
 		private readonly string _name;
-		private readonly ICodeWriter _codeWriter;
 
-		public ClassGenerator(string name, ICodeWriter codeWriter)
-		{
+		internal ClassGenerator(string name, ICodeWriter codeWriter)
+			: base(codeWriter) =>
 			_name = name;
-			_codeWriter = codeWriter;
-		}
-
-		public IClassGenerator AddLine() => AddLine(string.Empty);
-
-		public IClassGenerator AddLine(string line)
-		{
-			_codeWriter.WriteLine(line);
-			return this;
-		}
-
-		public IClassGenerator AddLines(IEnumerable<string> lines)
-		{
-			_codeWriter.WriteLines(lines);
-			return this;
-		}
-
-		public IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
-		{
-			_codeWriter.WriteScoped(line, generator, action);
-			return this;
-		}
 
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
 			AddScoped($"public {_name}()", ToMethodGenerator(), action);
@@ -68,11 +44,8 @@ namespace Abel.MetaCode.Generators
 				.WithParameters(methodInfo.GetParameters())
 				.WithContent(action);
 
-		public IClassGenerator AddProperty<T>(string propertyName, T value)
-		{
+		public IClassGenerator AddProperty<T>(string propertyName, T value) =>
 			AddLine($"public {typeof(T).Name} {propertyName} => {value};");
-			return this;
-		}
 
 		public IWithProperty AddProperty(string propertyName) =>
 			new WithProperty(propertyName, this);
@@ -80,11 +53,5 @@ namespace Abel.MetaCode.Generators
 		public IWithProperty AddProperty<T>(string propertyName) =>
 			AddProperty(propertyName)
 				.WithReturnType<T>();
-
-		public IPropertyGenerator ToPropertyGenerator() =>
-			new PropertyGenerator(_codeWriter);
-
-		public IMethodGenerator ToMethodGenerator() =>
-			new MethodGenerator(_codeWriter);
 	}
 }

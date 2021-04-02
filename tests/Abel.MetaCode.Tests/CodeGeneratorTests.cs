@@ -58,6 +58,28 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
+		public void Using_CodeIsCorrect()
+		{
+			var code = _codeGenerator
+				.Using("System")
+				.Generate();
+
+			RemoveSpecialChars(code).Should().Be("using System;");
+		}
+
+		[Fact]
+		public void AddUsings_CodeIsCorrect()
+		{
+			var code = _codeGenerator
+				.AddUsings("System", "System.Text")
+				.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"using System;" +
+				"using System.Text;");
+		}
+
+		[Fact]
 		public void AddNamespace_CodeIsCorrect()
 		{
 			var code = _codeGenerator

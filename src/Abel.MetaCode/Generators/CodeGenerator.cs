@@ -1,36 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using Abel.MetaCode.Extensions;
+using System.Linq;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class CodeGenerator : ICodeGenerator
+	public class CodeGenerator : Generator<ICodeGenerator>, ICodeGenerator
 	{
-		private readonly ICodeWriter _codeWriter = new CodeWriter();
+		private readonly CodeWriter _codeWriter;
 
-		public ICodeGenerator AddLine() => AddLine(string.Empty);
-
-		public ICodeGenerator AddLine(string line)
+		public CodeGenerator()
+			: this(new CodeWriter())
 		{
-			_codeWriter.WriteLine(line);
-			return this;
 		}
 
-		public ICodeGenerator AddLines(IEnumerable<string> lines)
-		{
-			_codeWriter.WriteLines(lines);
-			return this;
-		}
+		internal CodeGenerator(CodeWriter codeWriter)
+			: base(codeWriter) =>
+			_codeWriter = codeWriter;
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
-		public ICodeGenerator AddUsings(IEnumerable<string> namespaceNames)
-		{
-			namespaceNames.ForEach(namespaceName => Using(namespaceName));
-			AddLine();
-			return this;
-		}
+		public ICodeGenerator AddUsings(IEnumerable<string> namespaceNames) =>
+			AddLines(namespaceNames.Select(namespaceName => $"using {namespaceName};"))
+				.AddLine();
+
+		public ICodeGenerator AddUsings(params string[] namespaceNames) => AddUsings(namespaceNames.ToList());
 
 		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
 			AddScoped($"namespace {namespaceName}", this, action);
@@ -38,17 +32,8 @@ namespace Abel.MetaCode.Generators
 		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
 			AddScoped($"public class {className}", ToClassGenerator(className), action);
 
-		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
-		{
-			_codeWriter.WriteScoped(line, generator, action);
-			return this;
-		}
-
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);
-
-		public IClassGenerator ToClassGenerator(string className) =>
-			new ClassGenerator(className, _codeWriter);
 
 		public string Generate() => _codeWriter.ToString();
 	}
