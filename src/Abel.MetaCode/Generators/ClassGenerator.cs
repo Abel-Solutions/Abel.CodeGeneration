@@ -68,6 +68,19 @@ namespace Abel.MetaCode.Generators
 				.WithParameters(methodInfo.GetParameters())
 				.WithContent(action);
 
+		public IClassGenerator AddProperty<T>(string propertyName, T value)
+		{
+			AddLine($"public {typeof(T).Name} {propertyName} => {value};");
+			return this;
+		}
+
+		public IWithProperty AddProperty(string propertyName) =>
+			new WithProperty(propertyName, this);
+
+		public IWithProperty AddProperty<T>(string propertyName) =>
+			AddProperty(propertyName)
+				.WithReturnType<T>();
+
 		private IMethodGenerator ToMethodGenerator() =>
 			new MethodGenerator(_codeWriter);
 	}

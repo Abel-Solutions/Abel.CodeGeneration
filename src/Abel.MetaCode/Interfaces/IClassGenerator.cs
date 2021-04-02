@@ -29,5 +29,11 @@ namespace Abel.MetaCode.Interfaces
 		IClassGenerator AddMethod<TResult>(string methodName, Action<IMethodGenerator> action);
 
 		IClassGenerator AddMethod(MethodInfo methodInfo, Action<IMethodGenerator> action);
+
+		IClassGenerator AddProperty<T>(string propertyName, T value);
+
+		IWithProperty AddProperty(string propertyName);
+
+		IWithProperty AddProperty<T>(string propertyName);
 	}
 }

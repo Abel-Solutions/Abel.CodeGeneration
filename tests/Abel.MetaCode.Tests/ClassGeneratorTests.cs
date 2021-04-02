@@ -300,6 +300,88 @@ namespace Abel.MetaCode.Tests
 				"}");
 		}
 
+		[Fact]
+		public void AddProperty_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty("Lol", 3);
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be("public Int32 Lol => 3;");
+		}
+
+		[Fact]
+		public void AddProperty_Line_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty<int>("Lol")
+				.WithContent(prop => prop
+				.AddLine("get => 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Int32 Lol" +
+				"{" +
+				"get => 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_ReturnTypeGeneric_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty("Lol")
+				.WithReturnType<string>()
+				.WithContent(prop => prop
+					.AddLine("get => 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public String Lol" +
+				"{" +
+				"get => 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_ReturnType_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty("Lol")
+				.WithReturnType("string")
+				.WithContent(prop => prop
+					.AddLine("get => 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public string Lol" +
+				"{" +
+				"get => 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_Modifier_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty<string>("Lol")
+				.WithModifier("private")
+				.WithContent(prop => prop
+					.AddLine("get => 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"private String Lol" +
+				"{" +
+				"get => 3;" +
+				"}");
+		}
+
 		private static string RemoveSpecialChars(string text) => text
 			.Replace("\t", "")
 			.Replace(Environment.NewLine, "");
