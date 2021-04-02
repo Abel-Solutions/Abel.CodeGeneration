@@ -4,7 +4,7 @@ using System.Text;
 using Abel.MetaCode.Extensions;
 using Abel.MetaCode.Interfaces;
 
-namespace Abel.MetaCode.Generators
+namespace Abel.MetaCode
 {
 	public class CodeWriter : ICodeWriter
 	{
