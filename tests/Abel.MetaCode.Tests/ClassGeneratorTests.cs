@@ -279,6 +279,27 @@ namespace Abel.MetaCode.Tests
 				"}");
 		}
 
+		[Fact]
+		public void AddMethod_AsyncAwait_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddMethod("Lol")
+				.WithModifier("public async")
+				.WithReturnType("Task<int>")
+				.WithContent(method => method
+					.AddLine("await Task.Delay(100);")
+					.AddLine("return 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public async Task<int> Lol()" +
+				"{" +
+				"await Task.Delay(100);" +
+				"return 3;" +
+				"}");
+		}
+
 		private static string RemoveSpecialChars(string text) =>
 			text
 				.Replace("\t", "")
