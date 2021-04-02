@@ -1,4 +1,5 @@
-﻿using Abel.MetaCode.Interfaces;
+﻿using System;
+using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
@@ -22,10 +23,25 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
+		public IPropertyGenerator Get(Action<IMethodGenerator> action)
+		{
+			_codeWriter.WriteScoped("get", ToMethodGenerator(), action);
+			return this;
+		}
+
 		public IPropertyGenerator Set<T>(T value)
 		{
 			AddLine($"set => value = {value};");
 			return this;
 		}
+
+		public IPropertyGenerator Set(Action<IMethodGenerator> action)
+		{
+			_codeWriter.WriteScoped("set", ToMethodGenerator(), action);
+			return this;
+		}
+
+		private IMethodGenerator ToMethodGenerator() =>
+			new MethodGenerator(_codeWriter);
 	}
 }

@@ -420,6 +420,33 @@ namespace Abel.MetaCode.Tests
 				"}");
 		}
 
+		[Fact]
+		public void AddProperty_GetAndSetMethods_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty<int>("Lol")
+				.WithContent(prop => prop
+					.Get(method => method
+						.AddLine("return 3;"))
+					.Set(method => method
+						.AddLine("value = 3;")));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Int32 Lol" +
+				"{" +
+				"get" +
+				"{" +
+				"return 3;" +
+				"}" +
+				"set" +
+				"{" +
+				"value = 3;" +
+				"}" +
+				"}");
+		}
+
 		private static string RemoveSpecialChars(string text) => text
 			.Replace("\t", "")
 			.Replace(Environment.NewLine, "");
