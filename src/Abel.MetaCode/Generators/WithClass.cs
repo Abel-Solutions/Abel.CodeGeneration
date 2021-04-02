@@ -53,7 +53,7 @@ namespace Abel.MetaCode.Generators
 		}
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
-			_codeGenerator.AddScoped(Line(), _codeGenerator.ToClassGenerator(_name), action);
+			_codeGenerator.AddScoped(Line(), _codeGenerator.ToClassGenerator(_name), action); // todo abstraction?
 
 		private string Line() => $"{Modifiers()} class {_name}{Generics()}{Parents()}{Constraints()}";
 

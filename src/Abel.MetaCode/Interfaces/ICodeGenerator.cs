@@ -17,6 +17,8 @@ namespace Abel.MetaCode.Interfaces
 
 		ICodeGenerator AddUsings(IEnumerable<string> namespaceNames);
 
+		ICodeGenerator AddUsings(params string[] namespaceNames);
+
 		ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action);
 
 		ICodeGenerator AddClass(string className, Action<IClassGenerator> action);

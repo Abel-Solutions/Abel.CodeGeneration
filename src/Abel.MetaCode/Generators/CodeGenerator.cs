@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Abel.MetaCode.Extensions;
+using System.Linq;
 using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
@@ -20,12 +20,11 @@ namespace Abel.MetaCode.Generators
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
-		public ICodeGenerator AddUsings(IEnumerable<string> namespaceNames)
-		{
-			namespaceNames.ForEach(namespaceName => Using(namespaceName));
-			AddLine();
-			return this;
-		}
+		public ICodeGenerator AddUsings(IEnumerable<string> namespaceNames) =>
+			AddLines(namespaceNames.Select(namespaceName => $"using {namespaceName};"))
+				.AddLine();
+
+		public ICodeGenerator AddUsings(params string[] namespaceNames) => AddUsings(namespaceNames.ToList());
 
 		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
 			AddScoped($"namespace {namespaceName}", this, action);
