@@ -12,7 +12,7 @@ namespace Abel.MetaCode.Interfaces
 
 		IClassGenerator AddLines(IEnumerable<string> lines);
 
-		IClassGenerator AddScoped(string line, Action<IMethodGenerator> action);
+		IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
 
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 
@@ -35,5 +35,9 @@ namespace Abel.MetaCode.Interfaces
 		IWithProperty AddProperty(string propertyName);
 
 		IWithProperty AddProperty<T>(string propertyName);
+
+		IMethodGenerator ToMethodGenerator();
+
+		IPropertyGenerator ToPropertyGenerator();
 	}
 }

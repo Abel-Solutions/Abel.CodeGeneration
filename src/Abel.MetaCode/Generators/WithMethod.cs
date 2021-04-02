@@ -55,7 +55,7 @@ namespace Abel.MetaCode.Generators
 		public IWithMethod WithParameter(ParameterInfo parameter) => WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
-			_classGenerator.AddScoped(Line(), action);
+			_classGenerator.AddScoped(Line(), _classGenerator.ToMethodGenerator(), action);
 
 		private string Line() => $"{Modifiers()} {_returnTypeName} {_name}({Parameters()})";
 

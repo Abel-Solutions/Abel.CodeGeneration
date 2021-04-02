@@ -30,14 +30,14 @@ namespace Abel.MetaCode.Generators
 			return this;
 		}
 
-		public IClassGenerator AddScoped(string line, Action<IMethodGenerator> action)
+		public IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
 		{
-			_codeWriter.WriteScoped(line, ToMethodGenerator(), action);
+			_codeWriter.WriteScoped(line, generator, action);
 			return this;
 		}
 
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
-			AddScoped($"public {_name}()", action);
+			AddScoped($"public {_name}()", ToMethodGenerator(), action);
 
 		public IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action) =>
 			AddConstructor()
@@ -81,7 +81,10 @@ namespace Abel.MetaCode.Generators
 			AddProperty(propertyName)
 				.WithReturnType<T>();
 
-		private IMethodGenerator ToMethodGenerator() =>
+		public IPropertyGenerator ToPropertyGenerator() =>
+			new PropertyGenerator(_codeWriter);
+
+		public IMethodGenerator ToMethodGenerator() =>
 			new MethodGenerator(_codeWriter);
 	}
 }

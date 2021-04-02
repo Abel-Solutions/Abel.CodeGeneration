@@ -14,6 +14,6 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithProperty WithReturnType<TResult>();
 
-		IClassGenerator WithContent(Action<IMethodGenerator> action);
+		IClassGenerator WithContent(Action<IPropertyGenerator> action);
 	}
 }

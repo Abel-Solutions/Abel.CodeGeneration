@@ -315,9 +315,27 @@ namespace Abel.MetaCode.Tests
 		public void AddProperty_Line_CodeIsCorrect()
 		{
 			_classGenerator
-				.AddProperty<int>("Lol")
+				.AddProperty("Lol")
 				.WithContent(prop => prop
 				.AddLine("get => 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public object Lol" +
+				"{" +
+				"get => 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_ReturnTypeGeneric_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty("Lol")
+				.WithReturnType<int>()
+				.WithContent(prop => prop
+					.AddLine("get => 3;"));
 
 			var code = _codeGenerator.Generate();
 
@@ -329,36 +347,18 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddProperty_ReturnTypeGeneric_CodeIsCorrect()
-		{
-			_classGenerator
-				.AddProperty("Lol")
-				.WithReturnType<string>()
-				.WithContent(prop => prop
-					.AddLine("get => 3;"));
-
-			var code = _codeGenerator.Generate();
-
-			RemoveSpecialChars(code).Should().Be(
-				"public String Lol" +
-				"{" +
-				"get => 3;" +
-				"}");
-		}
-
-		[Fact]
 		public void AddProperty_ReturnType_CodeIsCorrect()
 		{
 			_classGenerator
 				.AddProperty("Lol")
-				.WithReturnType("string")
+				.WithReturnType("int")
 				.WithContent(prop => prop
 					.AddLine("get => 3;"));
 
 			var code = _codeGenerator.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
-				"public string Lol" +
+				"public int Lol" +
 				"{" +
 				"get => 3;" +
 				"}");
@@ -368,7 +368,7 @@ namespace Abel.MetaCode.Tests
 		public void AddProperty_Modifier_CodeIsCorrect()
 		{
 			_classGenerator
-				.AddProperty<string>("Lol")
+				.AddProperty<int>("Lol")
 				.WithModifier("private")
 				.WithContent(prop => prop
 					.AddLine("get => 3;"));
@@ -376,9 +376,47 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator.Generate();
 
 			RemoveSpecialChars(code).Should().Be(
-				"private String Lol" +
+				"private Int32 Lol" +
 				"{" +
 				"get => 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_GetAndSetLines_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty<int>("Lol")
+				.WithContent(prop => prop
+					.AddLine("get => 3;")
+					.AddLine("set => value = 3;"));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Int32 Lol" +
+				"{" +
+				"get => 3;" +
+				"set => value = 3;" +
+				"}");
+		}
+
+		[Fact]
+		public void AddProperty_GetAndSet_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddProperty<int>("Lol")
+				.WithContent(prop => prop
+					.Get(3)
+					.Set(3));
+
+			var code = _codeGenerator.Generate();
+
+			RemoveSpecialChars(code).Should().Be(
+				"public Int32 Lol" +
+				"{" +
+				"get => 3;" +
+				"set => value = 3;" +
 				"}");
 		}
 
