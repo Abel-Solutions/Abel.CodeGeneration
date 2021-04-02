@@ -40,7 +40,7 @@ namespace Abel.MetaCode.Generators
 		public IWithProperty WithReturnType<TResult>() => WithReturnType(typeof(TResult));
 
 		public IClassGenerator WithContent(Action<IPropertyGenerator> action) =>
-			_classGenerator.AddScoped(Line(), _classGenerator.ToPropertyGenerator(), action);
+			(IClassGenerator)_classGenerator.AddScoped(Line(), _classGenerator.ToPropertyGenerator(), action);
 
 		private string Line() => $"{Modifiers()} {_returnTypeName} {_name}";
 

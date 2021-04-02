@@ -12,8 +12,6 @@ namespace Abel.MetaCode.Interfaces
 
 		IClassGenerator AddLines(IEnumerable<string> lines);
 
-		IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action);
-
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 
 		IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action);

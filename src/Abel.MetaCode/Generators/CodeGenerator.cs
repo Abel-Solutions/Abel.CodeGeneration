@@ -5,18 +5,18 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class CodeGenerator : Generator<ICodeGenerator>, ICodeGenerator
+	public class CodeGenerator : Generator, ICodeGenerator
 	{
 		public CodeGenerator()
 			: base(new CodeWriter())
 		{
 		}
 
-		public ICodeGenerator AddLine() => AddLine(this);
+		public new ICodeGenerator AddLine() => (ICodeGenerator)base.AddLine();
 
-		public ICodeGenerator AddLine(string line) => AddLine(line, this);
+		public new ICodeGenerator AddLine(string line) => (ICodeGenerator)base.AddLine(line);
 
-		public ICodeGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
+		public new ICodeGenerator AddLines(IEnumerable<string> lines) => (ICodeGenerator)base.AddLines(lines);
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
@@ -26,14 +26,14 @@ namespace Abel.MetaCode.Generators
 
 		public ICodeGenerator AddUsings(params string[] namespaceNames) => AddUsings(namespaceNames.ToList());
 
+		public new ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
+			(ICodeGenerator)base.AddScoped(line, generator, action);
+
 		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
 			AddScoped($"namespace {namespaceName}", this, action);
 
 		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
 			AddScoped($"public class {className}", ToClassGenerator(className), action);
-
-		public ICodeGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
-			AddScoped(line, generator, action, this);
 
 		public IWithClass AddClass(string className) =>
 			new WithClass(className, this);

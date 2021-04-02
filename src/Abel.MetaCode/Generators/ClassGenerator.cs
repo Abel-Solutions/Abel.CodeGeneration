@@ -5,7 +5,7 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class ClassGenerator : Generator<IClassGenerator>, IClassGenerator
+	public class ClassGenerator : Generator, IClassGenerator
 	{
 		private readonly string _name;
 
@@ -13,14 +13,14 @@ namespace Abel.MetaCode.Generators
 			: base(codeWriter) =>
 			_name = name;
 
-		public IClassGenerator AddLine() => AddLine(this);
+		public new IClassGenerator AddLine() => (IClassGenerator)base.AddLine();
 
-		public IClassGenerator AddLine(string line) => AddLine(line, this);
+		public new IClassGenerator AddLine(string line) => (IClassGenerator)base.AddLine(line);
 
-		public IClassGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
+		public new IClassGenerator AddLines(IEnumerable<string> lines) => (IClassGenerator)base.AddLines(lines);
 
-		public IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
-			AddScoped(line, generator, action, this);
+		public new IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
+			(IClassGenerator)base.AddScoped(line, generator, action);
 
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
 			AddScoped($"public {_name}()", ToMethodGenerator(), action);

@@ -3,17 +3,17 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class MethodGenerator : Generator<IMethodGenerator>, IMethodGenerator
+	public class MethodGenerator : Generator, IMethodGenerator
 	{
 		public MethodGenerator(ICodeWriter codeWriter)
 			: base(codeWriter)
 		{
 		}
 
-		public IMethodGenerator AddLine() => AddLine(this);
+		public new IMethodGenerator AddLine() => (IMethodGenerator)base.AddLine();
 
-		public IMethodGenerator AddLine(string line) => AddLine(line, this);
+		public new IMethodGenerator AddLine(string line) => (IMethodGenerator)base.AddLine(line);
 
-		public IMethodGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
+		public new IMethodGenerator AddLines(IEnumerable<string> lines) => (IMethodGenerator)base.AddLines(lines);
 	}
 }

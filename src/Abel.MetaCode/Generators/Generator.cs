@@ -4,30 +4,30 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public abstract class Generator<TGenerator> : IGenerator
+	public abstract class Generator : IGenerator
 	{
 		protected readonly ICodeWriter _codeWriter; // todo why protected?
 
 		protected Generator(ICodeWriter codeWriter) => _codeWriter = codeWriter;
 
-		public TGenerator AddLine(TGenerator generator) => AddLine(string.Empty, generator);
+		public IGenerator AddLine() => AddLine(string.Empty);
 
-		public TGenerator AddLine(string line, TGenerator generator)
+		public IGenerator AddLine(string line)
 		{
 			_codeWriter.WriteLine(line);
-			return generator;
+			return this;
 		}
 
-		public TGenerator AddLines(IEnumerable<string> lines, TGenerator generator)
+		public IGenerator AddLines(IEnumerable<string> lines)
 		{
 			_codeWriter.WriteLines(lines);
-			return generator;
+			return this;
 		}
 
-		public TGenerator AddScoped<T>(string line, T generator, Action<T> action, TGenerator returnGenerator)
+		public IGenerator AddScoped<T>(string line, T generator, Action<T> action)
 		{
 			_codeWriter.WriteScoped(line, generator, action);
-			return returnGenerator;
+			return this;
 		}
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, _codeWriter);
