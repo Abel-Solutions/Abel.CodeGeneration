@@ -23,6 +23,8 @@ namespace Abel.MetaCode.Interfaces
 
 		IWithClass AddClass(string className);
 
+		IClassGenerator ToClassGenerator(string className);
+
 		string Generate();
 	}
 }

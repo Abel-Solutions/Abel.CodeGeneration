@@ -33,5 +33,9 @@ namespace Abel.MetaCode.Interfaces
 		IWithProperty AddProperty(string propertyName);
 
 		IWithProperty AddProperty<T>(string propertyName);
+
+		IPropertyGenerator ToPropertyGenerator();
+
+		IMethodGenerator ToMethodGenerator();
 	}
 }
