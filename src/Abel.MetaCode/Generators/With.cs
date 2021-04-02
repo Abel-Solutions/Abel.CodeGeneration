@@ -6,7 +6,7 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public abstract class With<TGenerator> : IWith
+	public abstract class With<TGenerator>
 		where TGenerator : IGenerator
 	{
 		protected readonly TGenerator Generator;
@@ -26,40 +26,40 @@ namespace Abel.MetaCode.Generators
 			Generator = generator;
 		}
 
-		public IWith WithParameters(params string[] parameters)
+		public TWith WithParameters<TWith>(string[] parameters, TWith with)
 		{
 			_parameters.AddRange(parameters);
-			return this;
+			return with;
 		}
 
-		public IWith WithModifiers(string[] modifiers)
+		public TWith WithModifiers<TWith>(string[] modifiers, TWith with)
 		{
 			_modifiers.AddRange(modifiers.SelectMany(m => m.Split(" ")));
-			return this;
+			return with;
 		}
 
-		public IWith WithParents(string[] parentNames)
+		public TWith WithParents<TWith>(string[] parentNames, TWith with)
 		{
 			_parentNames.AddRange(parentNames);
-			return this;
+			return with;
 		}
 
-		public IWith WithGenericType(string typeName)
+		public TWith WithGenericType<TWith>(string typeName, TWith with)
 		{
 			_genericTypeNames.Add(typeName);
-			return this;
+			return with;
 		}
 
-		public IWith WithGenericType(string typeName, string constraintTypeName)
+		public TWith WithGenericType<TWith>(string typeName, string constraintTypeName, TWith with)
 		{
 			_constraints.Add($" where {typeName} : {constraintTypeName}");
-			return WithGenericType(typeName);
+			return WithGenericType(typeName, with);
 		}
 
-		public IWith WithReturnType(string typeName)
+		public TWith WithReturnType<TWith>(string typeName, TWith with)
 		{
 			ReturnTypeName = typeName;
-			return this;
+			return with;
 		}
 
 		public TGenerator WithContent<T>(Action<T> action, T generator)

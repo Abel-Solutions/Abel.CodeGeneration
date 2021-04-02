@@ -12,13 +12,17 @@ namespace Abel.MetaCode.Generators
 		{
 		}
 
-		public new IWithConstructor WithModifiers(params string[] modifiers) => (IWithConstructor)base.WithModifiers(modifiers);
+		public IWithConstructor WithModifiers(params string[] modifiers) =>
+			WithModifiers(modifiers, this);
 
-		public IWithConstructor WithModifier(string modifier) => WithModifiers(modifier);
+		public IWithConstructor WithModifier(string modifier) =>
+			WithModifiers(modifier);
 
-		public new IWithConstructor WithParameters(params string[] parameters) => (IWithConstructor)base.WithParameters(parameters);
+		public IWithConstructor WithParameters(params string[] parameters) =>
+			WithParameters(parameters, this);
 
-		public IWithConstructor WithParameter(string parameter) => WithParameters(parameter);
+		public IWithConstructor WithParameter(string parameter) =>
+			WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			WithContent(action, Generator.ToMethodGenerator());

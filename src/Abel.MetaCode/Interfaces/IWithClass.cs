@@ -2,7 +2,7 @@
 
 namespace Abel.MetaCode.Interfaces
 {
-	public interface IWithClass : IWith
+	public interface IWithClass
 	{
 		IWithClass WithParent(string parentName);
 

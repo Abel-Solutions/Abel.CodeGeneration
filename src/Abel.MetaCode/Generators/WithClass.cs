@@ -12,20 +12,26 @@ namespace Abel.MetaCode.Generators
 		{
 		}
 
-		public new IWithClass WithModifiers(params string[] modifiers) => (IWithClass)base.WithModifiers(modifiers);
+		public IWithClass WithModifiers(params string[] modifiers) =>
+			WithModifiers(modifiers, this);
 
-		public IWithClass WithModifier(string modifier) => WithModifiers(modifier);
+		public IWithClass WithModifier(string modifier) =>
+			WithModifiers(modifier);
 
-		public new IWithClass WithParents(params string[] parentNames) => (IWithClass)base.WithParents(parentNames);
+		public IWithClass WithParents(params string[] parentNames) =>
+			WithParents(parentNames, this);
 
-		public IWithClass WithParent(string parentName) => WithParents(parentName);
+		public IWithClass WithParent(string parentName) =>
+			WithParents(parentName);
 
-		public IWithClass WithParent<T>() => WithParent(typeof(T).Name);
+		public IWithClass WithParent<T>() =>
+			WithParent(typeof(T).Name);
 
-		public new IWithClass WithGenericType(string typeName) => (IWithClass)base.WithGenericType(typeName);
+		public IWithClass WithGenericType(string typeName) =>
+			WithGenericType(typeName, this);
 
-		public new IWithClass WithGenericType(string typeName, string constraintTypeName) =>
-			(IWithClass)base.WithGenericType(typeName, constraintTypeName);
+		public IWithClass WithGenericType(string typeName, string constraintTypeName) =>
+			WithGenericType(typeName, constraintTypeName, this);
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
 			WithContent(action, Generator.ToClassGenerator(Name));

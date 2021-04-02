@@ -13,24 +13,32 @@ namespace Abel.MetaCode.Generators
 			: base(name, classGenerator) =>
 			ReturnTypeName = "void";
 
-		public new IWithMethod WithModifiers(params string[] modifiers) => (IWithMethod)base.WithModifiers(modifiers);
+		public IWithMethod WithModifiers(params string[] modifiers) =>
+			WithModifiers(modifiers, this);
 
-		public IWithMethod WithModifier(string modifier) => WithModifiers(modifier);
+		public IWithMethod WithModifier(string modifier) =>
+			WithModifiers(modifier);
 
-		public new IWithMethod WithReturnType(string typeName) => (IWithMethod)base.WithReturnType(typeName);
+		public IWithMethod WithReturnType(string typeName) =>
+			WithReturnType(typeName, this);
 
-		public IWithMethod WithReturnType(Type type) => WithReturnType(type.Name);
+		public IWithMethod WithReturnType(Type type) =>
+			WithReturnType(type.Name);
 
-		public IWithMethod WithReturnType<TResult>() => WithReturnType(typeof(TResult));
+		public IWithMethod WithReturnType<TResult>() =>
+			WithReturnType(typeof(TResult));
 
-		public new IWithMethod WithParameters(params string[] parameters) => (IWithMethod)base.WithParameters(parameters);
+		public IWithMethod WithParameters(params string[] parameters) =>
+			WithParameters(parameters, this);
 
 		public IWithMethod WithParameters(params ParameterInfo[] parameters) =>
 			WithParameters(parameters.Select(p => $"{p.ParameterType.Name} {p.Name}").ToArray());
 
-		public IWithMethod WithParameter(string parameter) => WithParameters(parameter);
+		public IWithMethod WithParameter(string parameter) =>
+			WithParameters(parameter);
 
-		public IWithMethod WithParameter(ParameterInfo parameter) => WithParameters(parameter);
+		public IWithMethod WithParameter(ParameterInfo parameter) =>
+			WithParameters(parameter);
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			WithContent(action, Generator.ToMethodGenerator());
