@@ -3,19 +3,15 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class PropertyGenerator : IPropertyGenerator
+	public class PropertyGenerator : Generator<IPropertyGenerator>, IPropertyGenerator
 	{
-		private readonly ICodeWriter _codeWriter;
-
-		public PropertyGenerator(ICodeWriter codeWriter) => _codeWriter = codeWriter;
-
-		public IPropertyGenerator AddLine() => AddLine(string.Empty);
-
-		public IPropertyGenerator AddLine(string line)
+		public PropertyGenerator(ICodeWriter codeWriter) : base(codeWriter)
 		{
-			_codeWriter.WriteLine(line);
-			return this;
 		}
+
+		public IPropertyGenerator AddLine() => AddLine(this);
+
+		public IPropertyGenerator AddLine(string line) => AddLine(line, this);
 
 		public IPropertyGenerator Get<T>(T value)
 		{

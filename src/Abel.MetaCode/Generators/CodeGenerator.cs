@@ -5,23 +5,18 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class CodeGenerator : ICodeGenerator
+	public class CodeGenerator : Generator<ICodeGenerator>, ICodeGenerator
 	{
-		private readonly ICodeWriter _codeWriter = new CodeWriter();
-
-		public ICodeGenerator AddLine() => AddLine(string.Empty);
-
-		public ICodeGenerator AddLine(string line)
+		public CodeGenerator()
+			: base(new CodeWriter())
 		{
-			_codeWriter.WriteLine(line);
-			return this;
 		}
 
-		public ICodeGenerator AddLines(IEnumerable<string> lines)
-		{
-			_codeWriter.WriteLines(lines);
-			return this;
-		}
+		public ICodeGenerator AddLine() => AddLine(this);
+
+		public ICodeGenerator AddLine(string line) => AddLine(line, this);
+
+		public ICodeGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
 
 		public ICodeGenerator Using(string namespaceName) => AddLine($"using {namespaceName};");
 
