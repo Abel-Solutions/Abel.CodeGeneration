@@ -18,12 +18,9 @@ namespace Abel.MetaCode.Generators
 		public new IClassGenerator AddLine(string line) => (IClassGenerator)base.AddLine(line);
 
 		public new IClassGenerator AddLines(IEnumerable<string> lines) => (IClassGenerator)base.AddLines(lines);
-
-		public new IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action) =>
-			(IClassGenerator)base.AddScoped(line, generator, action);
-
+		
 		public IClassGenerator AddConstructor(Action<IMethodGenerator> action) =>
-			AddScoped($"public {_name}()", ToMethodGenerator(), action);
+			(IClassGenerator)AddScoped($"public {_name}()", ToMethodGenerator(), action);
 
 		public IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action) =>
 			AddConstructor()
