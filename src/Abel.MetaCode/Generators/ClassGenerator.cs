@@ -5,30 +5,19 @@ using Abel.MetaCode.Interfaces;
 
 namespace Abel.MetaCode.Generators
 {
-	public class ClassGenerator : IClassGenerator
+	public class ClassGenerator : Generator<IClassGenerator>, IClassGenerator
 	{
 		private readonly string _name;
-		private readonly ICodeWriter _codeWriter;
 
-		public ClassGenerator(string name, ICodeWriter codeWriter)
-		{
+		public ClassGenerator(string name, ICodeWriter codeWriter) 
+			: base(codeWriter) =>
 			_name = name;
-			_codeWriter = codeWriter;
-		}
 
-		public IClassGenerator AddLine() => AddLine(string.Empty);
+		public IClassGenerator AddLine() => AddLine(this);
 
-		public IClassGenerator AddLine(string line)
-		{
-			_codeWriter.WriteLine(line);
-			return this;
-		}
+		public IClassGenerator AddLine(string line) => AddLine(line, this);
 
-		public IClassGenerator AddLines(IEnumerable<string> lines)
-		{
-			_codeWriter.WriteLines(lines);
-			return this;
-		}
+		public IClassGenerator AddLines(IEnumerable<string> lines) => AddLines(lines, this);
 
 		public IClassGenerator AddScoped<TGenerator>(string line, TGenerator generator, Action<TGenerator> action)
 		{

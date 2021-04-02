@@ -5,7 +5,8 @@ namespace Abel.MetaCode.Generators
 {
 	public class PropertyGenerator : Generator<IPropertyGenerator>, IPropertyGenerator
 	{
-		public PropertyGenerator(ICodeWriter codeWriter) : base(codeWriter)
+		public PropertyGenerator(ICodeWriter codeWriter)
+			: base(codeWriter)
 		{
 		}
 
