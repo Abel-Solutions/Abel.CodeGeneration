@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Abel.MetaCode.Interfaces
 {
 	public interface IClassGenerator : IGenerator<IClassGenerator>
 	{
-		IClassGenerator AddLine(); // todo move to IGenreator
-
-		IClassGenerator AddLine(string line);
-
-		IClassGenerator AddLines(IEnumerable<string> lines);
-
 		IClassGenerator AddConstructor(Action<IMethodGenerator> action);
 
 		IClassGenerator AddConstructor(string parameters, Action<IMethodGenerator> action);

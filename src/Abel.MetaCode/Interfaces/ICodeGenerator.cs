@@ -5,12 +5,6 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface ICodeGenerator : IGenerator<ICodeGenerator>
 	{
-		ICodeGenerator AddLine();
-
-		ICodeGenerator AddLine(string line);
-
-		ICodeGenerator AddLines(IEnumerable<string> lines);
-
 		ICodeGenerator Using(string namespaceName);
 
 		ICodeGenerator AddUsings(IEnumerable<string> namespaceNames);

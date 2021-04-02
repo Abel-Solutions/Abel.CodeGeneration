@@ -4,10 +4,6 @@ namespace Abel.MetaCode.Interfaces
 {
 	public interface IPropertyGenerator : IGenerator<IPropertyGenerator>
 	{
-		IPropertyGenerator AddLine();
-
-		IPropertyGenerator AddLine(string line);
-
 		IPropertyGenerator Get<T>(T value);
 
 		IPropertyGenerator Get(Action<IMethodGenerator> action);

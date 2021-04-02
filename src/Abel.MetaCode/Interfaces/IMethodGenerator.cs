@@ -1,13 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Abel.MetaCode.Interfaces
+﻿namespace Abel.MetaCode.Interfaces
 {
-	public interface IMethodGenerator
+	public interface IMethodGenerator : IGenerator<IMethodGenerator>
 	{
-		IMethodGenerator AddLine();
-
-		IMethodGenerator AddLine(string line);
-
-		IMethodGenerator AddLines(IEnumerable<string> lines);
 	}
 }
