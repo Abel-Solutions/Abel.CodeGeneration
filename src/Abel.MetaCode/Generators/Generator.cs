@@ -8,7 +8,7 @@ namespace Abel.MetaCode.Generators
 	{
 		protected readonly ICodeWriter CodeWriter;
 
-		private TGenerator CastedGenerator => (TGenerator)(object)this;
+		private TGenerator This => (TGenerator)(object)this;
 
 		protected Generator(ICodeWriter codeWriter) => CodeWriter = codeWriter;
 
@@ -17,19 +17,19 @@ namespace Abel.MetaCode.Generators
 		public TGenerator AddLine(string line)
 		{
 			CodeWriter.WriteLine(line);
-			return CastedGenerator;
+			return This;
 		}
 
 		public TGenerator AddLines(IEnumerable<string> lines)
 		{
 			CodeWriter.WriteLines(lines);
-			return CastedGenerator;
+			return This;
 		}
 
 		public TGenerator AddScoped<TScope>(string line, TScope scopeGenerator, Action<TScope> action)
 		{
 			CodeWriter.WriteScoped(line, scopeGenerator, action);
-			return CastedGenerator;
+			return This;
 		}
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, CodeWriter);
