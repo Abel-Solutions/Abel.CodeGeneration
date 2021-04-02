@@ -64,28 +64,28 @@ namespace Abel.MetaCode.Generators
 
 		public TGenerator WithContent<T>(Action<T> action, T generator)
 		{
-			Generator.AddScoped(Line(), generator, action);
+			Generator.AddScoped(Line, generator, action);
 			return Generator;
 		}
 
-		protected abstract string Line();
+		protected abstract string Line { get; }
 
-		protected string Modifiers() => _modifiers.Any() ?
+		protected string Modifiers => _modifiers.Any() ?
 			string.Join(" ", _modifiers.Distinct()) :
 			"public";
 
-		protected string Generics() => _genericTypeNames.Any() ?
+		protected string Generics => _genericTypeNames.Any() ?
 			$"<{string.Join(", ", _genericTypeNames)}>"
 			: null;
 
-		protected string Parents() => _parentNames.Any() ?
+		protected string Parents => _parentNames.Any() ?
 			$" : {string.Join(", ", _parentNames)}" :
 			null;
 
-		protected string Constraints() => _constraints.Any() ?
+		protected string Constraints => _constraints.Any() ?
 			string.Join(string.Empty, _constraints) :
 			null;
 
-		protected string Parameters() => string.Join(", ", _parameters);
+		protected string Parameters => string.Join(", ", _parameters);
 	}
 }

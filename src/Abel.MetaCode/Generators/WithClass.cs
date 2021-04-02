@@ -5,6 +5,8 @@ namespace Abel.MetaCode.Generators
 {
 	public class WithClass : With<ICodeGenerator>, IWithClass
 	{
+		protected override string Line => $"{Modifiers} class {Name}{Generics}{Parents}{Constraints}";
+
 		public WithClass(string name, ICodeGenerator generator)
 			: base(name, generator)
 		{
@@ -27,7 +29,5 @@ namespace Abel.MetaCode.Generators
 
 		public ICodeGenerator WithContent(Action<IClassGenerator> action) =>
 			WithContent(action, Generator.ToClassGenerator(Name));
-
-		protected override string Line() => $"{Modifiers()} class {Name}{Generics()}{Parents()}{Constraints()}";
 	}
 }

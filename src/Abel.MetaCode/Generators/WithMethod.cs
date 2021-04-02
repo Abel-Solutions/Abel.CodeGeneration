@@ -7,6 +7,8 @@ namespace Abel.MetaCode.Generators
 {
 	public class WithMethod : With<IClassGenerator>, IWithMethod
 	{
+		protected override string Line => $"{Modifiers} {ReturnTypeName} {Name}({Parameters})";
+
 		public WithMethod(string name, IClassGenerator classGenerator)
 			: base(name, classGenerator) =>
 			ReturnTypeName = "void";
@@ -32,7 +34,5 @@ namespace Abel.MetaCode.Generators
 
 		public IClassGenerator WithContent(Action<IMethodGenerator> action) =>
 			WithContent(action, Generator.ToMethodGenerator());
-
-		protected override string Line() => $"{Modifiers()} {ReturnTypeName} {Name}({Parameters()})"; // todo properties
 	}
 }

@@ -5,6 +5,8 @@ namespace Abel.MetaCode.Generators
 {
 	public class WithProperty : With<IClassGenerator>, IWithProperty
 	{
+		protected override string Line => $"{Modifiers} {ReturnTypeName} {Name}";
+
 		public WithProperty(string name, IClassGenerator classGenerator)
 			: base(name, classGenerator) =>
 			ReturnTypeName = "object";
@@ -21,7 +23,5 @@ namespace Abel.MetaCode.Generators
 
 		public IClassGenerator WithContent(Action<IPropertyGenerator> action) =>
 			WithContent(action, Generator.ToPropertyGenerator());
-
-		protected override string Line() => $"{Modifiers()} {ReturnTypeName} {Name}";
 	}
 }
