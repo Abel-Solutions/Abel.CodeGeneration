@@ -23,7 +23,17 @@ namespace Abel.MetaCode.Tests
 					.WithGenericType("T", "Object")
 					.WithParent<object>()
 					.WithContent(@class => @class
-						.AddConstructor("string lol", ctor => ctor
+						.AddProperty<int>("Woot")
+						.WithModifier("private")
+						.WithContent(property => property
+							.Get(method => method
+								.AddLine("return 3;"))
+							.Set(method => method
+								.AddLine("value = 3;")))
+						.AddConstructor()
+						.WithModifier("private")
+						.WithParameter("string lol")
+						.WithContent(ctor => ctor
 							.AddLine("Console.WriteLine(lol);"))
 						.AddMethod<int>("GetInt", method => method
 							.AddLine("return 1337;"))
@@ -41,7 +51,18 @@ namespace Abel.MetaCode.Tests
 				"{" +
 				"private class Lol<T> : Object where T : Object" +
 				"{" +
-				"public Lol(string lol)" +
+				"private Int32 Woot" +
+				"{" +
+				"get" +
+				"{" +
+				"return 3;" +
+				"}" +
+				"set" +
+				"{" +
+				"value = 3;" +
+				"}" +
+				"}" +
+				"private Lol(string lol)" +
 				"{" +
 				"Console.WriteLine(lol);" +
 				"}" +

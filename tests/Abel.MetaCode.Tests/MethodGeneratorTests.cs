@@ -18,7 +18,7 @@ namespace Abel.MetaCode.Tests
 		[Fact]
 		public void AddScoped_foreach_CodeIsCorrect()
 		{
-			_methodGenerator.AddScoped("foreach(var e in list)", _methodGenerator, method => method
+			_methodGenerator.AddScoped("foreach(var e in list)", _methodGenerator, method => method // todo ugly
 				.AddLine("Console.WriteLine(e);"));
 
 			var code = _codeGenerator.Generate();
