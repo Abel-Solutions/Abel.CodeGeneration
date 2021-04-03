@@ -1,6 +1,6 @@
-﻿using System;
-using Abel.MetaCode.Generators;
+﻿using Abel.MetaCode.Generators;
 using Abel.MetaCode.Interfaces;
+using Abel.MetaCode.Tests.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -34,7 +34,7 @@ namespace Abel.MetaCode.Tests
 							.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"using System;" +
 				"using System.Text;" +
 				"namespace MetaCode" +
@@ -64,7 +64,7 @@ namespace Abel.MetaCode.Tests
 				.Using("System")
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be("using System;");
+			code.RemoveSpecialCharacters().Should().Be("using System;");
 		}
 
 		[Fact]
@@ -74,7 +74,7 @@ namespace Abel.MetaCode.Tests
 				.AddUsings("System", "System.Text")
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"using System;" +
 				"using System.Text;");
 		}
@@ -86,7 +86,7 @@ namespace Abel.MetaCode.Tests
 				.AddNamespace("Lol", nspace => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"namespace Lol" +
 				"{" +
 				"}");
@@ -99,7 +99,7 @@ namespace Abel.MetaCode.Tests
 				.AddClass("Lol", @class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol" +
 				"{" +
 				"}");
@@ -113,7 +113,7 @@ namespace Abel.MetaCode.Tests
 					.AddClass("Bar", @class => { }))
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"namespace Foo" +
 				"{" +
 				"public class Bar" +
@@ -131,7 +131,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol<T>" +
 				"{" +
 				"}");
@@ -146,7 +146,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol<T> where T : object" +
 				"{" +
 				"}");
@@ -161,7 +161,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : object" +
 				"{" +
 				"}");
@@ -176,7 +176,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : Object" +
 				"{" +
 				"}");
@@ -191,7 +191,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : object, ISomething" +
 				"{" +
 				"}");
@@ -206,7 +206,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private class Lol" +
 				"{" +
 				"}");
@@ -221,7 +221,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
@@ -236,7 +236,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
@@ -251,14 +251,10 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
 		}
-
-		private static string RemoveSpecialChars(string text) => text
-			.Replace("\t", "")
-			.Replace(Environment.NewLine, "");
 	}
 }

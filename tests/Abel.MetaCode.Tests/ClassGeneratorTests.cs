@@ -1,6 +1,6 @@
-﻿using System;
-using Abel.MetaCode.Generators;
+﻿using Abel.MetaCode.Generators;
 using Abel.MetaCode.Interfaces;
+using Abel.MetaCode.Tests.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -21,7 +21,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Lol()" +
 				"{" +
 				"}");
@@ -35,7 +35,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Lol(string lol)" +
 				"{" +
 				"}");
@@ -51,7 +51,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Lol(int foo)" +
 				"{" +
 				"}");
@@ -67,7 +67,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Lol(int foo, string bar)" +
 				"{" +
 				"}");
@@ -83,7 +83,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private Lol()" +
 				"{" +
 				"}");
@@ -99,7 +99,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static Lol()" +
 				"{" +
 				"}");
@@ -115,7 +115,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static Lol()" +
 				"{" +
 				"}");
@@ -131,7 +131,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static Lol()" +
 				"{" +
 				"}");
@@ -145,7 +145,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public void Lol()" +
 				"{" +
 				"}");
@@ -161,7 +161,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private void Lol()" +
 				"{" +
 				"}");
@@ -177,7 +177,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static void Lol()" +
 				"{" +
 				"}");
@@ -193,7 +193,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static void Lol()" +
 				"{" +
 				"}");
@@ -209,7 +209,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static void Lol()" +
 				"{" +
 				"}");
@@ -225,7 +225,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public void Lol(string lol)" +
 				"{" +
 				"}");
@@ -241,7 +241,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public void Lol(string lol, int foo)" +
 				"{" +
 				"}");
@@ -257,7 +257,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public string Lol()" +
 				"{" +
 				"}");
@@ -273,7 +273,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public String Lol()" +
 				"{" +
 				"}");
@@ -292,7 +292,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public async Task<int> Lol()" +
 				"{" +
 				"await Task.Delay(100);" +
@@ -308,7 +308,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be("public Int32 Lol => 3;");
+			code.RemoveSpecialCharacters().Should().Be("public Int32 Lol => 3;");
 		}
 
 		[Fact]
@@ -321,7 +321,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public object Lol" +
 				"{" +
 				"get => 3;" +
@@ -339,7 +339,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Int32 Lol" +
 				"{" +
 				"get => 3;" +
@@ -357,7 +357,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public int Lol" +
 				"{" +
 				"get => 3;" +
@@ -375,7 +375,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private Int32 Lol" +
 				"{" +
 				"get => 3;" +
@@ -393,7 +393,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Int32 Lol" +
 				"{" +
 				"get => 3;" +
@@ -412,7 +412,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Int32 Lol" +
 				"{" +
 				"get => 3;" +
@@ -433,7 +433,7 @@ namespace Abel.MetaCode.Tests
 
 			var code = _codeGenerator.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public Int32 Lol" +
 				"{" +
 				"get" +
@@ -446,9 +446,5 @@ namespace Abel.MetaCode.Tests
 				"}" +
 				"}");
 		}
-
-		private static string RemoveSpecialChars(string text) => text
-			.Replace("\t", "")
-			.Replace(Environment.NewLine, "");
 	}
 }
