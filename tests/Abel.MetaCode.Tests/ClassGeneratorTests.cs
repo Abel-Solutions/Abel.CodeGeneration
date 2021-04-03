@@ -301,6 +301,17 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
+		public void AddMethod_DirectValue_CodeIsCorrect()
+		{
+			_classGenerator
+				.AddMethod("Lol", 3);
+
+			var code = _codeGenerator.Generate();
+
+			code.RemoveSpecialCharacters().Should().Be("public Int32 Lol() => 3;");
+		}
+
+		[Fact]
 		public void AddProperty_CodeIsCorrect()
 		{
 			_classGenerator
