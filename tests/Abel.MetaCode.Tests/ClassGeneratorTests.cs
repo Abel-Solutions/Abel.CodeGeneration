@@ -301,7 +301,7 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddMethod_DirectValue_CodeIsCorrect()
+		public void AddMethod_Expression_CodeIsCorrect()
 		{
 			_classGenerator
 				.AddMethod("Lol", 3);
@@ -312,7 +312,7 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddProperty_CodeIsCorrect()
+		public void AddProperty_Expression_CodeIsCorrect()
 		{
 			_classGenerator
 				.AddProperty("Lol", 3);
