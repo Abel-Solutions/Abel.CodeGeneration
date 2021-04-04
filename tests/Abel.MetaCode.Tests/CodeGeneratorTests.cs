@@ -1,6 +1,6 @@
-﻿using System;
-using Abel.MetaCode.Generators;
+﻿using Abel.MetaCode.Generators;
 using Abel.MetaCode.Interfaces;
+using Abel.MetaCode.Tests.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -23,7 +23,17 @@ namespace Abel.MetaCode.Tests
 					.WithGenericType("T", "Object")
 					.WithParent<object>()
 					.WithContent(@class => @class
-						.AddConstructor("string lol", ctor => ctor
+						.AddProperty<int>("Woot")
+						.WithModifier("private")
+						.WithContent(property => property
+							.Get(method => method
+								.AddLine("return 3;"))
+							.Set(method => method
+								.AddLine("value = 3;")))
+						.AddConstructor()
+						.WithModifier("private")
+						.WithParameter("string lol")
+						.WithContent(ctor => ctor
 							.AddLine("Console.WriteLine(lol);"))
 						.AddMethod<int>("GetInt", method => method
 							.AddLine("return 1337;"))
@@ -34,14 +44,25 @@ namespace Abel.MetaCode.Tests
 							.AddLine("Console.WriteLine(\"foo\");"))))
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"using System;" +
 				"using System.Text;" +
 				"namespace MetaCode" +
 				"{" +
 				"private class Lol<T> : Object where T : Object" +
 				"{" +
-				"public Lol(string lol)" +
+				"private Int32 Woot" +
+				"{" +
+				"get" +
+				"{" +
+				"return 3;" +
+				"}" +
+				"set" +
+				"{" +
+				"value = 3;" +
+				"}" +
+				"}" +
+				"private Lol(string lol)" +
 				"{" +
 				"Console.WriteLine(lol);" +
 				"}" +
@@ -64,7 +85,7 @@ namespace Abel.MetaCode.Tests
 				.Using("System")
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be("using System;");
+			code.RemoveSpecialCharacters().Should().Be("using System;");
 		}
 
 		[Fact]
@@ -74,46 +95,46 @@ namespace Abel.MetaCode.Tests
 				.AddUsings("System", "System.Text")
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"using System;" +
 				"using System.Text;");
 		}
 
 		[Fact]
-		public void AddNamespace_CodeIsCorrect()
+		public void AddNamespace_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddNamespace("Lol", nspace => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"namespace Lol" +
 				"{" +
 				"}");
 		}
 
 		[Fact]
-		public void AddClass_CodeIsCorrect()
+		public void AddClass_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddClass("Lol", @class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol" +
 				"{" +
 				"}");
 		}
 
 		[Fact]
-		public void AddNamespace_AddClass_CodeIsCorrect()
+		public void AddNamespace_AndClass_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddNamespace("Foo", nspace => nspace
 					.AddClass("Bar", @class => { }))
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"namespace Foo" +
 				"{" +
 				"public class Bar" +
@@ -131,7 +152,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol<T>" +
 				"{" +
 				"}");
@@ -146,7 +167,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol<T> where T : object" +
 				"{" +
 				"}");
@@ -161,7 +182,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : object" +
 				"{" +
 				"}");
@@ -176,7 +197,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : Object" +
 				"{" +
 				"}");
@@ -191,7 +212,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"public class Lol : object, ISomething" +
 				"{" +
 				"}");
@@ -206,7 +227,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private class Lol" +
 				"{" +
 				"}");
@@ -221,7 +242,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
@@ -236,7 +257,7 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
@@ -251,14 +272,10 @@ namespace Abel.MetaCode.Tests
 				.WithContent(@class => { })
 				.Generate();
 
-			RemoveSpecialChars(code).Should().Be(
+			code.RemoveSpecialCharacters().Should().Be(
 				"private static class Lol" +
 				"{" +
 				"}");
 		}
-
-		private static string RemoveSpecialChars(string text) => text
-			.Replace("\t", "")
-			.Replace(Environment.NewLine, "");
 	}
 }
