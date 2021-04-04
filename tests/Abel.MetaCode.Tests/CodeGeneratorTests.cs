@@ -101,7 +101,7 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddNamespace_CodeIsCorrect()
+		public void AddNamespace_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddNamespace("Lol", nspace => { })
@@ -114,7 +114,7 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddClass_CodeIsCorrect()
+		public void AddClass_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddClass("Lol", @class => { })
@@ -127,7 +127,7 @@ namespace Abel.MetaCode.Tests
 		}
 
 		[Fact]
-		public void AddNamespace_AddClass_CodeIsCorrect()
+		public void AddNamespace_AndClass_CodeIsCorrect()
 		{
 			var code = _codeGenerator
 				.AddNamespace("Foo", nspace => nspace
