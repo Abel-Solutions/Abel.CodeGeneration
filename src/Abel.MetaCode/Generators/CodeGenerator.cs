@@ -27,7 +27,7 @@ namespace Abel.MetaCode.Generators
 		public ICodeGenerator AddUsings(params string[] namespaceNames) => AddUsings(namespaceNames.ToList());
 
 		public ICodeGenerator AddNamespace(string namespaceName, Action<ICodeGenerator> action) =>
-			AddScoped($"namespace {namespaceName}", this, action);
+			AddScoped($"namespace {namespaceName}", action);
 
 		public ICodeGenerator AddClass(string className, Action<IClassGenerator> action) =>
 			AddScoped($"public class {className}", ToClassGenerator(className), action);

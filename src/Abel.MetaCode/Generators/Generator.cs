@@ -26,11 +26,13 @@ namespace Abel.MetaCode.Generators
 			return This;
 		}
 
-		public TGenerator AddScoped<TScope>(string line, TScope scopeGenerator, Action<TScope> action)
+		public TGenerator AddScoped<TScope>(string line, TScope generator, Action<TScope> action)
 		{
-			_codeWriter.WriteScoped(line, scopeGenerator, action);
+			_codeWriter.WriteScoped(line, generator, action);
 			return This;
 		}
+
+		public TGenerator AddScoped(string line, Action<TGenerator> action) => AddScoped(line, This, action);
 
 		public IClassGenerator ToClassGenerator(string className) => new ClassGenerator(className, _codeWriter);
 

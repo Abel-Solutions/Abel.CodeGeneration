@@ -11,6 +11,8 @@ namespace Abel.MetaCode.Interfaces
 
 		TGenerator AddLines(IEnumerable<string> lines);
 
-		TGenerator AddScoped<TScope>(string line, TScope scopeGenerator, Action<TScope> action);
+		TGenerator AddScoped<TScope>(string line, TScope generator, Action<TScope> action);
+
+		TGenerator AddScoped(string line, Action<TGenerator> action);
 	}
 }
