@@ -1,4 +1,8 @@
-﻿using Xunit;
+﻿using Abel.CodeGeneration.Generators;
+using Abel.CodeGeneration.Interfaces;
+using Abel.CodeGeneration.Tests.Extensions;
+using FluentAssertions;
+using Xunit;
 
 namespace Abel.CodeGeneration.Tests
 {

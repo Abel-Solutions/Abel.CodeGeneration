@@ -1,7 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Abel.CodeGeneration.Extensions;
+using Abel.CodeGeneration.Generators;
+using Abel.CodeGeneration.Interfaces;
 using FluentAssertions;
+using Microsoft.CodeAnalysis;
 using Xunit;
 
 namespace Abel.CodeGeneration.Tests
