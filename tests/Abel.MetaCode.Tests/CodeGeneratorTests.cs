@@ -104,7 +104,7 @@ namespace Abel.MetaCode.Tests
 		public void AddNamespace_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
-				.AddNamespace("Lol", nspace => { })
+				.AddNamespace("Lol", _ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -117,7 +117,7 @@ namespace Abel.MetaCode.Tests
 		public void AddClass_NoContent_CodeIsCorrect()
 		{
 			var code = _codeGenerator
-				.AddClass("Lol", @class => { })
+				.AddClass("Lol", _ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -131,7 +131,7 @@ namespace Abel.MetaCode.Tests
 		{
 			var code = _codeGenerator
 				.AddNamespace("Foo", nspace => nspace
-					.AddClass("Bar", @class => { }))
+					.AddClass("Bar", _ => { }))
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -149,7 +149,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithGenericType("T")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -164,7 +164,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithGenericType("T", "object")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -179,7 +179,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithParent("object")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -194,7 +194,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithParent<object>()
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -209,7 +209,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithParents("object, ISomething")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -224,7 +224,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithModifier("private")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -239,7 +239,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithModifiers("private", "static")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -254,7 +254,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithModifier("private static")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(
@@ -269,7 +269,7 @@ namespace Abel.MetaCode.Tests
 			var code = _codeGenerator
 				.AddClass("Lol")
 				.WithModifiers("private static")
-				.WithContent(@class => { })
+				.WithContent(_ => { })
 				.Generate();
 
 			code.RemoveSpecialCharacters().Should().Be(

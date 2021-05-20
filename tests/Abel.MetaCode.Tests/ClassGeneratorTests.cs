@@ -17,7 +17,7 @@ namespace Abel.MetaCode.Tests
 		public void AddConstructor_CodeIsCorrect()
 		{
 			_classGenerator
-				.AddConstructor(ctor => { });
+                .AddConstructor(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -31,7 +31,7 @@ namespace Abel.MetaCode.Tests
 		public void AddConstructor_ParameterShorthand_CodeIsCorrect()
 		{
 			_classGenerator
-				.AddConstructor("string lol", ctor => { });
+                .AddConstructor("string lol", _ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -47,7 +47,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithParameter("int foo")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -63,7 +63,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithParameters("int foo", "string bar")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -79,7 +79,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithModifier("private")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -95,7 +95,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithModifiers("private", "static")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -111,7 +111,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithModifier("private static")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -127,7 +127,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddConstructor()
 				.WithModifiers("private static")
-				.WithContent(ctor => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -141,7 +141,7 @@ namespace Abel.MetaCode.Tests
 		public void AddMethod_CodeIsCorrect()
 		{
 			_classGenerator
-				.AddMethod("Lol", method => { });
+				.AddMethod("Lol", _ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -157,7 +157,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithModifier("private")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -173,7 +173,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithModifiers("private", "static")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -189,7 +189,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithModifier("private static")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -205,7 +205,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithModifiers("private static")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -221,7 +221,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithParameter("string lol")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -237,7 +237,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithParameter("string lol, int foo")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -253,7 +253,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithReturnType("string")
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 
@@ -269,7 +269,7 @@ namespace Abel.MetaCode.Tests
 			_classGenerator
 				.AddMethod("Lol")
 				.WithReturnType<string>()
-				.WithContent(method => { });
+				.WithContent(_ => { });
 
 			var code = _codeGenerator.Generate();
 

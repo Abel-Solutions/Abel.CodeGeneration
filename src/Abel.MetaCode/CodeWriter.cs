@@ -10,7 +10,7 @@ namespace Abel.MetaCode
 	{
 		private int _indents;
 
-		private readonly StringBuilder _sb = new StringBuilder();
+		private readonly StringBuilder _sb = new();
 
 		public void WriteLine(string line) => _sb.AppendLine(new string('\t', _indents) + line);
 
