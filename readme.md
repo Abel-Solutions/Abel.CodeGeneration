@@ -1,14 +1,14 @@
-# Abel.MetaCode
+# Abel.CodeGeneration
 
-Abel.MetaCode is a suite of tools for generating, compiling, executing and mocking classes.
+Abel.CodeGeneration is a suite of tools for generating, compiling, executing and mocking classes.
 
-## Code generation
+## Generate code
 
 The CodeGenerator class helps generate code in a fluent way.
 
 A simple console app which prints "Hello world":
 
-~~~
+```C#
 var code = new CodeGenerator()
 	.Using("System")
 	.AddClass("Lol", @class => @class
@@ -17,11 +17,11 @@ var code = new CodeGenerator()
 		.WithContent(method => method
 			.AddLine("Console.WriteLine(\"Hello world\");")))
 	.Generate();
-~~~
+```
 
-Another example with namespace, inheritance, constructor and explicit modifiers and parameters:
+A slightly more complex example which demonstrates inheritance, constructor, modifiers and parameters:
 
-~~~
+```C#
 var code = _codeGenerator
 	.Using("System")
 	.Using("System.Text")
@@ -35,7 +35,7 @@ var code = _codeGenerator
 			.AddMethod<int>("GetInt", method => method
 				.AddLine("return 1337;"))))
 	.Generate();
-~~~
+```
 
 The generator contains lots of overloads to suit different needs.
 
@@ -45,13 +45,13 @@ The Compiler class compiles source code and returns an Assembly.
 
 This example compiles a console app and runs it:
 
-~~~
+```C#
 new Compiler()
 	.Compile(code, OutputKind.ConsoleApplication)
 	.Execute();
-~~~
+```
 
-OutputKind is optional, without it the Assembly will be a DLL.
+OutputKind is optional, without it the assembly will be a DLL.
 
 The Execute method is an extension method which invokes the entry method (usually `static void Main`).
 
@@ -61,11 +61,11 @@ The Mocker class works similarly to Moq and demonstrates both code generation an
 
 This example shows it in action, together with FluentAssertions:
 
-~~~
+```C#
 var mock = new Mocker<ISomething>();
 mock.Setup(m => m.ToString(2), "2");
 mock.Setup(m => m.GetDouble(2), 4);
 
 mock.Object.ToString(2).Should().Be("2");
 mock.Object.GetDouble(2).Should().Be(4);
-~~~
+```
